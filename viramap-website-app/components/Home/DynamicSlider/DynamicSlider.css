@@ -1,0 +1,540 @@
+/* components/home/DynamicSlider/DynamicSlider.css */
+.dynamic-slider {
+  /* Main Container */
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 80px;
+  gap: 48px;
+  isolation: isolate;
+  background: rgba(250, 250, 250, 0.1);
+  backdrop-filter: blur(2.06px);
+  border-radius: 0px;
+  overflow: hidden;
+}
+
+/* Ellipse Background */
+.slider-ellipse {
+  position: absolute;
+  width: 474px;
+  height: 474px;
+  right: 100px;
+  top: 100%;
+  transform: translateY(-50%);
+  background: rgba(251, 101, 20, 0.3);
+  filter: blur(50px);
+  z-index: 0;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  border-radius: 50%;
+}
+
+/* Main Container */
+.slider-main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 12px;
+  width: 100%;
+  max-width: 1440px;
+  height: 100%;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  z-index: 1;
+}
+
+/* Slides Wrapper */
+.slides-wrapper {
+  position: relative;
+  width: 100%;
+  height: 316px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Slide Item */
+.slide-item {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 80px;
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.6s ease;
+  
+}
+
+.slide-item.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Device Container */
+.device-container {
+  position: absolute;
+  bottom: 15px;
+  right: 170px;
+  width: 400px;
+  height: 300px;
+  z-index: 2;
+}
+
+.device-frame {
+  position: absolute;
+  width: 239.5px;
+  height: 600px;
+  background: #3A4245;
+  border-radius: 30px;
+}
+
+.device-screen {
+  position: absolute;
+  width: 231.37px;
+  height: 600px;
+  left: 5.63px;
+  top: 4.4px;
+  background: #121515;
+  border-radius: 32px;
+  /* overflow: hidden; */
+}
+
+.screen-image {
+  position: absolute;
+  width: 232;
+  height: 450px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Device Details */
+.device-volume {
+  position: absolute;
+  width: 2px;
+  height: 40px;
+  left: 100.26%;
+  top: 18.18%;
+  background: #121515;
+}
+
+.device-power {
+  position: absolute;
+  width: 2px;
+  height: 40px;
+  left: 100.26%;
+  top: 37.41%;
+  background: #121515;
+}
+
+.device-camera {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 47.03%;
+  top: 2.45%;
+  background: #262C2D;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-lens {
+  width: 6px;
+  height: 6px;
+  background: #121515;
+  border-radius: 50%;
+}
+
+.camera-sensor {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #636F73;
+  opacity: 0.4;
+  border-radius: 50%;
+}
+
+/* Content Container */
+.content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  width: 640px;
+  height: 100%;
+  margin-right: 150px;
+  padding: 20px 0;
+}
+
+/* Top Section */
+.top-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Icon Container */
+.icon-container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 12px;
+  gap: 10px;
+  width: 48px;
+  height: 48px;
+  background: rgba(250, 250, 250, 0.1);
+  border: 1px solid #FAFAFA;
+  backdrop-filter: blur(12px);
+  border-radius: 8px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.routing-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.vector {
+  position: absolute;
+  background: #FAFAFA;
+}
+
+.vector.v1 {
+  left: 8.21%;
+  right: 62.63%;
+  top: 8.33%;
+  bottom: 62.5%;
+  opacity: 0.4;
+}
+
+.vector.v2 {
+  left: 62.5%;
+  right: 8.33%;
+  top: 62.5%;
+  bottom: 8.33%;
+  opacity: 0.4;
+}
+
+.vector.v3 {
+  left: 27.37%;
+  right: 27.37%;
+  top: 17.71%;
+  bottom: 17.71%;
+}
+
+.vector.v4 {
+  left: 72.96%;
+  right: 18.67%;
+  top: 72.92%;
+  bottom: 18.75%;
+}
+
+.vector.v5 {
+  left: 18.79%;
+  right: 72.83%;
+  top: 18.75%;
+  bottom: 72.92%;
+}
+
+/* Slide Title */
+.slide-title {
+  width: 100%;
+  height: 36px;
+  font-family: 'Morabba', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 36px;
+  text-align: right;
+  color: #FAFAFA;
+  margin: 0;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+/* Slide Description */
+.slide-description {
+  width: 100%;
+  min-height: 78px;
+  font-family: 'Yekan Bakh', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 26px;
+  text-align: right;
+  color: #E4E4E7;
+  margin: 0;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+/* Slider Controls */
+.slider-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.slider-dots {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(1.2);
+}
+
+.dot.active {
+  background: #FB6514;
+  transform: scale(1.2);
+}
+
+/* Navigation Buttons */
+.navigation-buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(250, 250, 250, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FAFAFA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.nav-btn:hover {
+  background: rgba(251, 101, 20, 0.2);
+  border-color: #FB6514;
+  transform: scale(1.1);
+}
+
+.play-pause-btn {
+  width: 36px;
+  height: 36px;
+}
+
+/* Slide Indicator */
+.slide-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Morabba', sans-serif;
+  font-size: 14px;
+  color: #FAFAFA;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.slide-indicator .current {
+  color: #FB6514;
+  font-weight: 600;
+}
+
+.slide-indicator .separator {
+  opacity: 0.6;
+}
+
+/* Loading and Empty States */
+.slider-loading,
+.slider-empty {
+  width: 100%;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(250, 250, 250, 0.1);
+  backdrop-filter: blur(2.06px);
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 18px;
+  color: #E4E4E7;
+}
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+/* به DynamicSlider.css اضافه کنید */
+
+/* Ellipse برای سمت راست */
+.ellipse-right {
+  position: absolute;
+  width: 528px;
+  height: 528px;
+  left: 4px; /* تنظیم برای سمت راست - نصف عرض دایره */
+  top: 40%;
+  transform: translateY(-50%);
+  background: #1193891c;
+  filter: blur(250px);
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+/* اگر می‌خواهید دقیقاً مانند کد شما باشد با left */
+.ellipse-right-exact {
+  position: absolute;
+  width: 528px;
+  height: 528px;
+  left: calc(100% - 264px); /* برای قرارگیری در سمت راست */
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(17, 147, 137, 0.3);
+  filter: blur(250px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .dynamic-slider {
+    padding: 24px 40px;
+  }
+  
+  .content-container {
+    margin-right: 250px;
+    width: 500px;
+  }
+}
+
+@media (max-width: 992px) {
+  .dynamic-slider {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 20px;
+  }
+  
+  .slide-item {
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .device-container {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .content-container {
+    margin-right: 0;
+    width: 100%;
+    max-width: 640px;
+    padding: 0;
+  }
+  
+  .slider-ellipse {
+    right: -200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dynamic-slider {
+    min-height: 600px;
+  }
+  
+  .slider-main-container {
+    gap: 20px;
+  }
+  
+  .device-frame {
+    transform: scale(0.9);
+  }
+  
+  .content-container {
+    padding: 10px 0;
+  }
+  
+  .slide-title {
+    font-size: 16px;
+    line-height: 32px;
+  }
+  
+  .slide-description {
+    font-size: 13px;
+    line-height: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dynamic-slider {
+    padding: 20px 16px;
+    min-height: 550px;
+  }
+  
+  .device-frame {
+    transform: scale(0.8);
+  }
+  
+  .content-container {
+    gap: 8px;
+  }
+  
+  .icon-container {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+  }
+  
+  .routing-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .slider-controls {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .navigation-buttons {
+    order: -1;
+  }
+}

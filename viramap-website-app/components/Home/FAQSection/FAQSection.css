@@ -1,0 +1,58 @@
+/* components/home/FAQSection/FAQSection.css */
+/* انیمیشن‌های سفارشی */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  /* در موبایل یک ستونه شود */
+  .faq-section .grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* متن‌ها کوچک‌تر شوند */
+  .faq-section h2 {
+    font-size: 24px !important;
+    line-height: 40px !important;
+    width: auto !important;
+    height: auto !important;
+  }
+  
+  .faq-item span {
+    font-size: 16px !important;
+    line-height: 28px !important;
+  }
+  
+  .faq-item p {
+    font-size: 14px !important;
+    line-height: 24px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .faq-section h2 {
+    font-size: 20px !important;
+    line-height: 32px !important;
+  }
+  
+  .faq-section .badge {
+    width: 120px !important;
+  }
+  
+  .faq-section .badge span {
+    font-size: 11px !important;
+    width: auto !important;
+  }
+}

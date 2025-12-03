@@ -1,0 +1,63 @@
+/* app/globals.css */
+@import "tailwindcss";
+
+/* اضافه کردن فونت Morabba و Yekan Bakh */
+@font-face {
+  font-family: 'Morabba';
+  src: url('/fonts/Morabba-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Morabba';
+  src: url('/fonts/Morabba-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Morabba';
+  src: url('/fonts/Morabba-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Yekan Bakh';
+  src: url('/fonts/YekanBakh-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Yekan Bakh';
+  src: url('/fonts/YekanBakh-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --background:#141414;
+  --foreground: #e2e8f0;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: 'Vazirmatn', system-ui, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Vazirmatn', system-ui, sans-serif;
+  direction: rtl;
+  margin: 0;
+  padding: 0;
+}
