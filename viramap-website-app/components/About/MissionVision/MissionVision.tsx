@@ -26,14 +26,18 @@ export default function MissionVision() {
         
       </div>
 
-      {/* Right Side: Image Container */}
+       {/* Right Side: Image Container */}
       <div className="relative w-[480px] h-[480px] flex-none order-1">
-        <div 
-          className="w-full h-full bg-cover bg-center rounded-xl "
-          style={{
-            backgroundImage: 'url(/images/About/about1.png)',
-          }}
-        />
+        <div className="relative w-full h-full">
+          {/* فقط تصویر با سایه - بدون بلور پشت */}
+          <div 
+            className="w-full h-full bg-cover bg-center"
+            style={{
+              backgroundImage: 'url(/images/About/about1.png)',
+              filter: 'drop-shadow(10px 15px 20px rgba(248, 248, 248, 0.24))',
+            }}
+          />
+        </div>
       </div>
     </div>
   );

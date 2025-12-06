@@ -11,7 +11,7 @@ export default function DifferenceSection() {
       gap: '40px',
       width: '1280px',
       height: 'auto',
-      margin: '80px auto 0 auto'
+      margin: '80px auto 150px auto'
     }}>
       
       {/* Right Side: Image Container - 50% */}

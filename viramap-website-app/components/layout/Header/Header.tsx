@@ -1,25 +1,68 @@
 // components/layout/Header/Header.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('');
+  const [isSolutionsOpen, setIsSolutionsOpen] = useState(false);
+  const [isTechOpen, setIsTechOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const solutionsDropdownRef = useRef<HTMLDivElement>(null);
+  const techDropdownRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
+  // راهکارها و مسیرهای مربوطه
+  const solutions = [
+    { id: 'healthcare', label: 'مراکز بهداشتی و درمانی', path: '/solutions/healthcare' },
+    { id: 'airports', label: 'فرودگاه‌ها', path: '/solutions/airports' },
+    { id: 'exhibitions', label: 'نمایشگاه‌ها', path: '/solutions/exhibitions' },
+    { id: 'pilgrimage', label: 'اماکن زیارتی', path: '/solutions/pilgrimage' },
+    { id: 'universities', label: 'دانشگاه‌ها و مراکز آموزشی', path: '/solutions/universities' },
+    { id: 'malls', label: 'مجتمع‌های تجاری و مال‌ها', path: '/solutions/malls' },
+    { id: 'stadiums', label: 'ورزشگاه‌ها و استادیوم‌ها', path: '/solutions/stadiums' },
+    { id: 'industrial', label: 'واحد‌های صنعتی و تولیدی', path: '/solutions/industrial' }
+  ];
+
+  // تکنولوژی‌ها و پلتفرم
+  const technologies = [
+    { id: 'technologies', label: 'تکنولوژی‌ها', path: '/technologies' },
+    { id: 'platform', label: 'پلتفرم', path: '/platform' }
+  ];
+
+  // بستن dropdown وقتی کلیک بیرون از آن انجام شود
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (solutionsDropdownRef.current && !solutionsDropdownRef.current.contains(event.target as Node)) {
+        setIsSolutionsOpen(false);
+      }
+      if (techDropdownRef.current && !techDropdownRef.current.contains(event.target as Node)) {
+        setIsTechOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // بستن dropdown وقتی مسیر تغییر کند
+  useEffect(() => {
+    setIsSolutionsOpen(false);
+    setIsTechOpen(false);
+  }, [pathname]);
 
   const navItems = [
-    { href: '/', label: 'خانه' },
-    { href: '/solutions', label: 'راهکار ها' },
-    { href: '/technologies', label: 'تکنولوژی ها' },
     { href: '/news', label: 'اخبار و مقالات' },
     { href: '/about', label: 'درباره ویرامپ' },
     { href: '/careers', label: 'همکاری با ما' }
   ];
 
   // استایل اصلی هدر
-  const headerStyle = {
-    position: 'fixed' as const,
+  const headerStyle: React.CSSProperties = {
+    position: 'fixed',
     top: '24px',
     left: '50%',
     transform: 'translateX(-50%)',
@@ -39,25 +82,27 @@ const Header = () => {
     border: '1px solid rgba(255, 255, 255, 0.1)'
   };
 
-  // استایل لینک‌ها
-  const linkStyle = (isActive: boolean) => ({
-    fontFamily: 'Vazirmatn, system-ui',
-    fontWeight: 600,
-    fontSize: '14px',
-    lineHeight: '32px',
-    color: '#E4E4E7',
-    textAlign: 'right' as const,
-    padding: '8px 16px',
-    borderRadius: '9999px',
+  // استایل dropdown
+  const getDropdownStyle = (isOpen: boolean): React.CSSProperties => ({
+    position: 'absolute',
+    top: 'calc(100% + 8px)',
+    right: '0',
+    minWidth: '200px',
+    backgroundColor: 'rgba(30, 30, 30, 0.95)',
+    backdropFilter: 'blur(12px)',
+    borderRadius: '12px',
+    padding: '12px 0',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+    opacity: isOpen ? 1 : 0,
+    visibility: isOpen ? 'visible' : 'hidden' as 'visible' | 'hidden',
+    transform: isOpen ? 'translateY(0)' : 'translateY(-10px)',
     transition: 'all 0.3s ease',
-    backgroundColor: isActive ? 'rgba(251, 101, 20, 0.3)' : 'transparent',
-    backdropFilter: isActive ? 'blur(24px)' : 'none',
-    textDecoration: 'none'
+    zIndex: 1001,
   });
 
   return (
     <header style={headerStyle}>
-      
       {/* لوگو و نام برند */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -84,7 +129,6 @@ const Header = () => {
             </linearGradient>
           </defs>
         </svg>
-        
         <span style={{
           color: '#E4E4E7',
           fontSize: '18px',
@@ -97,33 +141,208 @@ const Header = () => {
 
       {/* ناوبری دسکتاپ */}
       <nav style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {/* لینک خانه */}
+        <Link 
+          href="/"
+          style={{
+            fontFamily: 'Vazirmatn, system-ui',
+            fontWeight: 600,
+            fontSize: '14px',
+            lineHeight: '32px',
+            color: activeLink === '/' ? '#FB6514' : '#E4E4E7',
+            textAlign: 'right' as const,
+            padding: '8px 16px',
+            borderRadius: '9999px',
+            transition: 'all 0.3s ease',
+            backgroundColor: activeLink === '/' ? 'rgba(251, 101, 20, 0.3)' : 'transparent',
+            backdropFilter: activeLink === '/' ? 'blur(24px)' : 'none',
+            textDecoration: 'none'
+          }}
+          onMouseEnter={() => setActiveLink('/')}
+          onMouseLeave={() => setActiveLink('')}
+        >
+          خانه
+        </Link>
+
+        {/* Dropdown برای تکنولوژی‌ها */}
+        <div 
+          ref={techDropdownRef}
+          style={{ position: 'relative', display: 'inline-block' }}
+        >
+          <button
+            onClick={() => setIsTechOpen(!isTechOpen)}
+            onMouseEnter={() => setIsTechOpen(true)}
+            style={{
+              fontFamily: 'Vazirmatn, system-ui',
+              fontWeight: 600,
+              fontSize: '14px',
+              lineHeight: '32px',
+              color: pathname === '/technologies' || pathname === '/platform' ? '#FB6514' : '#E4E4E7',
+              textAlign: 'right' as const,
+              padding: '8px 16px',
+              borderRadius: '9999px',
+              transition: 'all 0.3s ease',
+              backgroundColor: pathname === '/technologies' || pathname === '/platform' ? 'rgba(251, 101, 20, 0.3)' : 'transparent',
+              backdropFilter: pathname === '/technologies' || pathname === '/platform' ? 'blur(24px)' : 'none',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            تکنولوژی ها
+            <svg 
+              width="16" 
+              height="16" 
+              viewBox="0 0 16 16" 
+              fill="none" 
+              style={{ 
+                transform: isTechOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.3s ease'
+              }}
+            >
+              <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          {/* Dropdown Menu برای تکنولوژی‌ها */}
+          <div style={getDropdownStyle(isTechOpen)}>
+            {technologies.map((tech) => (
+              <Link
+                key={tech.id}
+                href={tech.path}
+                style={{
+                  display: 'block',
+                  padding: '10px 20px',
+                  color: pathname === tech.path ? '#FB6514' : '#E4E4E7',
+                  textDecoration: 'none',
+                  fontSize: '14px',
+                  fontFamily: 'Vazirmatn, system-ui',
+                  transition: 'all 0.2s ease',
+                  borderRight: pathname === tech.path ? '3px solid #FB6514' : 'none'
+                }}
+                onMouseEnter={() => setActiveLink(tech.path)}
+                onMouseLeave={() => setActiveLink('')}
+              >
+                {tech.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* سایر لینک‌ها */}
         {navItems.map((item) => (
           <Link 
             key={item.href}
             href={item.href}
-            style={linkStyle(activeLink === item.href)}
+            style={{
+              fontFamily: 'Vazirmatn, system-ui',
+              fontWeight: 600,
+              fontSize: '14px',
+              lineHeight: '32px',
+              color: activeLink === item.href ? '#FB6514' : '#E4E4E7',
+              textAlign: 'right' as const,
+              padding: '8px 16px',
+              borderRadius: '9999px',
+              transition: 'all 0.3s ease',
+              backgroundColor: activeLink === item.href ? 'rgba(251, 101, 20, 0.3)' : 'transparent',
+              backdropFilter: activeLink === item.href ? 'blur(24px)' : 'none',
+              textDecoration: 'none'
+            }}
             onMouseEnter={() => setActiveLink(item.href)}
             onMouseLeave={() => setActiveLink('')}
           >
             {item.label}
           </Link>
         ))}
+        
+        {/* Dropdown برای راهکارها */}
+        <div 
+          ref={solutionsDropdownRef}
+          style={{ position: 'relative', display: 'inline-block' }}
+        >
+          <button
+            onClick={() => setIsSolutionsOpen(!isSolutionsOpen)}
+            onMouseEnter={() => setIsSolutionsOpen(true)}
+            style={{
+              fontFamily: 'Vazirmatn, system-ui',
+              fontWeight: 600,
+              fontSize: '14px',
+              lineHeight: '32px',
+              color: pathname.includes('/solutions') ? '#FB6514' : '#E4E4E7',
+              textAlign: 'right' as const,
+              padding: '8px 16px',
+              borderRadius: '9999px',
+              transition: 'all 0.3s ease',
+              backgroundColor: pathname.includes('/solutions') ? 'rgba(251, 101, 20, 0.3)' : 'transparent',
+              backdropFilter: pathname.includes('/solutions') ? 'blur(24px)' : 'none',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            راهکار ها
+            <svg 
+              width="16" 
+              height="16" 
+              viewBox="0 0 16 16" 
+              fill="none" 
+              style={{ 
+                transform: isSolutionsOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.3s ease'
+              }}
+            >
+              <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          {/* Dropdown Menu */}
+          <div style={getDropdownStyle(isSolutionsOpen)}>
+            {solutions.map((solution) => (
+              <Link
+                key={solution.id}
+                href={solution.path}
+                style={{
+                  display: 'block',
+                  padding: '10px 20px',
+                  color: pathname === solution.path ? '#FB6514' : '#E4E4E7',
+                  textDecoration: 'none',
+                  fontSize: '14px',
+                  fontFamily: 'Vazirmatn, system-ui',
+                  transition: 'all 0.2s ease',
+                  borderRight: pathname === solution.path ? '3px solid #FB6514' : 'none'
+                }}
+                onMouseEnter={() => setActiveLink(solution.path)}
+                onMouseLeave={() => setActiveLink('')}
+              >
+                {solution.label}
+              </Link>
+            ))}
+          </div>
+        </div>
       </nav>
 
       {/* دکمه CTA */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <button style={{
-          backgroundColor: '#FB6514',
-          color: 'white',
-          padding: '8px 24px',
-          borderRadius: '8px',
-          fontWeight: 600,
-          fontSize: '14px',
-          fontFamily: 'Vazirmatn, system-ui',
-          border: 'none',
-          cursor: 'pointer',
-          transition: 'all 0.3s ease'
-        }}>
+        <button 
+          style={{
+            backgroundColor: isHovered ? '#B2480E' : '#FB6514',
+            color: 'white',
+            padding: '8px 24px',
+            borderRadius: '8px',
+            fontWeight: 600,
+            fontSize: '14px',
+            fontFamily: 'Vazirmatn, system-ui',
+            border: 'none',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+          }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           تماس با ما
         </button>
       </div>

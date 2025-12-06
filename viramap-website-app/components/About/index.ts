@@ -8,3 +8,4 @@ export { default as AboutIntro } from './AboutIntro';
 export { default as DifferenceSection } from './DifferenceSection';
 export {default as WhyViramap} from './WhyViramap';
 export {default as TechnologySectionWithImage} from './TechnologySectionWithImage';
+export {default as ImplementationProcess} from './ImplementationProcess';

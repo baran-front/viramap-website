@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="bg-[#141414] text-white w-full">
       {/* بخش اصلی فوتر */}
-      <div className="container mx-auto px-32 py-12">
+      <div className="container mx-auto px-4 sm:px-8 lg:px-32 py-12">
         <div className="flex flex-col lg:flex-row justify-between gap-8 lg:gap-16">
           {/* بخش راست (40%) */}
           <div className="lg:w-2/5">
@@ -42,7 +42,7 @@ const Footer = () => {
 
             {/* متن توضیحی */}
             <div className="mb-8">
-              <p className="text-[#E4E4E7] text-[14px] leading-[26px] font-normal w-full max-w-[320px] h-[208px]">
+              <p className="text-[#E4E4E7] text-[14px] leading-[26px] font-normal max-w-[320px]">
                 شرکت ما، زیرمجموعه‌ای از *شرکت اروین ویرا*، با تمرکز بر ارائه‌ی راهکارهای نوین و هوشمند، به بهبود مسیریابی و ارائه خدمات موقعیت‌یابی داخلی (Indoor Mapping) در فضاهای بزرگ و پیچیده می‌پردازد. هدف ما افزایش رضایت و راحتی کاربران در مکان‌های گسترده‌ای مانند بیمارستان‌ها، استادیوم‌ها، و مراکز تجاری است. با بهره‌گیری از تکنولوژی‌های پیشرفته، خدمات ما به مدیران مکان‌های عمومی امکان می‌دهد تجربه‌ای کاربرپسند، سریع و دقیق برای بازدیدکنندگان فراهم کنند.
               </p>
             </div>
@@ -77,28 +77,28 @@ const Footer = () => {
 
           {/* بخش چپ (60%) - لینک‌ها */}
           <div className="lg:w-3/5">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
               {/* دسترسی سریع */}
               <div>
                 <h4 className="text-lg font-semibold mb-6">دسترسی سریع</h4>
                 <ul className="space-y-4">
                   <li>
-                    <Link href="/news" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/news" className="text-gray-300 hover:text-white transition-colors text-sm">
                       اخبار و مقالات
                     </Link>
                   </li>
                   <li>
-                    <Link href="/about-indoor" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/about-indoor" className="text-gray-300 hover:text-white transition-colors text-sm">
                       درباره مسیریاب‌داخلی
                     </Link>
                   </li>
                   <li>
-                    <Link href="/about-viramp" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/about-viramp" className="text-gray-300 hover:text-white transition-colors text-sm">
                       درباره ویرامپ
                     </Link>
                   </li>
                   <li>
-                    <Link href="/careers" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/careers" className="text-gray-300 hover:text-white transition-colors text-sm">
                       درخواست همکاری
                     </Link>
                   </li>
@@ -110,17 +110,17 @@ const Footer = () => {
                 <h4 className="text-lg font-semibold mb-6">محصولات</h4>
                 <ul className="space-y-4">
                   <li>
-                    <Link href="/products/indoor-mapping" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/products/indoor-mapping" className="text-gray-300 hover:text-white transition-colors text-sm">
                       نقشه برداری داخلی
                     </Link>
                   </li>
                   <li>
-                    <Link href="/products/indoor-navigation" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/products/indoor-navigation" className="text-gray-300 hover:text-white transition-colors text-sm">
                       ناوبری داخلی
                     </Link>
                   </li>
                   <li>
-                    <Link href="/products/indoor-tracking" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/products/indoor-tracking" className="text-gray-300 hover:text-white transition-colors text-sm">
                       ردیابی داخلی
                     </Link>
                   </li>
@@ -130,44 +130,44 @@ const Footer = () => {
               {/* راه کارها */}
               <div>
                 <h4 className="text-lg font-semibold mb-6">راه کارها</h4>
-                <ul className="space-y-4">
+                <ul className="space-y-2">
                   <li>
-                    <Link href="/solutions/healthcare" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/solutions/healthcare" className="text-gray-300 hover:text-white transition-colors text-sm block py-1">
                       مراکز بهداشتی و درمانی
                     </Link>
                   </li>
                   <li>
-                    <Link href="/solutions/stadiums" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/solutions/airports" className="text-gray-300 hover:text-white transition-colors text-sm block py-1">
                       فرودگاه‌ها
                     </Link>
                   </li>
                   <li>
-                    <Link href="/solutions/shopping-malls" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/solutions/exhibitions" className="text-gray-300 hover:text-white transition-colors text-sm block py-1">
                       نمایشگاه‌ها
                     </Link>
                   </li>
                   <li>
-                    <Link href="/solutions/airports" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/solutions/pilgrimage" className="text-gray-300 hover:text-white transition-colors text-sm block py-1">
                       اماکن زیارتی
                     </Link>
                   </li>
                   <li>
-                    <Link href="/solutions/healthcare" className="text-gray-300 hover:text-white transition-colors">
-                      دانشگاه‌ها و مراکز  آموزشی
+                    <Link href="/solutions/universities" className="text-gray-300 hover:text-white transition-colors text-sm block py-1">
+                      دانشگاه‌ها و مراکز آموزشی
                     </Link>
                   </li>
                   <li>
-                    <Link href="/solutions/stadiums" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/solutions/malls" className="text-gray-300 hover:text-white transition-colors text-sm block py-1">
                       مجتمع‌های تجاری و مال‌ها
                     </Link>
                   </li>
                   <li>
-                    <Link href="/solutions/shopping-malls" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/solutions/stadiums" className="text-gray-300 hover:text-white transition-colors text-sm block py-1">
                       ورزشگاه‌ها و استادیوم‌ها
                     </Link>
                   </li>
                   <li>
-                    <Link href="/solutions/airports" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/solutions/industrial" className="text-gray-300 hover:text-white transition-colors text-sm block py-1">
                       واحد‌های صنعتی و تولیدی
                     </Link>
                   </li>
@@ -178,25 +178,29 @@ const Footer = () => {
               <div>
                 <h4 className="text-lg font-semibold mb-6">تماس با ما</h4>
                 <ul className="space-y-4 text-gray-300">
-                  <li className="flex"> 
-                  
-                    <span>
+                  <li className="flex items-start gap-2"> 
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="mt-1 flex-shrink-0">
+                      <path d="M10 10.8333C12.3012 10.8333 14.1667 8.96785 14.1667 6.66667C14.1667 4.36548 12.3012 2.5 10 2.5C7.69881 2.5 5.83333 4.36548 5.83333 6.66667C5.83333 8.96785 7.69881 10.8333 10 10.8333Z" stroke="#E4E4E7" strokeWidth="1.5"/>
+                      <path d="M2.5 17.5C2.5 14.1667 5.83333 11.6667 10 11.6667C14.1667 11.6667 17.5 14.1667 17.5 17.5" stroke="#E4E4E7" strokeWidth="1.5" strokeLinecap="round"/>
+                    </svg>
+                    <span className="text-sm">
                       مشهد، خیام جنوبی ۲۶، پلاک ۱۰، طبقه ۵
                     </span>
                   </li>
-                    <li className="flex"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M14.1667 17.0834H5.83341C3.33341 17.0834 1.66675 15.8334 1.66675 12.9167V7.08341C1.66675 4.16675 3.33341 2.91675 5.83341 2.91675H14.1667C16.6667 2.91675 18.3334 4.16675 18.3334 7.08341V12.9167C18.3334 15.8334 16.6667 17.0834 14.1667 17.0834Z" stroke="#E4E4E7" strokeWidth="1.25" strokeMiterlimit="10" strokeLinecap="round" stroke-linejoin="round"/>
-                    <path d="M14.1666 7.5L11.5582 9.58333C10.6999 10.2667 9.29158 10.2667 8.43325 9.58333L5.83325 7.5" stroke="#E4E4E7" strokeWidth="1.25" strokeMiterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  <li className="flex items-center gap-2">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+                      <path d="M14.1667 17.0834H5.83341C3.33341 17.0834 1.66675 15.8334 1.66675 12.9167V7.08341C1.66675 4.16675 3.33341 2.91675 5.83341 2.91675H14.1667C16.6667 2.91675 18.3334 4.16675 18.3334 7.08341V12.9167C18.3334 15.8334 16.6667 17.0834 14.1667 17.0834Z" stroke="#E4E4E7" strokeWidth="1.25" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M14.1666 7.5L11.5582 9.58333C10.6999 10.2667 9.29158 10.2667 8.43325 9.58333L5.83325 7.5" stroke="#E4E4E7" strokeWidth="1.25" strokeMiterlimit="10" strokeLinejoin="round"/>
                     </svg>
-                    <span>
+                    <span className="text-sm">
                       Arvinvira@Info.com
                     </span>
                   </li>
-                  <li className="flex">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18.3084 15.2751C18.3084 15.5751 18.2417 15.8834 18.1001 16.1834C17.9584 16.4834 17.7751 16.7667 17.5334 17.0334C17.1251 17.4834 16.6751 17.8084 16.1667 18.0167C15.6667 18.2251 15.1251 18.3334 14.5417 18.3334C13.6917 18.3334 12.7834 18.1334 11.8251 17.7251C10.8667 17.3167 9.90842 16.7667 8.95842 16.0751C8.00008 15.3751 7.09175 14.6001 6.22508 13.7417C5.36675 12.8751 4.59175 11.9667 3.90008 11.0167C3.21675 10.0667 2.66675 9.11675 2.26675 8.17508C1.86675 7.22508 1.66675 6.31675 1.66675 5.45008C1.66675 4.88341 1.76675 4.34175 1.96675 3.84175C2.16675 3.33341 2.48341 2.86675 2.92508 2.45008C3.45841 1.92508 4.04175 1.66675 4.65841 1.66675C4.89175 1.66675 5.12508 1.71675 5.33341 1.81675C5.55008 1.91675 5.74175 2.06675 5.89175 2.28341L7.82508 5.00841C7.97508 5.21675 8.08341 5.40841 8.15841 5.59175C8.23341 5.76675 8.27508 5.94175 8.27508 6.10008C8.27508 6.30008 8.21675 6.50008 8.10008 6.69175C7.99175 6.88341 7.83341 7.08341 7.63341 7.28341L7.00008 7.94175C6.90841 8.03341 6.86675 8.14175 6.86675 8.27508C6.86675 8.34175 6.87508 8.40008 6.89175 8.46675C6.91675 8.53341 6.94175 8.58341 6.95842 8.63341C7.10842 8.90841 7.36675 9.26675 7.73341 9.70008C8.10841 10.1334 8.50841 10.5751 8.94175 11.0167C9.39175 11.4584 9.82508 11.8667 10.2667 12.2417C10.7001 12.6084 11.0584 12.8584 11.3417 13.0084C11.3834 13.0251 11.4334 13.0501 11.4917 13.0751C11.5584 13.1001 11.6251 13.1084 11.7001 13.1084C11.8417 13.1084 11.9501 13.0584 12.0417 12.9667L12.6751 12.3417C12.8834 12.1334 13.0834 11.9751 13.2751 11.8751C13.4667 11.7584 13.6584 11.7001 13.8667 11.7001C14.0251 11.7001 14.1917 11.7334 14.3751 11.8084C14.5584 11.8834 14.7501 11.9917 14.9584 12.1334L17.7167 14.0917C17.9334 14.2417 18.0834 14.4167 18.1751 14.6251C18.2584 14.8334 18.3084 15.0417 18.3084 15.2751Z" stroke="#E4E4E7" stroke-width="1.25" stroke-miterlimit="10"/>
+                  <li className="flex items-center gap-2">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+                      <path d="M18.3084 15.2751C18.3084 15.5751 18.2417 15.8834 18.1001 16.1834C17.9584 16.4834 17.7751 16.7667 17.5334 17.0334C17.1251 17.4834 16.6751 17.8084 16.1667 18.0167C15.6667 18.2251 15.1251 18.3334 14.5417 18.3334C13.6917 18.3334 12.7834 18.1334 11.8251 17.7251C10.8667 17.3167 9.90842 16.7667 8.95842 16.0751C8.00008 15.3751 7.09175 14.6001 6.22508 13.7417C5.36675 12.8751 4.59175 11.9667 3.90008 11.0167C3.21675 10.0667 2.66675 9.11675 2.26675 8.17508C1.86675 7.22508 1.66675 6.31675 1.66675 5.45008C1.66675 4.88341 1.76675 4.34175 1.96675 3.84175C2.16675 3.33341 2.48341 2.86675 2.92508 2.45008C3.45841 1.92508 4.04175 1.66675 4.65841 1.66675C4.89175 1.66675 5.12508 1.71675 5.33341 1.81675C5.55008 1.91675 5.74175 2.06675 5.89175 2.28341L7.82508 5.00841C7.97508 5.21675 8.08341 5.40841 8.15841 5.59175C8.23341 5.76675 8.27508 5.94175 8.27508 6.10008C8.27508 6.30008 8.21675 6.50008 8.10008 6.69175C7.99175 6.88341 7.83341 7.08341 7.63341 7.28341L7.00008 7.94175C6.90841 8.03341 6.86675 8.14175 6.86675 8.27508C6.86675 8.34175 6.87508 8.40008 6.89175 8.46675C6.91675 8.53341 6.94175 8.58341 6.95842 8.63341C7.10842 8.90841 7.36675 9.26675 7.73341 9.70008C8.10841 10.1334 8.50841 10.5751 8.94175 11.0167C9.39175 11.4584 9.82508 11.8667 10.2667 12.2417C10.7001 12.6084 11.0584 12.8584 11.3417 13.0084C11.3834 13.0251 11.4334 13.0501 11.4917 13.0751C11.5584 13.1001 11.6251 13.1084 11.7001 13.1084C11.8417 13.1084 11.9501 13.0584 12.0417 12.9667L12.6751 12.3417C12.8834 12.1334 13.0834 11.9751 13.2751 11.8751C13.4667 11.7584 13.6584 11.7001 13.8667 11.7001C14.0251 11.7001 14.1917 11.7334 14.3751 11.8084C14.5584 11.8834 14.7501 11.9917 14.9584 12.1334L17.7167 14.0917C17.9334 14.2417 18.0834 14.4167 18.1751 14.6251C18.2584 14.8334 18.3084 15.0417 18.3084 15.2751Z" stroke="#E4E4E7" strokeWidth="1.25" strokeMiterlimit="10"/>
                     </svg>
-                    <span>
+                    <span className="text-sm">
                       09129090990
                     </span>
                   </li>
@@ -208,38 +212,31 @@ const Footer = () => {
       </div>
 
       {/* خط جداکننده */}
-      <div className="w-full">
-        <svg width="100%" height="1" viewBox="0 0 1280 1" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100%" height="1" fill="#3F3F46"/>
-        </svg>
-      </div>
+      <div className="w-full border-t border-[#3F3F46]"></div>
 
       {/* بخش پایینی */}
-      <div className="container mx-auto px-32 py-6">
-        <div className="flex justify-between items-center w-full gap-4">
+      <div className="container mx-auto px-4 sm:px-8 lg:px-32 py-6">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          {/* باکس ایمیل سمت چپ */}
+          <div className="flex items-center gap-2 w-full md:w-auto order-2 md:order-1">
+            <input
+              type="email"
+              placeholder="ایمیل خود را وارد کنید"
+              className="w-full px-4 py-3 bg-[#27272A] border border-[#3F3F46] rounded-md focus:outline-none focus:ring-1 focus:ring-[#52525B] text-white placeholder:text-gray-400 text-sm"
+              dir="rtl"
+            />
+            <button className="bg-[#FB6514] hover:bg-[#B2480E] text-white px-6 py-3 rounded-md transition-colors font-medium whitespace-nowrap">
+              ارسال
+            </button>
+          </div>
 
-        {/* کپی‌رایت سمت راست */}
-        <div className="flex justify-end">
-          <p className="text-[#52525B] text-[18px]">
-            Design & Develop By ArvinVira Group ©
-          </p>
+          {/* کپی‌رایت سمت راست */}
+          <div className="order-1 md:order-2">
+            <p className="text-[#52525B] text-sm md:text-base text-center md:text-right">
+              Design & Develop By ArvinVira Group ©
+            </p>
+          </div>
         </div>
-
-        {/* باکس ایمیل سمت چپ */}
-        <div className="flex items-center gap-1.5">
-          <button className="bg-[#FB6514] hover:bg-[#B2480E] text-white px-6 py-3 rounded-md transition-colors font-medium">
-            ارسال
-          </button>
-
-          <input
-            type="email"
-            placeholder="ایمیل خود را وارد کنید"
-            className="w-full px-4 py-3 bg-[#27272A] border border-[#3F3F46] rounded-md focus:outline-none focus:ring-1 focus:ring-[#52525B] text-white placeholder:text-gray-400"
-            dir="rtl"
-          />
-        </div>
-
-      </div>
       </div>
     </footer>
   );

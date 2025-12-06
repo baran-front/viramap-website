@@ -8,47 +8,58 @@ export default function WhyViramap() {
   const [imageError, setImageError] = useState(false);
   
   return (
-    <section className="relative w-full px-4 sm:px-6 lg:px-8 py-12 lg:py-24 overflow-hidden min-h-[800px]">
-      {/* Ellipse 52 - Orange (Exact CSS) */}
-      <div 
-        className="absolute -z-10 rounded-full"
-        style={{
-          width: '519px',
-          height: '519px',
-          left: 'calc(50% - 519px/2)',
-          top: '-52px',
-          background: 'rgba(254, 139, 32, 0.3)',
-          filter: 'blur(150px)',
-        }}
-      />
+    <section className="relative w-full px-4 sm:px-6 lg:px-8 py-12 lg:py-24 min-h-[800px] overflow-visible">
+      {/* Background container for ellipses */}
+      <div className="absolute inset-0 overflow-visible pointer-events-none">
+        
+        {/* Ellipse 52 - Orange (Exact CSS) */}
+        <div 
+          className="absolute rounded-full opacity-70"
+          style={{
+            width: '519px',
+            height: '519px',
+            right: '335px',
+            top: '52px',
+            background: 'rgba(254, 139, 32, 0.3)',
+            filter: 'blur(150px)',
+            transform: 'translateZ(0)',
+            willChange: 'transform'
+          }}
+        />
 
-      {/* Ellipse 47 - Purple (Exact CSS) */}
-      <div 
-        className="absolute -z-10 rounded-full hidden lg:block"
-        style={{
-          width: '337px',
-          height: '349px',
-          left: 'calc(50% - 337px/2 + 575.5px)',
-          top: '1199px',
-          background: 'rgba(143, 101, 255, 0.1)',
-          filter: 'blur(100px)',
-        }}
-      />
+        {/* Ellipse 47 - Purple (Exact CSS) */}
+        <div 
+          className="absolute rounded-full opacity-70 hidden lg:block"
+          style={{
+            width: '337px',
+            height: '349px',
+            left: 'calc(50% - 337px/2 + 575.5px)',
+            top: '1199px',
+            background: 'rgba(143, 101, 255, 0.1)',
+            filter: 'blur(100px)',
+            transform: 'translateZ(0)',
+            willChange: 'transform'
+          }}
+        />
 
-      {/* Group 57 (Alternative positioning) */}
-      <div 
-        className="absolute -z-10 rounded-full hidden lg:block"
-        style={{
-          width: '337px',
-          height: '349px',
-          left: '1127px',
-          top: '1199px',
-          background: 'rgba(143, 101, 255, 0.1)',
-          filter: 'blur(100px)',
-        }}
-      />
+        {/* Group 57 (Alternative positioning) */}
+        <div 
+          className="absolute rounded-full opacity-70 hidden lg:block"
+          style={{
+            width: '337px',
+            height: '349px',
+            left: '1127px',
+            top: '1199px',
+            background: 'rgba(143, 101, 255, 0.1)',
+            filter: 'blur(100px)',
+            transform: 'translateZ(0)',
+            willChange: 'transform'
+          }}
+        />
 
-      <div className="relative max-w-7xl mx-auto">
+      </div>
+
+      <div className="relative max-w-7xl mx-auto z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 xl:gap-16">
           
           {/* Image Content - Left Side */}

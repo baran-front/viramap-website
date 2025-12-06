@@ -9,7 +9,7 @@ import { CTASection } from '@/components';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'viramap',
+  title: 'Vira Map',
   description: 'viramapdescription ',
 };
 

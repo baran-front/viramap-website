@@ -79,55 +79,84 @@ export default function InstallationProcess() {
         {/* Description Text */}
         <div style={{
           width: '616px',
-          height: '192px',
           fontFamily: "'Yekan Bakh', sans-serif",
           fontStyle: 'normal',
           fontWeight: 400,
           fontSize: '16px',
           lineHeight: '32px',
-          display: 'flex',
-          alignItems: 'center',
-          textAlign: 'right', // چپ‌چین
           color: '#E4E4E7',
           flex: 'none',
           order: 1,
           alignSelf: 'stretch',
-          flexGrow: 0
+          flexGrow: 0,
+          textAlign: 'right',
+          direction: 'rtl'
         }}>
-          پیاده‌سازی ایندور مپ برای کسب‌وکارها بسیار ساده‌تر از آن است که ممکن است تصور شود. ویرامپ به عنوان یک ایندور مپ به راحتی با زیرساخت‌های موجود در ساختمان‌ها مانند وای‌فای و بلوتوث کار می‌کنند، و برای نصب آن نیاز به تجهیزات خاص یا بازسازی فیزیکی فضا نیست. برای شروع، تیم‌های فنی از طریق نصب بیکن‌ها یا استفاده از روترهای موجود می‌توانند نقاط مرجع در فضای داخلی را تعیین کنند. این نقاط به عنوان راهنمایی برای دستگاه‌های کاربران عمل می‌کنند، و به کاربران اجازه می‌دهند تا با کمک اپلیکیشن ویرامپ موقعیت خود را به‌طور دقیق در محیط پیدا کنند.
+          پیاده‌سازی ایندور مپ برای کسب‌وکارها بسیار ساده‌تر از آن است که ممکن است تصور شود.{" "}
+          <a 
+            href="/about-viramp" 
+            style={{
+              color: '#FB6514',
+              textDecoration: 'none',
+              fontWeight: '600'
+            }}
+          >
+            ویرامپ
+          </a>
+          {" "}به عنوان یک ایندور مپ به راحتی با زیرساخت‌های موجود در ساختمان‌ها مانند وای‌فای و بلوتوث کار می‌کنند، و برای نصب آن نیاز به تجهیزات خاص یا بازسازی فیزیکی فضا نیست. برای شروع، تیم‌های فنی از طریق نصب بیکن‌ها یا استفاده از روترهای موجود می‌توانند نقاط مرجع در فضای داخلی را تعیین کنند. این نقاط به عنوان راهنمایی برای دستگاه‌های کاربران عمل می‌کنند، و به کاربران اجازه می‌دهند تا با کمک{" "}
+          <a 
+            href="/products/viramp-app" 
+            style={{
+              color: '#FB6514',
+              textDecoration: 'none',
+              fontWeight: '600'
+            }}
+          >
+            اپلیکیشن ویرامپ
+          </a>
+          {" "}موقعیت خود را به‌طور دقیق در محیط پیدا کنند.
         </div>
         
         {/* Button */}
-        <button style={{
+        {/* Button Container با justify-content: flex-end */}
+        <div style={{
           display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '8px',
-          width: '95px',
-          height: '24px',
-          fontFamily: "'Yekan Bakh', sans-serif",
-          fontStyle: 'normal',
-          fontWeight: 600,
-          fontSize: '14px',
-          lineHeight: '26px',
-          color: '#FB6514',
-          background: 'transparent',
-          border: 'none',
-          cursor: 'pointer',
-          padding: '0',
+          justifyContent: 'flex-end', // این خط را اضافه کنید
+          width: '100%',
           flex: 'none',
           order: 2,
           flexGrow: 0,
-          transition: 'all 0.3s ease'
+          marginTop: '8px' // فاصله اضافی از متن
         }}>
-          <span style={{ display: 'flex', alignItems: 'center' }}>
-            درباره ویرامپ
-          </span>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 19.9201L8.48003 13.4001C7.71003 12.6301 7.71003 11.3701 8.48003 10.6001L15 4.08008" stroke="#FB6514" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
+          {/* Button */}
+          <button style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'end',
+            gap: '8px',
+            width: '195px',
+            height: '24px',
+            fontFamily: "'Yekan Bakh', sans-serif",
+            fontStyle: 'normal',
+            fontWeight: 600,
+            fontSize: '14px',
+            lineHeight: '26px',
+            color: '#FB6514',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '0',
+            transition: 'all 0.3s ease'
+          }}>
+            <span style={{ display: 'flex', alignItems: 'center' }}>
+              درباره ویرامپ
+            </span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 19.9201L8.48003 13.4001C7.71003 12.6301 7.71003 11.3701 8.48003 10.6001L15 4.08008" stroke="#FB6514" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Right Side: Image Container */}

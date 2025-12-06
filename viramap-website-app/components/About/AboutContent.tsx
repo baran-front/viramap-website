@@ -9,6 +9,7 @@ import AboutIntro from './AboutIntro';
 import DifferenceSection from './DifferenceSection';
 import WhyViramap from './WhyViramap';
 import TechnologySection from '@/components/About/TechnologySectionWithImage';
+import ImplementationProcess from './ImplementationProcess';
 
 export default function AboutContent() {
   return (
@@ -26,8 +27,9 @@ export default function AboutContent() {
         <InstallationProcess />
         <AboutIntro />
         <DifferenceSection />
-        <WhyViramap/>
+        <WhyViramap/> 
         <TechnologySection/>
+        <ImplementationProcess/>
       </div>
     </div>
   );
