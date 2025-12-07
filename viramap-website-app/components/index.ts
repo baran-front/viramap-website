@@ -6,3 +6,4 @@ export * from './Home';
 
 // Export all about components
 export * from './About';
+

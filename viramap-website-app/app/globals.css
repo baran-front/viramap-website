@@ -1,22 +1,13 @@
 /* app/globals.css */
 @import "tailwindcss";
 
-/* ===============================
-   CSS Variables
-   =============================== */
 :root {
   --background: #141414;
   --foreground: #e2e8f0;
-
-  /* Default font */
   --font-sans: 'Vazirmatn', system-ui, sans-serif;
-  /* Ravi font */
   --font-ravi: 'Ravi', sans-serif;
 }
 
-/* ===============================
-   Font Faces
-   =============================== */
 @font-face {
   font-family: 'Ravi';
   src: url('/fonts/SemiPro/Ravi Family/Webfonts/woff2/Ravi-Bold.woff2') format('woff2');
@@ -25,9 +16,6 @@
   font-display: swap;
 }
 
-/* ===============================
-   Global Styles
-   =============================== */
 body {
   background: var(--background);
   color: var(--foreground);
@@ -37,8 +25,108 @@ body {
   padding: 0;
 }
 
-/* کلاس برای متن‌هایی که میخوای با Ravi نمایش داده بشه */
 .ravi-text {
   font-family: var(--font-ravi);
   font-weight: 700;
+}
+
+/* -------------------------------- */
+/* Utilities بدون رنگ ناشناس        */
+/* -------------------------------- */
+
+@utility container {
+  @apply max-w-384 mx-auto px-6 lg:px-8;
+}
+
+@utility f-align {
+  @apply flex items-center;
+}
+
+@utility f-center {
+  @apply flex items-center justify-center;
+}
+
+@utility heading {
+  @apply text-3xl leading-normal lg:text-5xl font-bold;
+}
+
+@utility sub-heading {
+  @apply text-xl lg:text-2xl font-semibold;
+}
+
+@utility title {
+  @apply text-lg lg:text-xl font-bold;
+}
+
+@utility typhography {
+  @apply lg:text-lg leading-loose lg:leading-11;
+}
+
+@utility card {
+  @apply p-3 lg:p-6 rounded-md lg:rounded-lg;
+}
+
+/* اینجا دیگه Tailwind استفاده نمی‌کنیم */
+.glassy-card {
+  background: rgba(226, 232, 240, 0.05);
+  backdrop-filter: blur(5px);
+}
+
+.bordered-glassy-card {
+  background: rgba(226, 232, 240, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.05);
+  backdrop-filter: blur(5px);
+}
+
+.hoverable-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hoverable-card:hover {
+  border-color: rgba(34, 211, 238, 0.2);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.05);
+}
+
+/* CMS */
+@utility cms {
+  h6 {
+    @apply not-first:mt-16 sub-heading;
+  }
+
+  p {
+    @apply not-first:mt-3 typhography;
+  }
+
+  ul {
+    @apply not-first:mt-6 typhography;
+
+    li {
+      @apply list-disc list-inside not-first:mt-3;
+
+      h6 {
+        @apply inline-block;
+      }
+    }
+  }
+
+  ol {
+    @apply not-first:mt-6 typhography;
+
+    li {
+      @apply list-decimal list-inside not-first:mt-3 font-bold;
+
+      h6 {
+        @apply inline-block;
+      }
+    }
+
+    ul {
+      @apply mt-0!;
+
+      li {
+        @apply list-disc;
+      }
+    }
+  }
 }
