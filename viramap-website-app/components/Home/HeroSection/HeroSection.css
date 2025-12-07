@@ -5,7 +5,7 @@
   background-color: #141414;
   color: white;
   display: flex;
-  font-family: 'Vazirmatn', system-ui;
+  font-family: "Vazirmatn", system-ui;
   overflow: hidden;
 }
 
@@ -75,32 +75,37 @@
 }
 
 .hero-subtitle {
-  font-family: 'Morabba', sans-serif;
+  font-family: "Morabba", sans-serif;
   font-weight: 600;
   font-size: 22px;
   line-height: 40px;
-  color: #E4E4E7;
+  color: #e4e4e7;
   margin-bottom: 32px;
   text-align: center;
 }
 
 .hero-title {
-  font-family: 'Morabba', sans-serif;
+  font-family: "Morabba", sans-serif;
   font-weight: bold;
   font-size: 60px;
   line-height: 92px;
-  color: #E4E4E7;
+  color: #e4e4e7;
   margin-bottom: 0;
   text-align: center;
   max-width: 965px;
 }
 
 .hero-gradient-text {
-  font-family: 'Yekan Bakh', sans-serif;
+  font-family: "Yekan Bakh", sans-serif;
   font-weight: 600;
   font-size: 18px;
   line-height: 40px;
-  background: linear-gradient(269.96deg, #FE8B20 29.13%, #AECE3B 47.88%, #119389 65.19%);
+  background: linear-gradient(
+    269.96deg,
+    #fe8b20 29.13%,
+    #aece3b 47.88%,
+    #119389 65.19%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -124,12 +129,12 @@
   gap: 8px;
   width: 135px;
   height: 48px;
-  background-color: #FB6514;
+  background-color: #fb6514;
   border-radius: 12px;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: 'Yekan Bakh', sans-serif;
+  font-family: "Yekan Bakh", sans-serif;
   font-weight: 600;
   font-size: 14px;
   line-height: 26px;
@@ -156,11 +161,11 @@
   position: relative;
   border: 1px solid rgba(251, 101, 20, 0.3);
   transition: all 0.3s ease;
-  font-family: 'Yekan Bakh', sans-serif;
+  font-family: "Yekan Bakh", sans-serif;
   font-weight: 600;
   font-size: 14px;
   line-height: 26px;
-  color: #FB6514;
+  color: #fb6514;
 }
 
 .secondary-button:hover {
@@ -174,14 +179,13 @@
   right: 0;
   width: 50%;
   height: 100%;
-  background-image: url('/images/hero/background.png');
+  background-image: url("/images/hero/background.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: right center;
   pointer-events: none;
   z-index: 0;
 }
-
 
 /* به DynamicSlider.css اضافه کنید */
 
@@ -213,7 +217,7 @@
 
 .slider-arrow-btn:hover .arrow-main-right,
 .slider-arrow-btn:hover .arrow-decorative-right {
-  stroke: #FB6514 !important;
+  stroke: #fb6514 !important;
 }
 
 .slide-indicator {
@@ -221,7 +225,7 @@
 }
 
 .slide-indicator:hover {
-  background: #FB6514 !important;
+  background: #fb6514 !important;
   opacity: 0.8;
 }
 
@@ -241,7 +245,7 @@
     stroke: rgba(250, 250, 250, 0.1);
   }
   100% {
-    stroke: #FB6514;
+    stroke: #fb6514;
   }
 }
 
@@ -253,11 +257,20 @@
   animation: arrowHover 0.3s ease 0.1s forwards;
 }
 
-
 /* HeroSection Responsive CSS */
 
-/* تبلت */
+/* Hide all ellipses in responsive views */
 @media (max-width: 1024px) {
+  /* Hide ellipses using class selectors */
+  section[class*="relative"] > div[class*="absolute"] > div[class*="hidden"] {
+    display: none !important;
+  }
+
+  /* Hide ellipses using attribute selectors for inline styles */
+  div[style*="blur"][class*="rounded-full"] {
+    display: none !important;
+  }
+
   .hero-content {
     padding: 60px 24px;
   }
@@ -285,12 +298,14 @@
     align-items: center;
   }
 
+  /* Responsive: Background image scales to show full content on tablet */
   .hero-right-image {
     width: 100%;
     height: 400px;
     margin-top: 32px;
-    background-size: cover;
+    background-size: contain; /* Changed to contain to show full image without cropping */
     background-position: center;
+    background-repeat: no-repeat;
   }
 }
 
@@ -337,13 +352,15 @@
     text-align: center;
   }
 
+  /* Responsive: Background image scales to show full content on mobile */
   .hero-right-image {
     position: relative;
     width: 100%;
     height: 300px;
     margin-top: 24px;
-    background-size: cover;
+    background-size: contain; /* Changed to contain to show full image without cropping on mobile */
     background-position: center;
+    background-repeat: no-repeat;
   }
 
   /* مخفی کردن همه ellipses برای موبایل */
@@ -351,7 +368,7 @@
   .ellipse-large-left,
   .ellipse-right-top,
   .ellipse-right-bottom {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -372,7 +389,10 @@
     line-height: 20px;
   }
 
+  /* Responsive: Further height reduction for very small screens while maintaining image visibility */
   .hero-right-image {
     height: 250px;
+    background-size: contain; /* Full image visible on very small screens */
+    background-repeat: no-repeat;
   }
 }

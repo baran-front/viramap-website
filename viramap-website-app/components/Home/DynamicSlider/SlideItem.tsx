@@ -15,20 +15,8 @@ const SlideItem = memo(
 
     return (
       <div
-        className="slide-item"
+        className={`slide-item ${isActive ? "active" : ""}`}
         style={{
-          opacity: isActive ? 1 : 0,
-          transform: isActive ? "translateX(0)" : "translateX(100px)",
-          transition: "all 0.5s ease",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "80px 40px",
           fontFamily: "Vazirmatn, system-ui",
           zIndex: isActive ? 2 : 1, // اسلاید فعال روی بالا باشد
           pointerEvents: isActive ? "auto" : "none", // فقط اسلاید فعال قابل کلیک باشد
@@ -38,9 +26,15 @@ const SlideItem = memo(
         <div className="device-container">
           <div className="device-frame">
             <div className="device-screen">
+              {/* Responsive: Screen image scales proportionally using CSS background-size: contain to show full content */}
               <div
                 className="screen-image"
-                style={{ backgroundImage: `url(${slide.imageUrl})` }}
+                style={{
+                  backgroundImage: `url(${slide.imageUrl})`,
+                  backgroundSize: "contain", // Ensures full image is visible without cropping
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                }}
               />
             </div>
             {/* Device Details */}

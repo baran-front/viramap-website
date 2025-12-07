@@ -1,256 +1,156 @@
 // components/home/IndoorMap/IndoorMap.tsx
-'use client';
+"use client";
 
 const IndoorMap = () => {
   return (
     <div>
-        <section style={{
-        minHeight: '100vh',
-        backgroundColor: '#141414',
-        color: 'white',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '80px 40px',
-        fontFamily: 'Vazirmatn, system-ui'
-        }}>
-        
-        {/* Main Container */}
-        <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '80px',
-            maxWidth: '1400px',
-            width: '100%'
-        }}>
-
-            {/* Right Side - Content (60%) */}
-            <div style={{
-            flex: '0 0 50%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '4px'
-            }}>
-            
-            {/* Title Frame */}
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-satart',
-                width: '616px',
-                marginBottom: '24px'
-            }}>
-                <h1 style={{
-                fontFamily: "'Morabba', 'Vazirmatn', system-ui",
-                fontWeight: 700,
-                fontSize: '28px',
-                lineHeight: '1.4',
-                color: '#E4E4E7',
-                textAlign: 'right',
-                margin: 0
-                }}>
+      {/* Section 1 */}
+      <section className="bg-[#141414] text-white flex items-center justify-center py-8 sm:py-10 md:py-12 lg:py-16 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20 font-[family-name:Vazirmatn,system-ui]">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 lg:gap-12 xl:gap-16 max-w-[1400px] w-full">
+          {/* Left Side - Content */}
+          <div className="flex-1 lg:flex-[0_0_52%] flex flex-col items-end w-full lg:w-auto order-1 lg:order-1">
+            <div className="w-full max-w-[640px] flex flex-col items-end">
+              {/* Title */}
+              <h1 className="font-morabba font-bold text-[28px] sm:text-[32px] md:text-[36px] lg:text-[34px] leading-[1.3] text-[#E4E4E7] text-right w-full mb-4 sm:mb-5 md:mb-6">
                 با دنیای مسیریابی داخلی (Indoormap) آشنا شوید
-                </h1>
-            </div>
+              </h1>
 
-            {/* Description Text */}
-            <div style={{
-                width: '640px',
-                fontFamily: "'Yekan Bakh', 'Vazirmatn', system-ui",
-                fontWeight: 400,
-                fontSize: '16px',
-                lineHeight: '32px',
-                color: '#E4E4E7',
-                textAlign: 'right',
-                marginBottom: '40px'
-            }}>
-                <p style={{textAlign:'justify',textJustify:'inter-word'}}>
-                Indoormap یک تکنولوژی نوآورانه است که برای مسیریابی و هدایت در محیط‌های داخلی توسعه یافته است. با این فناوری، کاربران می‌توانند به سادگی راه خود را در ساختمان‌های پیچیده و مکان‌های شلوغ مثل بیمارستان‌ها، فرودگاه‌ها، و مراکز تجاری پیدا کنند. Indoormap راه‌حلی هوشمند برای رفع نیازهای مسیریابی داخلی شماست.
-                </p>
-            </div>
+              {/* Description Text */}
+              <p className="font-yekan font-normal text-[15px] sm:text-[16px] md:text-[16px] lg:text-[15px] leading-[28px] sm:leading-[30px] md:leading-[32px] text-[#E4E4E7] text-justify w-full mb-6 sm:mb-7 md:mb-8">
+                Indoormap یک تکنولوژی نوآورانه است که برای مسیریابی و هدایت در
+                محیط‌های داخلی توسعه یافته است. با این فناوری، کاربران می‌توانند
+                به سادگی راه خود را در ساختمان‌های پیچیده و مکان‌های شلوغ مثل
+                بیمارستان‌ها، فرودگاه‌ها و مراکز تجاری پیدا کنند. Indoomap
+                راه‌حلی هوشمند برای رفع نیازهای مسیریابی داخلی شماست.
+              </p>
 
-            {/* Button - اطلاعات بیشتر */}
-            <button style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '12px 20px',
-                gap: '8px',
-                width: '167px',
-                height: '48px',
-                borderRadius: '8px',
-                backgroundColor: 'transparent',
-                cursor: 'pointer',
-                position: 'relative',
-                alignSelf: 'flex-end'
-            }}>
-                
-                <span style={{
-                fontFamily: "'Yekan Bakh', 'Vazirmatn', system-ui",
-                fontWeight: 600,
-                fontSize: '14px',
-                lineHeight: '26px',
-                color: '#FB6514'
-                }}>
-                مطالعه بیشتر
+              {/* Button */}
+              <button className="flex flex-row items-center gap-2 px-0 py-0 bg-transparent border-none cursor-pointer transition-all hover:opacity-80 self-end">
+                <span className="font-yekan font-semibold text-[15px] sm:text-[16px] leading-[26px] text-[#FB6514]">
+                  مطالعه بیشتر
                 </span>
-                {/* Arrow Icon */}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                <path d="M15.0001 19.9201L8.48009 13.4001C7.71009 12.6301 7.71009 11.3701 8.48009 10.6001L15.0001 4.08008" stroke="#FB6514" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="flex-shrink-0"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  <path
+                    d="M15.0001 19.9201L8.48009 13.4001C7.71009 12.6301 7.71009 11.3701 8.48009 10.6001L15.0001 4.08008"
+                    stroke="#FB6514"
+                    strokeWidth="1.5"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
-            </button>
+              </button>
+            </div>
+          </div>
 
+          {/* Right Side - Image */}
+          <div className="flex-1 lg:flex-[0_0_48%] flex justify-center items-center w-full lg:w-auto order-2 lg:order-2 -my-6 sm:-my-8 md:-my-10 lg:my-0">
+            <div className="w-full max-w-[700px] h-[280px] sm:h-[380px] md:h-[480px] lg:h-[600px] xl:h-[700px] bg-[url('/images/indormap/indoormap.png')] bg-contain sm:bg-cover bg-center bg-no-repeat rounded-2xl sm:rounded-3xl relative">
+              {/* Glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-2xl sm:rounded-3xl blur-xl opacity-50"></div>
             </div>
-
-            {/* Left Side - Image (40%) */}
-            <div style={{
-            flex: '0 0 50%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-            }}>
-            <div style={{
-                width: '100%',
-                maxWidth: '700px',
-                height: '700px',
-                backgroundImage: "url('/images/indormap/indoormap.png')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                borderRadius: '24px'
-            }}>
-            </div>
-            </div>
+          </div>
         </div>
-        </section>
-        {/* ///////////////////////////////////////////////////////// */}
-        <section style={{
-        minHeight: '100vh',
-        backgroundColor: '#141414',
-        color: 'white',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '80px 40px',
-        fontFamily: 'Vazirmatn, system-ui'
-        }}>
-            {/* Main Container */}
-        <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '80px',
-            maxWidth: '1400px',
-            width: '100%'
-        }}>
+      </section>
 
-            {/* Right Side */}
-            <div style={{
-            flex: '0 0 45%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-            }}>
-            <div style={{
-                width: '100%',
-                maxWidth: '455px',
-                height: '600px',
-                backgroundImage: "url('/images/indormap/phoneimg.png')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                borderRadius: '24px',
-                
-            }}>
-            </div>
-            </div>
+      {/* Section 2 */}
+      <section className="bg-[#141414] text-white flex items-center justify-center py-8 sm:py-10 md:py-12 lg:pt-2 lg:pb-16 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20 font-[family-name:Vazirmatn,system-ui] relative overflow-hidden">
+        {/* Background Ellipses */}
+        <div className="absolute inset-0 overflow-visible pointer-events-none hidden lg:block">
+          {/* Ellipse 47 */}
+          <div
+            className="absolute rounded-full opacity-70"
+            style={{
+              width: "337px",
+              height: "349px",
+              left: "calc(50% - 337px/2 + 575.5px)",
+              top: "1199px",
+              background: "rgba(143, 101, 255, 0.1)",
+              filter: "blur(100px)",
+              transform: "translateZ(0)",
+              willChange: "transform",
+            }}
+          />
 
-            {/* Left Side */}
-            <div style={{
-            flex: '0 0 55%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '4px'
-            }}>
-            
-            {/* Title Frame */}
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-satart',
-                width: '616px',
-                marginBottom: '24px'
-            }}>
-                <h1 style={{
-                fontFamily: "'Morabba', 'Vazirmatn', system-ui",
-                fontWeight: 700,
-                fontSize: '28px',
-                lineHeight: '1.4',
-                color: '#E4E4E7',
-                textAlign: 'right',
-                margin: 0
-                }}>
+          {/* Ellipse 53 */}
+          <div
+            className="absolute rounded-full opacity-70"
+            style={{
+              width: "261px",
+              height: "273px",
+              left: "calc(50% - 261px/2 - 719.5px)",
+              top: "1413px",
+              background: "rgba(251, 101, 20, 0.1)",
+              filter: "blur(50px)",
+              transform: "translateZ(0)",
+              willChange: "transform",
+            }}
+          />
+        </div>
+
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 lg:gap-4 xl:gap-5 max-w-[1400px] w-full relative z-10">
+          {/* Left Side - Image */}
+          <div className="flex-1 lg:flex-[0_0_45%] flex justify-center items-center w-full lg:w-auto order-2 lg:order-1 -mt-8 sm:-mt-10 md:-mt-12 lg:mt-0 mb-6 sm:mb-8 md:mb-10 lg:mb-[30px]">
+            <div className="w-full max-w-[455px] h-[220px] sm:h-[300px] md:h-[400px] lg:h-[600px] bg-[url('/images/indormap/phoneimg.png')] bg-contain sm:bg-cover bg-center bg-no-repeat rounded-2xl sm:rounded-3xl relative">
+              {/* Glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-2xl sm:rounded-3xl blur-xl opacity-50"></div>
+            </div>
+          </div>
+
+          {/* Right Side - Content */}
+          <div className="flex-1 lg:flex-[0_0_55%] flex flex-col items-end w-full lg:w-auto order-1 lg:order-2">
+            <div className="w-full max-w-[640px] flex flex-col items-end">
+              {/* Title */}
+              <h1 className="font-morabba font-bold text-[28px] sm:text-[32px] md:text-[36px] lg:text-[34px] leading-[1.3] text-[#E4E4E7] text-right w-full mb-4 sm:mb-5 md:mb-6">
                 با دنیای مسیریابی داخلی (Indoormap) آشنا شوید
-                </h1>
-            </div>
+              </h1>
 
-            {/* Description Text */}
-            <div style={{
-                width: '640px',
-                fontFamily: "'Yekan Bakh', 'Vazirmatn', system-ui",
-                fontWeight: 400,
-                fontSize: '16px',
-                lineHeight: '32px',
-                color: '#E4E4E7',
-                textAlign: 'right',
-                marginBottom: '40px'
-            }}>
-                <p style={{textAlign:'justify',textJustify:'inter-word'}}>
-                Indoormap یک تکنولوژی نوآورانه است که برای مسیریابی و هدایت در محیط‌های داخلی توسعه یافته است. با این فناوری، کاربران می‌توانند به سادگی راه خود را در ساختمان‌های پیچیده و مکان‌های شلوغ مثل بیمارستان‌ها، فرودگاه‌ها، و مراکز تجاری پیدا کنند. Indoormap راه‌حلی هوشمند برای رفع نیازهای مسیریابی داخلی شماست.
-                </p>
-            </div>
+              {/* Description Text */}
+              <p className="font-yekan font-normal text-[15px] sm:text-[16px] md:text-[16px] lg:text-[15px] leading-[28px] sm:leading-[30px] md:leading-[32px] text-[#E4E4E7] text-justify w-full mb-6 sm:mb-7 md:mb-8">
+                Indoormap یک تکنولوژی نوآورانه است که برای مسیریابی و هدایت در
+                محیط‌های داخلی توسعه یافته است. با این فناوری، کاربران می‌توانند
+                به سادگی راه خود را در ساختمان‌های پیچیده و مکان‌های شلوغ مثل
+                بیمارستان‌ها، فرودگاه‌ها و مراکز تجاری پیدا کنند. Indoomap
+                راه‌حلی هوشمند برای رفع نیازهای مسیریابی داخلی شماست.
+              </p>
 
-            {/* Button - اطلاعات بیشتر */}
-            <button style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '12px 20px',
-                gap: '8px',
-                width: '167px',
-                height: '48px',
-                borderRadius: '8px',
-                backgroundColor: 'transparent',
-                cursor: 'pointer',
-                position: 'relative',
-                left:'35px',
-                alignSelf: 'flex-end'
-            }}>
-                
-                <span style={{
-                fontFamily: "'Yekan Bakh', 'Vazirmatn', system-ui",
-                fontWeight: 600,
-                fontSize: '14px',
-                lineHeight: '26px',
-                color: '#FB6514'
-                }}>
-                مطالعه بیشتر
+              {/* Button */}
+              <button className="flex flex-row items-center gap-2 px-0 py-0 bg-transparent border-none cursor-pointer transition-all hover:opacity-80 self-end">
+                <span className="font-yekan font-semibold text-[15px] sm:text-[16px] leading-[26px] text-[#FB6514]">
+                  مطالعه بیشتر
                 </span>
-                {/* Arrow Icon */}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                <path d="M15.0001 19.9201L8.48009 13.4001C7.71009 12.6301 7.71009 11.3701 8.48009 10.6001L15.0001 4.08008" stroke="#FB6514" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="flex-shrink-0"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  <path
+                    d="M15.0001 19.9201L8.48009 13.4001C7.71009 12.6301 7.71009 11.3701 8.48009 10.6001L15.0001 4.08008"
+                    stroke="#FB6514"
+                    strokeWidth="1.5"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
-            </button>
-
+              </button>
             </div>
+          </div>
         </div>
-        </section>
-    </div>    
+      </section>
+    </div>
   );
 };
 

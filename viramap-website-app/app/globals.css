@@ -4,15 +4,210 @@
 :root {
   --background: #141414;
   --foreground: #e2e8f0;
-  --font-sans: 'Vazirmatn', system-ui, sans-serif;
-  --font-ravi: 'Ravi', sans-serif;
+  --font-sans: "Vazirmatn", system-ui, sans-serif;
+  --font-ravi: "Ravi", sans-serif;
+  --font-ravi-fanum: "Ravi FaNum", sans-serif;
+  --font-ravi-noen: "Ravi NoEn", sans-serif;
+}
+
+/* Ravi Family Fonts */
+@font-face {
+  font-family: "Ravi";
+  font-style: normal;
+  font-weight: 300;
+  src: url("/fonts/SemiPro/Ravi Family/Webfonts/woff2/Ravi-Light.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi Family/Webfonts/woff/Ravi-Light.woff")
+      format("woff");
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'Ravi';
-  src: url('/fonts/SemiPro/Ravi Family/Webfonts/woff2/Ravi-Bold.woff2') format('woff2');
-  font-weight: 700;
+  font-family: "Ravi";
   font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/SemiPro/Ravi Family/Webfonts/woff2/Ravi-Regular.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi Family/Webfonts/woff/Ravi-Regular.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi";
+  font-style: normal;
+  font-weight: 500;
+  src: url("/fonts/SemiPro/Ravi Family/Webfonts/woff2/Ravi-Medium.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi Family/Webfonts/woff/Ravi-Medium.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi";
+  font-style: normal;
+  font-weight: 600;
+  src: url("/fonts/SemiPro/Ravi Family/Webfonts/woff2/Ravi-SemiBold.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi Family/Webfonts/woff/Ravi-SemiBold.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/SemiPro/Ravi Family/Webfonts/woff2/Ravi-Bold.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi Family/Webfonts/woff/Ravi-Bold.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi";
+  font-style: normal;
+  font-weight: 950;
+  src: url("/fonts/SemiPro/Ravi Family/Webfonts/woff2/Ravi-ExtraBlack.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi Family/Webfonts/woff/Ravi-ExtraBlack.woff")
+      format("woff");
+  font-display: swap;
+}
+
+/* Ravi FaNum Fonts */
+@font-face {
+  font-family: "Ravi FaNum";
+  font-style: normal;
+  font-weight: 300;
+  src: url("/fonts/SemiPro/Ravi FaNum/Webfonts/woff2/RaviFaNum-Light.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi FaNum/Webfonts/woff/RaviFaNum-Light.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi FaNum";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/SemiPro/Ravi FaNum/Webfonts/woff2/RaviFaNum-Regular.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi FaNum/Webfonts/woff/RaviFaNum-Regular.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi FaNum";
+  font-style: normal;
+  font-weight: 500;
+  src: url("/fonts/SemiPro/Ravi FaNum/Webfonts/woff2/RaviFaNum-Medium.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi FaNum/Webfonts/woff/RaviFaNum-Medium.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi FaNum";
+  font-style: normal;
+  font-weight: 600;
+  src: url("/fonts/SemiPro/Ravi FaNum/Webfonts/woff2/RaviFaNum-SemiBold.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi FaNum/Webfonts/woff/RaviFaNum-SemiBold.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi FaNum";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/SemiPro/Ravi FaNum/Webfonts/woff2/RaviFaNum-Bold.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi FaNum/Webfonts/woff/RaviFaNum-Bold.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi FaNum";
+  font-style: normal;
+  font-weight: 950;
+  src: url("/fonts/SemiPro/Ravi FaNum/Webfonts/woff2/RaviFaNum-ExtraBlack.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi FaNum/Webfonts/woff/RaviFaNum-ExtraBlack.woff")
+      format("woff");
+  font-display: swap;
+}
+
+/* Ravi NoEn Fonts */
+@font-face {
+  font-family: "Ravi NoEn";
+  font-style: normal;
+  font-weight: 300;
+  src: url("/fonts/SemiPro/Ravi NoEn/Webfonts/woff2/RaviNoEn-Light.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi NoEn/Webfonts/woff/RaviNoEn-Light.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi NoEn";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/SemiPro/Ravi NoEn/Webfonts/woff2/RaviNoEn-Regular.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi NoEn/Webfonts/woff/RaviNoEn-Regular.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi NoEn";
+  font-style: normal;
+  font-weight: 500;
+  src: url("/fonts/SemiPro/Ravi NoEn/Webfonts/woff2/RaviNoEn-Medium.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi NoEn/Webfonts/woff/RaviNoEn-Medium.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi NoEn";
+  font-style: normal;
+  font-weight: 600;
+  src: url("/fonts/SemiPro/Ravi NoEn/Webfonts/woff2/RaviNoEn-SemiBold.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi NoEn/Webfonts/woff/RaviNoEn-SemiBold.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi NoEn";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/SemiPro/Ravi NoEn/Webfonts/woff2/RaviNoEn-Bold.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi NoEn/Webfonts/woff/RaviNoEn-Bold.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ravi NoEn";
+  font-style: normal;
+  font-weight: 950;
+  src: url("/fonts/SemiPro/Ravi NoEn/Webfonts/woff2/RaviNoEn-ExtraBlack.woff2")
+      format("woff2"),
+    url("/fonts/SemiPro/Ravi NoEn/Webfonts/woff/RaviNoEn-ExtraBlack.woff")
+      format("woff");
   font-display: swap;
 }
 
@@ -28,6 +223,14 @@ body {
 .ravi-text {
   font-family: var(--font-ravi);
   font-weight: 700;
+}
+
+.ravi-fanum-text {
+  font-family: var(--font-ravi-fanum);
+}
+
+.ravi-noen-text {
+  font-family: var(--font-ravi-noen);
 }
 
 /* -------------------------------- */

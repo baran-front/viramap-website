@@ -1,111 +1,35 @@
 // components/home/CTASection/CTASection.tsx
-'use client';
+"use client";
 
 const CTASection = () => {
   return (
-    <section style={{
-      backgroundColor: '#141414',
-      color: 'white',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '120px 40px',
-      fontFamily: 'Vazirmatn, system-ui',
-      textAlign: 'center'
-    }}>
-      
+    <section className="bg-[#141414] text-white flex flex-col items-center justify-center py-12 md:py-20 lg:py-30 px-4 sm:px-6 md:px-10 lg:px-20 font-[family-name:Vazirmatn,system-ui] text-center">
       {/* Main Container */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '32px',
-        maxWidth: '800px'
-      }}>
-        
-        {/* دکمه مشاوره رایگان (بالا) */}
-        <div style={{
-          boxSizing: 'border-box',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          alignItems: 'flex-start',
-          padding: '5px 16px',
-          gap: '24px',
-          width: '110px',
-          height: '35px',
-          background: 'linear-gradient(270deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%)',
-          borderRadius: '8px',
-          border:'1px solid #344054'
-        }}>
-          <span style={{
-            fontFamily: "'Yekan Bakh', 'Vazirmatn', system-ui",
-            fontWeight: 400,
-            fontSize: '12px',
-            lineHeight: '22px',
-            color: '#FFFFFF',
-            textAlign: 'right'
-          }}>
+      <div className="flex flex-col items-center gap-6 md:gap-8 max-w-[800px] w-full">
+        {/* Badge - مشاوره رایگان */}
+        <div className="flex flex-row justify-end items-start px-4 py-1.5 gap-6 w-auto min-w-[110px] h-[35px] bg-gradient-to-l from-[rgba(255,255,255,0.05)] to-transparent rounded-lg border border-[#344054]">
+          <span className="font-yekan font-normal text-[12px] leading-[22px] text-white text-right">
             مشاوره رایگان
           </span>
         </div>
 
         {/* عنوان اصلی */}
-        <h2 style={{
-          fontFamily: "'Morabba', 'Vazirmatn', system-ui",
-          fontWeight: 'bold',
-          fontSize: '30px',
-          lineHeight: '57px',
-          color: '#FAFAFA',
-          textAlign: 'center',
-          margin: 0
-        }}>
+        <h2 className="font-morabba font-bold text-[24px] sm:text-[26px] md:text-[28px] lg:text-[30px] leading-[36px] sm:leading-[42px] md:leading-[48px] lg:leading-[57px] text-[#FAFAFA] text-center m-0">
           با ویرامپ، مسیر ها را روشن کنید...
         </h2>
 
         {/* توضیحات */}
-        <p style={{
-          fontFamily: "'Yekan Bakh', 'Vazirmatn', system-ui",
-          fontWeight: 400,
-          fontSize: '16px',
-          lineHeight: '32px',
-          color: '#E4E4E7',
-          textAlign: 'center',
-          maxWidth: '796px',
-          margin: 0
-        }}>
-          با کمک مسیریابی هوشمند، تجربه‌ای خودکفا و لذت‌بخش برای بازدیدکنندگان فراهم کنید.
+        <p className="font-yekan font-normal text-[14px] sm:text-[15px] md:text-[16px] leading-[24px] sm:leading-[28px] md:leading-[32px] text-[#E4E4E7] text-center max-w-[796px] w-full m-0">
+          با کمک مسیریابی هوشمند، تجربه‌ای خودکفا و لذت‌بخش برای بازدیدکنندگان
+          فراهم کنید.
         </p>
 
         {/* دکمه تماس با ما */}
-        <button style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '12px 20px',
-          gap: '8px',
-          width: '135px',
-          height: '48px',
-          backgroundColor: '#FB6514',
-          borderRadius: '8px',
-          border: 'none',
-          cursor: 'pointer',
-          marginTop: '16px'
-        }}>
-          <span style={{
-            fontFamily: "'Yekan Bakh', 'Vazirmatn', system-ui",
-            fontWeight: 600,
-            fontSize: '14px',
-            lineHeight: '26px',
-            color: '#E4E4E7',
-            textAlign: 'center'
-          }}>
+        <button className="flex flex-row justify-center items-center px-5 py-3 gap-2 w-full sm:w-[135px] h-12 bg-[#FB6514] rounded-lg border-none cursor-pointer mt-4 transition-all hover:bg-[#e55a12] hover:-translate-y-1 active:scale-95">
+          <span className="font-yekan font-semibold text-[14px] leading-[26px] text-[#E4E4E7] text-center">
             تماس با ما
           </span>
         </button>
-
       </div>
     </section>
   );

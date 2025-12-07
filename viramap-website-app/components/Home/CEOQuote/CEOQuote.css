@@ -1,0 +1,119 @@
+/* Desktop styles remain unchanged - all responsive styles are in media queries */
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+  .ceo-quote-section {
+    padding: 100px 32px !important;
+  }
+
+  .ceo-quote-box {
+    width: 90% !important;
+    max-width: 846px !important;
+    padding: 56px 20px 20px !important;
+    gap: 20px !important;
+  }
+
+  .ceo-info-container {
+    left: auto !important;
+    right: 24px !important;
+    top: -28px !important;
+  }
+
+  .ceo-quote-text {
+    width: 100% !important;
+    max-width: 654px !important;
+    padding: 0 8px !important;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .ceo-quote-section {
+    padding: 80px 20px !important;
+    min-height: auto !important;
+  }
+
+  .ceo-quote-box {
+    width: 100% !important;
+    padding: 48px 16px 24px !important;
+    gap: 24px !important;
+    border-radius: 20px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .ceo-info-container {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+    top: -32px !important;
+    margin-bottom: 0 !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-direction: column !important;
+    width: auto !important;
+    gap: 12px !important;
+    order: 1 !important;
+  }
+
+  .ceo-image {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .ceo-title {
+    font-size: 16px !important;
+    line-height: 24px !important;
+    text-align: center !important;
+  }
+
+  .ceo-quote-text {
+    width: 100% !important;
+    font-size: 14px !important;
+    line-height: 28px !important;
+    padding: 0 !important;
+    margin-top: 72px !important;
+    order: 2 !important;
+  }
+
+  .quote-icon {
+    display: none !important;
+  }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+  .ceo-quote-section {
+    padding: 60px 16px !important;
+  }
+
+  .ceo-quote-box {
+    padding: 40px 12px 20px !important;
+    border-radius: 16px !important;
+  }
+
+  .ceo-info-container {
+    top: -28px !important;
+  }
+
+  .ceo-image {
+    width: 70px !important;
+    height: 70px !important;
+  }
+
+  .ceo-title {
+    font-size: 14px !important;
+    line-height: 22px !important;
+  }
+
+  .ceo-quote-text {
+    font-size: 13px !important;
+    line-height: 26px !important;
+    margin-top: 64px !important;
+  }
+
+  .quote-icon {
+    display: none !important;
+  }
+}

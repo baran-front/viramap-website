@@ -6,14 +6,15 @@ import SolutionSlide from "./SolutionSlide";
 import SliderControls from "./SliderControls";
 import "./SolutionsSlider.css";
 
+const AUTO_PLAY_INTERVAL = 6000; // 6 seconds
+
 const SolutionsSlider = () => {
   const [solutions, setSolutions] = useState<SolutionItem[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  // حذف slideDirection - استفاده نمی‌شود
 
-  // موقعیت‌های ثابت برای همه اسلایدها - استفاده از useMemo
+  // موقعیت‌های ثابت برای همه اسلایدها
   const staticFeaturePositions = useMemo(
     () => [
       { top: 360, left: 210 },
@@ -24,7 +25,7 @@ const SolutionsSlider = () => {
     []
   );
 
-  // داده‌های نمونه با موقعیت‌های ثابت - استفاده از useMemo
+  // داده‌های نمونه با موقعیت‌های ثابت
   const sampleSolutions: SolutionItem[] = useMemo(
     () => [
       {
@@ -39,7 +40,7 @@ const SolutionsSlider = () => {
           "نقشه‌برداری سه‌بعدی از تمام طبقات",
           "اتصال به سیستم‌های بیمارستانی",
         ],
-        featurePositions: staticFeaturePositions, // استفاده از موقعیت‌های ثابت
+        featurePositions: staticFeaturePositions,
         buttonText: "مطالعه بیشتر",
         imageUrl: "/images/solutions/hospital.png",
         order: 1,
@@ -56,7 +57,7 @@ const SolutionsSlider = () => {
           "پیشنهاد مسیرهای بهینه",
           "رزرو آنلاین خدمات",
         ],
-        featurePositions: staticFeaturePositions, // استفاده از موقعیت‌های ثابت
+        featurePositions: staticFeaturePositions,
         buttonText: "مطالعه بیشتر",
         imageUrl: "/images/solutions/mall.jpg",
         order: 2,
@@ -73,7 +74,7 @@ const SolutionsSlider = () => {
           "راهنمای خدمات فرودگاهی",
           "پشتیبانی چندزبانه",
         ],
-        featurePositions: staticFeaturePositions, // استفاده از موقعیت‌های ثابت
+        featurePositions: staticFeaturePositions,
         buttonText: "مطالعه بیشتر",
         imageUrl: "/images/solutions/airport.jpg",
         order: 3,
@@ -87,12 +88,14 @@ const SolutionsSlider = () => {
     const fetchSolutions = async () => {
       try {
         setIsLoading(true);
-        // حذف تاخیر غیرضروری - اگر داده‌ها استاتیک هستند مستقیماً set کنید
-        // یا اگر از API می‌آید، fetch کنید
-        // await new Promise(resolve => setTimeout(resolve, 500)); // ❌ حذف شد
+        // TODO: Replace with actual API call when available
+        // const response = await fetch('/api/solutions');
+        // const data = await response.json();
+        // setSolutions(data);
         setSolutions(sampleSolutions);
       } catch (error) {
         console.error("Error fetching solutions:", error);
+        // Fallback to sample data on error
         setSolutions(sampleSolutions);
       } finally {
         setIsLoading(false);
@@ -100,23 +103,23 @@ const SolutionsSlider = () => {
     };
 
     fetchSolutions();
-  }, []);
+  }, [sampleSolutions]);
 
-  // Auto-slide
+  // Auto-slide functionality
   useEffect(() => {
     if (solutions.length <= 1 || !isAutoPlaying) return;
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % solutions.length);
-    }, 6000);
+    }, AUTO_PLAY_INTERVAL);
 
     return () => clearInterval(interval);
   }, [solutions.length, isAutoPlaying]);
 
   const nextSlide = useCallback(
     (e?: React.MouseEvent) => {
-      e?.preventDefault(); // جلوگیری از رفتار پیش‌فرض
-      e?.stopPropagation(); // جلوگیری از انتشار رویداد
+      e?.preventDefault();
+      e?.stopPropagation();
       setCurrentSlide((prev) => (prev + 1) % solutions.length);
       setIsAutoPlaying(false);
     },
@@ -125,8 +128,8 @@ const SolutionsSlider = () => {
 
   const prevSlide = useCallback(
     (e?: React.MouseEvent) => {
-      e?.preventDefault(); // جلوگیری از رفتار پیش‌فرض
-      e?.stopPropagation(); // جلوگیری از انتشار رویداد
+      e?.preventDefault();
+      e?.stopPropagation();
       setCurrentSlide(
         (prev) => (prev - 1 + solutions.length) % solutions.length
       );
@@ -135,16 +138,21 @@ const SolutionsSlider = () => {
     [solutions.length]
   );
 
-  const goToSlide = useCallback((index: number, e?: React.MouseEvent) => {
-    e?.preventDefault(); // جلوگیری از رفتار پیش‌فرض
-    e?.stopPropagation(); // جلوگیری از انتشار رویداد
-    setCurrentSlide(index);
-    setIsAutoPlaying(false);
-  }, []);
+  const goToSlide = useCallback(
+    (index: number, e?: React.MouseEvent) => {
+      e?.preventDefault();
+      e?.stopPropagation();
+      if (index >= 0 && index < solutions.length) {
+        setCurrentSlide(index);
+        setIsAutoPlaying(false);
+      }
+    },
+    [solutions.length]
+  );
 
   const toggleAutoPlay = useCallback((e?: React.MouseEvent) => {
-    e?.preventDefault(); // جلوگیری از رفتار پیش‌فرض
-    e?.stopPropagation(); // جلوگیری از انتشار رویداد
+    e?.preventDefault();
+    e?.stopPropagation();
     setIsAutoPlaying((prev) => !prev);
   }, []);
 

@@ -15,13 +15,22 @@
   animation: fadeIn 0.3s ease-out;
 }
 
+/* Gradient Border برای FAQ Items */
+.faq-gradient-border {
+  position: relative;
+  border: 1px solid rgba(251, 101, 20, 0.4);
+  box-shadow: 0 0 0 1px rgba(251, 101, 20, 0.3),
+    inset 0 0 20px rgba(251, 101, 20, 0.05);
+}
+
 /* Responsive Design */
+/* Responsive: Mobile breakpoint - grid becomes single column, text sizes adjust */
 @media (max-width: 768px) {
   /* در موبایل یک ستونه شود */
   .faq-section .grid {
     grid-template-columns: 1fr !important;
   }
-  
+
   /* متن‌ها کوچک‌تر شوند */
   .faq-section h2 {
     font-size: 24px !important;
@@ -29,28 +38,29 @@
     width: auto !important;
     height: auto !important;
   }
-  
+
   .faq-item span {
     font-size: 16px !important;
     line-height: 28px !important;
   }
-  
+
   .faq-item p {
     font-size: 14px !important;
     line-height: 24px !important;
   }
 }
 
+/* Responsive: Small mobile breakpoint - further text size reduction */
 @media (max-width: 480px) {
   .faq-section h2 {
     font-size: 20px !important;
     line-height: 32px !important;
   }
-  
+
   .faq-section .badge {
     width: 120px !important;
   }
-  
+
   .faq-section .badge span {
     font-size: 11px !important;
     width: auto !important;

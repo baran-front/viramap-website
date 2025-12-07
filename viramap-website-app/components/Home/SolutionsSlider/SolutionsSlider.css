@@ -1,9 +1,24 @@
+/* CSS Variables */
+:root {
+  --solutions-bg-color: #141414;
+  --solutions-primary-color: #fb6514;
+  --solutions-primary-hover: #e55a12;
+  --solutions-text-primary: #fafafa;
+  --solutions-text-secondary: #e4e4e7;
+  --solutions-border-color: #344054;
+  --solutions-border-secondary: #3f3f46;
+  --solutions-overlay-bg: rgba(82, 82, 91, 0.1);
+  --solutions-overlay-hover: rgba(251, 101, 20, 0.1);
+  --solutions-button-bg: rgba(250, 250, 250, 0.1);
+  --solutions-button-hover: rgba(251, 101, 20, 0.2);
+}
+
 /* Reset and Base Styles */
 .solutions-slider-section {
   width: 100%;
-  background: #141414;
+  background: var(--solutions-bg-color);
   padding: 80px 0;
-  font-family: 'Vazirmatn', system-ui;
+  font-family: "Vazirmatn", system-ui;
   position: relative;
   overflow: hidden;
 }
@@ -45,7 +60,19 @@
   transform: translateX(0);
 }
 
-/* Background Image */
+/* Background Image Wrapper */
+.solution-bg-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+/* Background Image - Desktop: original position (smaller, positioned) */
 .solution-bg-image {
   position: absolute;
   top: 410px;
@@ -57,6 +84,41 @@
   background-repeat: no-repeat;
   border-radius: 16px;
   z-index: 1;
+  object-fit: cover;
+}
+
+/* Solution Badge */
+.solution-badge {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 5px 16px;
+  gap: 24px;
+  width: 70px;
+  height: 35px;
+  background: linear-gradient(
+    270deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: 8px;
+  border: 1px solid var(--solutions-border-color);
+}
+
+.solution-badge-text {
+  font-family: "Yekan Bakh", "Vazirmatn", system-ui;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 22px;
+  color: var(--solutions-text-primary);
+  text-align: right;
+}
+
+/* Dark blur overlay - hidden on desktop */
+.solution-bg-overlay {
+  display: none;
 }
 
 /* Content Overlay */
@@ -81,28 +143,28 @@
 }
 
 .solution-title {
-  font-family: 'Morabba';
+  font-family: "Morabba";
   font-style: normal;
   font-weight: bold;
   font-size: 30px;
   line-height: 57px;
-  color: #FAFAFA;
+  color: var(--solutions-text-primary);
   margin: 0 auto 24px;
   text-align: center;
 }
 
 .category-highlight {
-  color: #FB6514;
+  color: var(--solutions-primary-color);
   margin-right: 4px;
 }
 
 .solution-description {
-  font-family: 'Yekan Bakh';
+  font-family: "Yekan Bakh";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 32px;
-  color: #E4E4E7;
+  color: var(--solutions-text-secondary);
   margin: 0 auto 32px;
   text-align: center;
   max-width: 796px;
@@ -118,56 +180,62 @@
   gap: 8px;
   width: 124px;
   height: 40px;
-  background: #FB6514;
+  background: var(--solutions-primary-color);
   border-radius: 6px;
   border: none;
   cursor: pointer;
   margin: 0 auto;
   transition: all 0.3s ease;
-  position: absolute; /* اضافه کردن این خط */
-  bottom: 200px; /* فاصله از پایین */
-  left: 50%; /* وسط افقی */
-  transform: translateX(-50%); /* تنظیم دقیق وسط */
-  z-index: 10; /* بالا بودن روی سایر عناصر */
+  position: absolute;
+  bottom: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
 }
 
 .read-more-btn:hover {
-  background: #e55a12;
-  transform: translateX(-50%) translateY(-2px); /* تغییر transform برای hover */
+  background: var(--solutions-primary-hover);
+  transform: translateX(-50%) translateY(-2px);
 }
 
 .read-more-btn span {
-  font-family: 'Yekan Bakh';
+  font-family: "Yekan Bakh";
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
   line-height: 22px;
-  color: #FAFAFA;
+  color: var(--solutions-text-primary);
 }
 
-/* Features Vertical Container - موقعیت جدید */
-.features-vertical-container {
+/* Features Vertical Container - موقعیت اصلی برای دسکتاپ */
+.features-grid-container {
   position: absolute;
   top: 55%;
   left: 50px;
   transform: translateY(-50%);
   width: 400px;
-  height: 500px; /* افزایش ارتفاع برای موقعیت‌های جدید */
+  height: 500px;
+  display: block;
 }
 
-/* Feature Box - موقعیت‌های ثابت جدید */
+/* Hide grid layout on desktop */
+.features-grid-container .feature-box {
+  position: absolute;
+}
+
+/* Feature Box */
 .feature-box {
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  align-items: center; /* تغییر از flex-start به center */
+  align-items: center;
   padding: 12px;
   gap: 8px;
   width: 365px;
   height: 56px;
-  background: rgba(82, 82, 91, 0.1);
-  border: 1px solid #3F3F46;
+  background: var(--solutions-overlay-bg);
+  border: 1px solid var(--solutions-border-secondary);
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
   backdrop-filter: blur(12px);
   border-radius: 16px;
@@ -176,19 +244,19 @@
 }
 
 .feature-box:hover {
-  background: rgba(251, 101, 20, 0.1);
-  border-color: #FB6514;
+  background: var(--solutions-overlay-hover);
+  border-color: var(--solutions-primary-color);
   transform: translateX(5px);
 }
 
 .feature-text {
-  font-family: 'Morabba';
+  font-family: "Morabba";
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 32px;
   text-align: right;
-  color: #FAFAFA;
+  color: var(--solutions-text-primary);
   width: 250px;
 }
 
@@ -209,26 +277,24 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(250, 250, 250, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #FAFAFA;
+  background: var(--solutions-button-bg);
+  border: none;
+  color: var(--solutions-text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 5;
-  border: none; /* حذف border اضافی */
 }
 
 .arrow-control:hover {
-  background: rgba(251, 101, 20, 0.2);
-  border-color: #FB6514;
+  background: var(--solutions-button-hover);
   transform: scale(1.1);
 }
 
 .arrow-control:hover svg path {
-  stroke: #FB6514 !important;
+  stroke: var(--solutions-primary-color) !important;
 }
 
 /* Bottom Controls */
@@ -263,7 +329,7 @@
 }
 
 .dot.active {
-  background: #FB6514;
+  background: var(--solutions-primary-color);
   transform: scale(1.2);
 }
 
@@ -271,21 +337,19 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(250, 250, 250, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #FAFAFA;
+  background: var(--solutions-button-bg);
+  border: none;
+  color: var(--solutions-text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: none; /* حذف border اضافی */
   padding: 0;
 }
 
 .play-pause-btn:hover {
-  background: rgba(251, 101, 20, 0.2);
-  border-color: #FB6514;
+  background: var(--solutions-button-hover);
   transform: scale(1.1);
 }
 
@@ -297,31 +361,68 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #141414;
-  font-family: 'Vazirmatn', sans-serif;
+  background: var(--solutions-bg-color);
+  font-family: "Vazirmatn", sans-serif;
   font-size: 18px;
-  color: #E4E4E7;
+  color: var(--solutions-text-secondary);
 }
 
 /* Responsive */
+@media (max-width: 1200px) {
+  .solutions-container {
+    padding: 0 16px;
+  }
+
+  .solution-bg-image {
+    left: 300px;
+    width: 45%;
+  }
+}
+
+/* Responsive: Tablet breakpoint - adjusts layout and image positioning */
 @media (max-width: 1024px) {
-  .features-vertical-container {
+  .solutions-slider-section {
+    padding: 60px 0;
+  }
+
+  .solutions-container {
+    min-height: 600px;
+  }
+
+  .slides-main-wrapper {
+    height: 550px;
+  }
+
+  .features-grid-container {
     left: 20px;
     width: 300px;
   }
-  
+
   .feature-box {
     width: 280px;
   }
-  
+
   .solution-title {
     font-size: 26px;
     line-height: 48px;
   }
-  
+
   .solution-description {
     font-size: 13px;
     line-height: 28px;
+  }
+
+  /* Responsive: Background image position and size adjust for tablet screens */
+  .solution-bg-image {
+    left: 250px;
+    width: 50%;
+    top: 380px;
+    background-size: cover;
+    object-fit: cover;
+  }
+
+  .read-more-btn {
+    bottom: 180px;
   }
 }
 
@@ -329,31 +430,163 @@
   .solutions-slider-section {
     padding: 40px 0;
   }
-  
-  .slides-main-wrapper {
-    height: 500px;
+
+  .solutions-container {
+    min-height: 500px;
+    padding: 0 12px;
   }
-  
+
+  .slides-main-wrapper {
+    height: 600px;
+  }
+
   .solution-title {
     font-size: 22px;
     line-height: 40px;
+    margin-bottom: 16px;
   }
-  
+
   .solution-description {
     font-size: 12px;
     line-height: 24px;
+    margin-bottom: 24px;
   }
-  
-  .features-vertical-container {
-    display: none; /* در موبایل مخفی شود */
+
+  .features-grid-container {
+    display: grid;
+    grid-template-columns: 1fr; /* یک ستون در موبایل */
+    gap: 12px;
+    max-width: 100%;
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    height: auto;
   }
-  
+
+  .features-grid-container .feature-box {
+    position: relative !important;
+    width: 100% !important;
+    top: auto !important;
+    left: auto !important;
+    min-height: 56px;
+  }
+
+  .feature-text {
+    width: 100%;
+  }
+
+  /* Responsive: Background image becomes relative positioned on mobile, scales to show full content */
+  .solution-bg-wrapper {
+    position: relative;
+    height: 300px;
+    margin: 20px auto;
+  }
+
+  .solution-bg-image {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    max-width: 100%;
+    height: 300px;
+    margin: 20px auto;
+    background-size: contain;
+    background-position: center;
+    object-fit: contain;
+  }
+
+  .solution-bg-overlay {
+    display: block;
+    opacity: 0.7;
+  }
+
+  .solution-content {
+    padding: 20px;
+  }
+
+  .read-more-btn {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin: 20px auto 0;
+  }
+
   .slider-arrow-controls {
     padding: 0 10px;
+    top: 50%;
   }
-  
+
   .arrow-control {
     width: 35px;
     height: 35px;
+  }
+
+  .solutions-controls {
+    margin-top: 16px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .solutions-slider-section {
+    padding: 32px 0;
+  }
+
+  .solutions-container {
+    min-height: 450px;
+    padding: 0 8px;
+  }
+
+  .slides-main-wrapper {
+    height: 550px;
+  }
+
+  .solution-title {
+    font-size: 20px;
+    line-height: 36px;
+    margin-bottom: 12px;
+  }
+
+  .solution-description {
+    font-size: 11px;
+    line-height: 22px;
+    margin-bottom: 20px;
+  }
+
+  /* Responsive: Further height reduction for very small screens while maintaining image visibility */
+  .solution-bg-wrapper {
+    height: 250px;
+    margin: 16px auto;
+  }
+
+  .solution-bg-image {
+    height: 250px;
+    margin: 16px auto;
+    background-size: contain;
+    object-fit: contain;
+  }
+
+  .read-more-btn {
+    width: 110px;
+    height: 36px;
+    font-size: 11px;
+  }
+
+  .arrow-control {
+    width: 32px;
+    height: 32px;
+  }
+
+  .play-pause-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
   }
 }

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * InstallationProcess Component - Explains how to install indoor mapping
@@ -6,178 +6,86 @@
  */
 export default function InstallationProcess() {
   return (
-    <div style={{
-      // Main Container - تنظیم برای نمایش متن در چپ و عکس در راست
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: '0px',
-      gap: '80px',
-      width: '1280px',
-      height: 'auto',
-      margin: '80px auto 0 auto',
-      flex: 'none',
-      order: 0,
-      alignSelf: 'stretch',
-      flexGrow: 0,
-      position: 'relative'
-    }}>
-      
+    <div className="flex flex-col lg:flex-row justify-between items-center px-4 sm:px-6 lg:px-0 gap-8 sm:gap-12 lg:gap-20 w-full max-w-[1280px] mx-auto mt-12 sm:mt-16 lg:mt-20 relative">
       {/* Left Side: Text Content Container */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'flex-start', // چپ‌چین کردن محتوا
-        padding: '0px',
-        gap: '24px',
-        width: '616px',
-        height: 'auto',
-        flex: 'none',
-        order: 0,
-        flexGrow: 0
-      }}>
-        
+      <div className="flex flex-col justify-center items-start gap-4 sm:gap-6 w-full lg:w-[616px]">
         {/* Title Section */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start', // چپ‌چین کردن عنوان
-          padding: '0px',
-          gap: '4px',
-          width: '100%',
-          height: 'auto',
-          flex: 'none',
-          order: 0,
-          alignSelf: 'stretch',
-          flexGrow: 0
-        }}>
+        <div className="flex flex-col items-start w-full gap-1">
           {/* Title Text */}
-          <h2 style={{
-            width: '616px',
-            height: '57px',
-            fontFamily: "'Morabba', sans-serif",
-            fontStyle: 'normal',
-            fontWeight: 500,
-            fontSize: '32px',
-            lineHeight: '57px',
-            display: 'flex',
-            alignItems: 'center',
-            textAlign: 'right', // چپ‌چین
-            color: '#FAFAFA',
-            margin: 0,
-            flex: 'none',
-            order: 0,
-            alignSelf: 'stretch',
-            flexGrow: 0
-          }}>
+          <h2 className="w-full font-morabba font-medium text-2xl sm:text-3xl lg:text-[32px] leading-[1.5] lg:leading-[57px] text-right text-white m-0">
             نصب و راه‌اندازی ایندور مپ‌ها چگونه است؟
           </h2>
         </div>
-        
+
         {/* Description Text */}
-        <div style={{
-          width: '616px',
-          fontFamily: "'Yekan Bakh', sans-serif",
-          fontStyle: 'normal',
-          fontWeight: 400,
-          fontSize: '16px',
-          lineHeight: '32px',
-          color: '#E4E4E7',
-          flex: 'none',
-          order: 1,
-          alignSelf: 'stretch',
-          flexGrow: 0,
-          textAlign: 'right',
-          direction: 'rtl'
-        }}>
-          پیاده‌سازی ایندور مپ برای کسب‌وکارها بسیار ساده‌تر از آن است که ممکن است تصور شود.{" "}
-          <a 
-            href="/about-viramp" 
-            style={{
-              color: '#FB6514',
-              textDecoration: 'none',
-              fontWeight: '600'
-            }}
+        <div
+          className="w-full font-yekanbakh font-normal text-sm sm:text-base leading-7 sm:leading-8 text-justify text-gray-300"
+          style={{
+            textAlignLast: "right",
+            direction: "rtl",
+          }}
+        >
+          پیاده‌سازی ایندور مپ برای کسب‌وکارها بسیار ساده‌تر از آن است که ممکن
+          است تصور شود.{" "}
+          <a
+            href="/about-viramp"
+            className="text-[#FB6514] no-underline font-semibold"
           >
             ویرامپ
-          </a>
-          {" "}به عنوان یک ایندور مپ به راحتی با زیرساخت‌های موجود در ساختمان‌ها مانند وای‌فای و بلوتوث کار می‌کنند، و برای نصب آن نیاز به تجهیزات خاص یا بازسازی فیزیکی فضا نیست. برای شروع، تیم‌های فنی از طریق نصب بیکن‌ها یا استفاده از روترهای موجود می‌توانند نقاط مرجع در فضای داخلی را تعیین کنند. این نقاط به عنوان راهنمایی برای دستگاه‌های کاربران عمل می‌کنند، و به کاربران اجازه می‌دهند تا با کمک{" "}
-          <a 
-            href="/products/viramp-app" 
-            style={{
-              color: '#FB6514',
-              textDecoration: 'none',
-              fontWeight: '600'
-            }}
+          </a>{" "}
+          به عنوان یک ایندور مپ به راحتی با زیرساخت‌های موجود در ساختمان‌ها
+          مانند وای‌فای و بلوتوث کار می‌کنند، و برای نصب آن نیاز به تجهیزات خاص
+          یا بازسازی فیزیکی فضا نیست. برای شروع، تیم‌های فنی از طریق نصب بیکن‌ها
+          یا استفاده از روترهای موجود می‌توانند نقاط مرجع در فضای داخلی را تعیین
+          کنند. این نقاط به عنوان راهنمایی برای دستگاه‌های کاربران عمل می‌کنند،
+          و به کاربران اجازه می‌دهند تا با کمک{" "}
+          <a
+            href="/products/viramp-app"
+            className="text-[#FB6514] no-underline font-semibold"
           >
             اپلیکیشن ویرامپ
-          </a>
-          {" "}موقعیت خود را به‌طور دقیق در محیط پیدا کنند.
+          </a>{" "}
+          موقعیت خود را به‌طور دقیق در محیط پیدا کنند.
         </div>
-        
+
         {/* Button */}
         {/* Button Container با justify-content: flex-end */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'flex-end', // این خط را اضافه کنید
-          width: '100%',
-          flex: 'none',
-          order: 2,
-          flexGrow: 0,
-          marginTop: '8px' // فاصله اضافی از متن
-        }}>
+        <div className="flex justify-end w-full mt-2">
           {/* Button */}
-          <button style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'end',
-            gap: '8px',
-            width: '195px',
-            height: '24px',
-            fontFamily: "'Yekan Bakh', sans-serif",
-            fontStyle: 'normal',
-            fontWeight: 600,
-            fontSize: '14px',
-            lineHeight: '26px',
-            color: '#FB6514',
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '0',
-            transition: 'all 0.3s ease'
-          }}>
-            <span style={{ display: 'flex', alignItems: 'center' }}>
-              درباره ویرامپ
-            </span>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15 19.9201L8.48003 13.4001C7.71003 12.6301 7.71003 11.3701 8.48003 10.6001L15 4.08008" stroke="#FB6514" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+          <button className="flex flex-row items-center justify-end gap-2 w-[195px] h-6 font-yekanbakh font-semibold text-sm leading-[26px] text-[#FB6514] bg-transparent border-none cursor-pointer p-0 transition-all duration-300">
+            <span className="flex items-center">درباره ویرامپ</span>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15 19.9201L8.48003 13.4001C7.71003 12.6301 7.71003 11.3701 8.48003 10.6001L15 4.08008"
+                stroke="#FB6514"
+                strokeWidth="1.5"
+                strokeMiterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
         </div>
       </div>
 
       {/* Right Side: Image Container */}
-      <div style={{
-        position: 'relative',
-        width: '480px',
-        height: '480px',
-        flex: 'none',
-        order: 1,
-        flexGrow: 0
-      }}>
+      <div className="relative w-full lg:w-[480px] h-[300px] sm:h-[400px] lg:h-[480px] flex-none order-1 lg:order-1">
         {/* Main Image */}
-        <div style={{
-          width: '100%',
-          height: '100%',
-          background: 'url(/images/About/about3.png)', // مسیر تصویر جدید
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          borderRadius: '12px'
-        }} />
+        <div
+          className="w-full h-full bg-cover bg-center rounded-xl"
+          style={{
+            background: "url(/images/About/about3.png)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
       </div>
     </div>
   );
