@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import { Slide } from "./types";
+import SlideIcon from "./SlideIcon";
 
 interface SlideItemProps {
   slide: Slide;
@@ -52,13 +53,7 @@ const SlideItem = memo(
           {/* Top Section */}
           <div className="top-section">
             <div className="icon-container">
-              <div className="routing-icon">
-                <div className="vector v1"></div>
-                <div className="vector v2"></div>
-                <div className="vector v3"></div>
-                <div className="vector v4"></div>
-                <div className="vector v5"></div>
-              </div>
+              <SlideIcon id={slide.id} />
             </div>
 
             <h3 className="slide-title">{slide.title}</h3>
