@@ -2,7 +2,7 @@
 
 const HeroSection = () => {
   return (
-    <section className="relative w-full min-h-screen bg-[#141414] text-white overflow-hidden flex flex-col items-center justify-center py-12 md:py-20 lg:py-0">
+    <section className="relative w-full min-h-screen bg-[#141414] text-white overflow-hidden flex flex-col items-center justify-center pt-12 pb-1 md:py-20 lg:py-0">
       {/* Blurred Glowing Circles - Responsive Positioning */}
       <div className="hidden md:block absolute w-[663px] h-[663px] -left-[500px] top-[180px] rounded-full bg-[#067871]/20 blur-[250px] z-0" />
       <div className="hidden md:block absolute w-[800px] h-[800px] -left-[200px] -top-[200px] rounded-full bg-[#FE8B20]/10 blur-[200px] z-0" />

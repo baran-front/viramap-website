@@ -17,44 +17,16 @@ export default function TechnologiesSection2({
   imageSrc = "/images/technologies/tech-diagram.png",
 }: TechnologiesSection2Props) {
   return (
-    <div className="flex flex-col items-center p-0 gap-12 w-full max-w-[1480px] mx-auto py-20 relative overflow-hidden">
-      {/* Ellipse Backgrounds */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Ellipse 47 */}
-        <div
-          className="absolute rounded-full transform-gpu hidden lg:block"
-          style={{
-            width: "676px",
-            height: "676px",
-            left: "calc(50% - 338px + 694px)",
-            top: "calc(813px - 600px)", // Adjusted position
-            background: "rgba(254, 139, 32, 0.2)",
-            filter: "blur(250px)",
-          }}
-        />
-
-        {/* Ellipse 53 */}
-        <div
-          className="absolute rounded-full transform-gpu hidden lg:block"
-          style={{
-            width: "548px",
-            height: "548px",
-            left: "calc(50% - 274px - 536px)",
-            top: "calc(877px - 600px)", // Adjusted position
-            background: "rgba(6, 120, 113, 0.1)",
-            filter: "blur(50px)",
-          }}
-        />
-      </div>
-
+    <div className="flex flex-col items-center p-0 gap-4 md:gap-6 lg:gap-8 w-full max-w-[1480px] mx-auto py-4 md:py-6 lg:py-8 px-4 md:px-6 lg:px-8 relative overflow-hidden">
       {/* Title Section */}
-      <div className="flex flex-col justify-center items-center p-0 gap-1 w-full relative z-10">
+      <div className="flex flex-col justify-center items-center p-0 gap-2 md:gap-3 lg:gap-4 w-full relative z-10">
         {/* Feature Badge */}
         <div
-          className="box-border flex flex-row justify-end items-start px-4 py-1 gap-6"
+          className="box-border flex flex-row justify-end items-start px-3 md:px-4 py-1 gap-6"
           style={{
-            width: "120px",
-            height: "30px",
+            width: "auto",
+            minWidth: "100px",
+            height: "28px",
             background:
               "linear-gradient(270deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%)",
             borderRadius: "8px",
@@ -62,14 +34,12 @@ export default function TechnologiesSection2({
           }}
         >
           <div
-            className="flex items-center text-right"
+            className="flex items-center text-right px-2"
             style={{
-              width: "100px",
-              height: "22px",
-              fontFamily: "'Yekan Bakh'",
+              fontFamily: "'Ravi'",
               fontStyle: "normal",
               fontWeight: "400",
-              fontSize: "12px",
+              fontSize: "11px",
               lineHeight: "22px",
               color: "#FFFFFF",
             }}
@@ -80,14 +50,13 @@ export default function TechnologiesSection2({
 
         {/* Main Title */}
         <div
-          className="flex items-center justify-center text-center w-full"
+          className="flex items-center justify-center text-center w-full px-4 mt-1 md:mt-2 lg:mt-3 mb-1 md:mb-2 lg:mb-3"
           style={{
-            height: "57px",
-            fontFamily: "'Morabba'",
+            fontFamily: "'Ravi'",
             fontStyle: "normal",
-            fontWeight: "500",
-            fontSize: "32px",
-            lineHeight: "57px",
+            fontWeight: "700",
+            fontSize: "clamp(22px, 4vw, 42px)",
+            lineHeight: "1.2",
             color: "#FAFAFA",
           }}
         >
@@ -96,36 +65,39 @@ export default function TechnologiesSection2({
 
         {/* Description - محدود شده */}
         <div
-          className="flex justify-center items-center w-full max-w-[600px] px-4"
+          className="flex justify-center items-center w-full max-w-[700px] md:max-w-[800px] lg:max-w-[900px] px-4 md:px-6"
           style={{
-            fontFamily: "'Yekan Bakh'",
+            fontFamily: "'Ravi'",
             fontStyle: "normal",
             fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "32px",
+            fontSize: "clamp(12px, 1.5vw, 16px)",
+            lineHeight: "1.8",
             color: "#E4E4E7",
             textAlign: "justify",
             textAlignLast: "right",
             direction: "rtl",
-            minHeight: "96px",
+            marginTop: "8px",
           }}
         >
-          <div className="text-justify text-right leading-8 rtl max-w-[600px]">
+          <div
+            className="text-justify leading-8 rtl w-full"
+            style={{ textAlign: "justify", textAlignLast: "right" }}
+          >
             {description}
           </div>
         </div>
       </div>
 
-      {/* Image Section - کوچک‌تر و مرکز */}
-      <div className="w-full flex justify-center relative z-10">
-        <div className="relative flex justify-center items-center w-full max-w-[900px]">
-          <div className="relative w-full max-w-[700px] h-[350px] rounded-2xl overflow-hidden">
+      {/* Image Section - بزرگتر و مرکز */}
+      <div className="w-full flex justify-center relative z-10 -mt-20 md:-mt-24 lg:-mt-28">
+        <div className="relative flex justify-center items-center w-full max-w-[1200px]">
+          <div className="relative w-full max-w-[900px] md:max-w-[1000px] lg:max-w-[1100px] h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px] rounded-2xl overflow-hidden">
             <Image
               src={imageSrc}
               alt="تکنولوژی‌های ویرامپ"
               fill
               className="object-contain"
-              sizes="(max-width: 768px) 100vw, 700px"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 90vw, (max-width: 1024px) 85vw, 1100px"
               priority
               onError={(e) => {
                 const target = e.currentTarget;

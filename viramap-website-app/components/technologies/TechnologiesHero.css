@@ -1,0 +1,42 @@
+/* Desktop styles remain unchanged - all responsive styles are in media queries */
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+  .tech-hero-title {
+    font-size: 48px !important;
+    line-height: 72px !important;
+    height: auto !important;
+  }
+
+  .tech-hero-container {
+    gap: 32px !important;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .tech-hero-title {
+    font-size: 36px !important;
+    line-height: 54px !important;
+    height: auto !important;
+  }
+
+  .tech-hero-container {
+    gap: 40px !important;
+    padding: 60px 0px !important;
+  }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+  .tech-hero-title {
+    font-size: 28px !important;
+    line-height: 42px !important;
+    height: auto !important;
+  }
+
+  .tech-hero-container {
+    gap: 32px !important;
+    padding: 40px 0px !important;
+  }
+}

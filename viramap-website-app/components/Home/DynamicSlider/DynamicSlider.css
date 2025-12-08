@@ -202,11 +202,10 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: flex-end;
-  padding: 12px;
+  align-items: center;
   gap: 10px;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   background: rgba(250, 250, 250, 0.1);
   border: 1px solid #fafafa;
   backdrop-filter: blur(12px);
@@ -402,7 +401,7 @@
   justify-content: center;
   background: rgba(250, 250, 250, 0.1);
   backdrop-filter: blur(2.06px);
-  font-family: "Vazirmatn", sans-serif;
+  font-family: "Ravi", sans-serif;
   font-size: 18px;
   color: #e4e4e7;
 }
@@ -532,6 +531,16 @@
     margin-bottom: 25px;
   }
 
+  .icon-container {
+    width: 44px;
+    height: 44px;
+  }
+
+  .icon-container svg {
+    width: 44px;
+    height: 44px;
+  }
+
   .slider-controls {
     margin-top: 25px;
     padding-top: 18px;
@@ -616,6 +625,16 @@
   .top-section {
     align-items: center;
     width: 100%;
+  }
+
+  .icon-container {
+    width: 40px;
+    height: 40px;
+  }
+
+  .icon-container svg {
+    width: 40px;
+    height: 40px;
   }
 
   .slide-title {
@@ -704,9 +723,13 @@
   }
 
   .icon-container {
-    width: 80px;
-    height: 40px;
-    padding: 8px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .icon-container svg {
+    width: 36px;
+    height: 36px;
   }
 
   .routing-icon {

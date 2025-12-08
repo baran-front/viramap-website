@@ -76,7 +76,7 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="bg-[#141414] py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 w-full flex justify-center font-[family-name:Vazirmatn,system-ui]">
+    <section className="bg-[#141414] py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 w-full flex justify-center font-[family-name:Ravi,system-ui]">
       <div className="w-full max-w-[1280px] flex flex-col items-center gap-4 md:gap-6">
         {/* Title Container */}
         <div className="w-full flex flex-col items-center gap-1">

@@ -13,34 +13,18 @@ export default function TechnologiesSection3({
   imageSrc = "/images/technologies/benefits-diagram.png",
 }: TechnologiesSection3Props) {
   return (
-    <div className="tech-section3-container flex flex-col items-center p-0 gap-12 w-full max-w-[1480px] mx-auto py-20 relative overflow-hidden">
-      {/* Ellipse Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="tech-section3-ellipse absolute rounded-full transform-gpu hidden lg:block"
-          style={{
-            width: "511px",
-            height: "511px",
-            left: "calc(50% - 255.5px - 526.5px)",
-            top: "calc(2108px - 1700px)", // Adjusting for position
-            background: "rgba(17, 147, 137, 0.3)",
-            filter: "blur(250px)",
-          }}
-        />
-      </div>
-
+    <div className="tech-section3-container flex flex-col items-center p-0 gap-8 w-full max-w-[1480px] mx-auto pt-0 pb-12 relative overflow-hidden">
       {/* Title Section */}
-      <div className="flex flex-col justify-center items-center p-0 gap-1 w-full relative z-10">
+      <div className="flex flex-col justify-center items-center p-0 gap-1 w-full relative z-10 mb-8 md:mb-12">
         {/* Main Title */}
         <div
-          className="tech-section3-title flex items-center justify-center text-center w-full"
+          className="tech-section3-title flex items-center justify-center text-center w-full px-4"
           style={{
-            height: "57px",
-            fontFamily: "'Morabba'",
+            fontFamily: "'Ravi'",
             fontStyle: "normal",
-            fontWeight: "500",
-            fontSize: "32px",
-            lineHeight: "57px",
+            fontWeight: "700",
+            fontSize: "clamp(22px, 4vw, 42px)",
+            lineHeight: "1.2",
             color: "#FAFAFA",
           }}
         >

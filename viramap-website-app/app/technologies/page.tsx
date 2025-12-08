@@ -144,9 +144,9 @@ export default function TechnologiesPage() {
   }
 
   return (
-    <div className="bg-[#141414] min-h-screen">
+    <div className="bg-[#141414] min-h-screen overflow-x-hidden">
       {/* Hero Section */}
-      <div className="pt-32">
+      <div className="pt-8">
         <TechnologiesHero
           title={technologiesData.hero.title}
           description={technologiesData.hero.description}
@@ -154,7 +154,7 @@ export default function TechnologiesPage() {
       </div>
 
       {/* Section 2 - Technologies Overview */}
-      <div className="py-20 px-4">
+      <div className="py-2 px-4">
         <div className="max-w-[1480px] mx-auto">
           <TechnologiesSection2
             badgeText={technologiesData.section2.badgeText}
@@ -165,7 +165,7 @@ export default function TechnologiesPage() {
       </div>
 
       {/* Section 3 - Benefits Image */}
-      <div className="py-20 px-4 pb-32">
+      <div className="py-2 px-4 pb-8">
         <div className="max-w-[1480px] mx-auto">
           <TechnologiesSection3 title={technologiesData.section3.title} />
         </div>

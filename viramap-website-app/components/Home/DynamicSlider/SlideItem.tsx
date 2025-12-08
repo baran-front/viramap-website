@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { Slide } from "./types";
 import SlideIcon from "./SlideIcon";
 
@@ -10,15 +10,24 @@ interface SlideItemProps {
   index: number;
 }
 
+// نسخه ثابت برای جلوگیری از کش - در صورت تغییر تصاویر این عدد را تغییر دهید
+const IMAGE_VERSION = "2.0";
+
 const SlideItem = memo(
   ({ slide, isActive }: SlideItemProps) => {
     if (!isActive) return null;
+
+    // استفاده از useMemo برای جلوگیری از محاسبه مجدد در هر render
+    const imageUrlWithVersion = useMemo(
+      () => `${slide.imageUrl}?v=${IMAGE_VERSION}`,
+      [slide.imageUrl]
+    );
 
     return (
       <div
         className={`slide-item ${isActive ? "active" : ""}`}
         style={{
-          fontFamily: "Vazirmatn, system-ui",
+          fontFamily: "Ravi, system-ui",
           zIndex: isActive ? 2 : 1, // اسلاید فعال روی بالا باشد
           pointerEvents: isActive ? "auto" : "none", // فقط اسلاید فعال قابل کلیک باشد
         }}
@@ -31,7 +40,7 @@ const SlideItem = memo(
               <div
                 className="screen-image"
                 style={{
-                  backgroundImage: `url(${slide.imageUrl})`,
+                  backgroundImage: `url(${imageUrlWithVersion})`,
                   backgroundSize: "contain", // Ensures full image is visible without cropping
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",

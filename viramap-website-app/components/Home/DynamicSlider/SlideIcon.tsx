@@ -49,34 +49,7 @@ const SlideIcon = ({ id }: SlideIconProps) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <foreignObject x="-24" y="-24" width="96" height="96">
-              <div
-                style={{
-                  backdropFilter: "blur(12px)",
-                  clipPath: `url(#bgblur_icon_${id}_clip_path)`,
-                  height: "100%",
-                  width: "100%",
-                }}
-              ></div>
-            </foreignObject>
-            <g data-figma-bg-blur-radius="24">
-              <rect
-                x="0.5"
-                y="0.5"
-                width="47"
-                height="47"
-                rx="7.5"
-                fill="#FAFAFA"
-                fillOpacity="0.1"
-              />
-              <rect
-                x="0.5"
-                y="0.5"
-                width="47"
-                height="47"
-                rx="7.5"
-                stroke="#FAFAFA"
-              />
+            <g>
               <path
                 opacity="0.4"
                 d="M34.1801 25.66C34.0301 24.01 33.5901 22.25 30.3801 22.25H17.6201C14.4101 22.25 13.9801 24.01 13.8201 25.66L13.2601 31.75C13.1901 32.51 13.4401 33.27 13.9601 33.84C14.4901 34.42 15.2401 34.75 16.0401 34.75H17.9201C19.5401 34.75 19.8501 33.82 20.0501 33.21L20.2501 32.61C20.4801 31.92 20.5401 31.75 21.4401 31.75H26.5601C27.4601 31.75 27.4901 31.85 27.7501 32.61L27.9501 33.21C28.1501 33.82 28.4601 34.75 30.0801 34.75H31.9601C32.7501 34.75 33.5101 34.42 34.0401 33.84C34.5601 33.27 34.8101 32.51 34.7401 31.75L34.1801 25.66Z"
@@ -95,14 +68,6 @@ const SlideIcon = ({ id }: SlideIconProps) => {
                 fill="#FAFAFA"
               />
             </g>
-            <defs>
-              <clipPath
-                id={`bgblur_icon_${id}_clip_path`}
-                transform="translate(24 24)"
-              >
-                <rect x="0.5" y="0.5" width="47" height="47" rx="7.5" />
-              </clipPath>
-            </defs>
           </svg>
         );
       case 3:
@@ -114,34 +79,7 @@ const SlideIcon = ({ id }: SlideIconProps) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <foreignObject x="-24" y="-24" width="96" height="96">
-              <div
-                style={{
-                  backdropFilter: "blur(12px)",
-                  clipPath: `url(#bgblur_icon_${id}_clip_path)`,
-                  height: "100%",
-                  width: "100%",
-                }}
-              ></div>
-            </foreignObject>
-            <g data-figma-bg-blur-radius="24">
-              <rect
-                x="0.5"
-                y="0.5"
-                width="47"
-                height="47"
-                rx="7.5"
-                fill="#FAFAFA"
-                fillOpacity="0.1"
-              />
-              <rect
-                x="0.5"
-                y="0.5"
-                width="47"
-                height="47"
-                rx="7.5"
-                stroke="#FAFAFA"
-              />
+            <g>
               <path
                 opacity="0.6"
                 d="M22.11 16C22.03 16.3 22 16.63 22 17V20H17V18C17 16.9 17.9 16 19 16H22.11Z"
@@ -169,14 +107,6 @@ const SlideIcon = ({ id }: SlideIconProps) => {
                 fill="#FAFAFA"
               />
             </g>
-            <defs>
-              <clipPath
-                id={`bgblur_icon_${id}_clip_path`}
-                transform="translate(24 24)"
-              >
-                <rect x="0.5" y="0.5" width="47" height="47" rx="7.5" />
-              </clipPath>
-            </defs>
           </svg>
         );
       case 4:
@@ -188,34 +118,7 @@ const SlideIcon = ({ id }: SlideIconProps) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <foreignObject x="-24" y="-24" width="96" height="96">
-              <div
-                style={{
-                  backdropFilter: "blur(12px)",
-                  clipPath: `url(#bgblur_icon_${id}_clip_path)`,
-                  height: "100%",
-                  width: "100%",
-                }}
-              ></div>
-            </foreignObject>
-            <g data-figma-bg-blur-radius="24">
-              <rect
-                x="0.5"
-                y="0.5"
-                width="47"
-                height="47"
-                rx="7.5"
-                fill="#FAFAFA"
-                fillOpacity="0.1"
-              />
-              <rect
-                x="0.5"
-                y="0.5"
-                width="47"
-                height="47"
-                rx="7.5"
-                stroke="#FAFAFA"
-              />
+            <g>
               <path
                 opacity="0.4"
                 d="M34.75 34C34.75 34.41 34.41 34.75 34 34.75H14C13.59 34.75 13.25 34.41 13.25 34C13.25 33.59 13.59 33.25 14 33.25H34C34.41 33.25 34.75 33.59 34.75 34Z"
@@ -241,14 +144,6 @@ const SlideIcon = ({ id }: SlideIconProps) => {
                 fill="#FAFAFA"
               />
             </g>
-            <defs>
-              <clipPath
-                id={`bgblur_icon_${id}_clip_path`}
-                transform="translate(24 24)"
-              >
-                <rect x="0.5" y="0.5" width="47" height="47" rx="7.5" />
-              </clipPath>
-            </defs>
           </svg>
         );
       case 5:
@@ -260,34 +155,7 @@ const SlideIcon = ({ id }: SlideIconProps) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <foreignObject x="-24" y="-24" width="96" height="96">
-              <div
-                style={{
-                  backdropFilter: "blur(12px)",
-                  clipPath: `url(#bgblur_icon_${id}_clip_path)`,
-                  height: "100%",
-                  width: "100%",
-                }}
-              ></div>
-            </foreignObject>
-            <g data-figma-bg-blur-radius="24">
-              <rect
-                x="0.5"
-                y="0.5"
-                width="47"
-                height="47"
-                rx="7.5"
-                fill="#FAFAFA"
-                fillOpacity="0.1"
-              />
-              <rect
-                x="0.5"
-                y="0.5"
-                width="47"
-                height="47"
-                rx="7.5"
-                stroke="#FAFAFA"
-              />
+            <g>
               <path
                 opacity="0.4"
                 d="M28.9201 33.9998C26.1201 33.9998 23.8401 31.7299 23.8401 28.9199C23.8401 26.1199 26.1101 23.8398 28.9201 23.8398C31.7201 23.8398 34.0001 26.1099 34.0001 28.9199C34.0001 31.7299 31.7301 33.9998 28.9201 33.9998Z"
@@ -315,14 +183,6 @@ const SlideIcon = ({ id }: SlideIconProps) => {
                 fill="#FAFAFA"
               />
             </g>
-            <defs>
-              <clipPath
-                id={`bgblur_icon_${id}_clip_path`}
-                transform="translate(24 24)"
-              >
-                <rect x="0.5" y="0.5" width="47" height="47" rx="7.5" />
-              </clipPath>
-            </defs>
           </svg>
         );
       case 6:
@@ -334,34 +194,7 @@ const SlideIcon = ({ id }: SlideIconProps) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <foreignObject x="-24" y="-24" width="96" height="96">
-              <div
-                style={{
-                  backdropFilter: "blur(12px)",
-                  clipPath: `url(#bgblur_icon_${id}_clip_path)`,
-                  height: "100%",
-                  width: "100%",
-                }}
-              ></div>
-            </foreignObject>
-            <g data-figma-bg-blur-radius="24">
-              <rect
-                x="0.5"
-                y="0.5"
-                width="47"
-                height="47"
-                rx="7.5"
-                fill="#FAFAFA"
-                fillOpacity="0.1"
-              />
-              <rect
-                x="0.5"
-                y="0.5"
-                width="47"
-                height="47"
-                rx="7.5"
-                stroke="#FAFAFA"
-              />
+            <g>
               <path
                 d="M30 25C27.24 25 25 27.24 25 30C25 32.76 27.24 35 30 35C32.76 35 35 32.76 35 30C35 27.24 32.76 25 30 25ZM29.16 31.27C29.41 31.52 29.41 31.93 29.16 32.19C29.03 32.32 28.87 32.38 28.7 32.38C28.53 32.38 28.37 32.32 28.24 32.19L26.51 30.46C26.26 30.21 26.26 29.8 26.51 29.54L28.24 27.81C28.49 27.56 28.9 27.56 29.16 27.81C29.41 28.06 29.41 28.47 29.16 28.73L27.89 30L29.16 31.27ZM33.48 30.46L31.75 32.19C31.62 32.32 31.46 32.38 31.29 32.38C31.12 32.38 30.96 32.32 30.83 32.19C30.58 31.94 30.58 31.53 30.83 31.27L32.1 30L30.83 28.73C30.58 28.48 30.58 28.07 30.83 27.81C31.08 27.56 31.49 27.56 31.75 27.81L33.48 29.54C33.73 29.8 33.73 30.2 33.48 30.46Z"
                 fill="#FAFAFA"
@@ -376,14 +209,6 @@ const SlideIcon = ({ id }: SlideIconProps) => {
                 fill="#FAFAFA"
               />
             </g>
-            <defs>
-              <clipPath
-                id={`bgblur_icon_${id}_clip_path`}
-                transform="translate(24 24)"
-              >
-                <rect x="0.5" y="0.5" width="47" height="47" rx="7.5" />
-              </clipPath>
-            </defs>
           </svg>
         );
       default:
@@ -399,13 +224,8 @@ const SlideIcon = ({ id }: SlideIconProps) => {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        padding: "12px",
         width: "48px",
         height: "48px",
-        background: "rgba(250, 250, 250, 0.1)",
-        border: "1px solid #FAFAFA",
-        backdropFilter: "blur(12px)",
-        borderRadius: "8px",
       }}
     >
       {getIconContent()}

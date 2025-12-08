@@ -4,7 +4,7 @@
 :root {
   --background: #141414;
   --foreground: #e2e8f0;
-  --font-sans: "Vazirmatn", system-ui, sans-serif;
+  --font-sans: "Ravi", system-ui, sans-serif;
   --font-ravi: "Ravi", sans-serif;
   --font-ravi-fanum: "Ravi FaNum", sans-serif;
   --font-ravi-noen: "Ravi NoEn", sans-serif;
@@ -211,6 +211,25 @@
   font-display: swap;
 }
 
+/* Hide scrollbar but keep scrolling functionality */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -218,6 +237,12 @@ body {
   direction: rtl;
   margin: 0;
   padding: 0;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .ravi-text {
@@ -230,6 +255,27 @@ body {
 }
 
 .ravi-noen-text {
+  font-family: var(--font-ravi-noen);
+}
+
+.morabba-text {
+  font-family: "Morabba", sans-serif;
+}
+
+.yekanbakh-text {
+  font-family: "Yekan Bakh", sans-serif;
+}
+
+/* Tailwind utility classes for Ravi fonts */
+.font-ravi {
+  font-family: var(--font-ravi);
+}
+
+.font-ravi-fanum {
+  font-family: var(--font-ravi-fanum);
+}
+
+.font-ravi-noen {
   font-family: var(--font-ravi-noen);
 }
 
@@ -331,5 +377,58 @@ body {
         @apply list-disc;
       }
     }
+  }
+}
+
+/* Prose styles with Ravi font */
+.prose {
+  font-family: var(--font-ravi);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-family: var(--font-ravi);
+}
+
+.prose p {
+  font-family: var(--font-ravi);
+}
+
+/* Articles Page Hero Responsive */
+@media (max-width: 1440px) {
+  .articles-hero-bg {
+    width: calc(100% - 160px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .articles-hero-content {
+    width: calc(100% - 160px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .articles-hero-bg {
+    width: calc(100% - 40px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 100px !important;
+    height: auto !important;
+    min-height: 304px !important;
+  }
+
+  .articles-hero-content {
+    width: calc(100% - 40px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 100px !important;
+    height: auto !important;
+    min-height: 304px !important;
   }
 }

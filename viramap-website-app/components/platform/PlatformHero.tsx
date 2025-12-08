@@ -1,5 +1,5 @@
 // components/platform/PlatformHero.tsx
-'use client';
+"use client";
 
 interface BoxItem {
   id: number;
@@ -14,148 +14,153 @@ interface PlatformHeroProps {
   boxes: BoxItem[];
 }
 
-export default function PlatformHero({ 
-  title, 
+// استایل‌های مشترک برای افکت شیشه‌ای
+const glassEffectStyle = {
+  background: "rgba(255, 255, 255, 0.1)",
+  backdropFilter: "blur(20px)",
+  WebkitBackdropFilter: "blur(20px)",
+  border: "1px solid rgba(255, 255, 255, 0.2)",
+} as const;
+
+export default function PlatformHero({
+  title,
   description,
-  boxes 
+  boxes,
 }: PlatformHeroProps) {
   return (
-    <section className="relative w-full flex flex-col items-center px-4 pt-20">
-      
-      {/* Background Container */}
-      <div className="absolute inset-0 overflow-visible pointer-events-none">
-        {/* Ellipse ها */}
-        <div className="absolute inset-0">
-          {/* Ellipse 50 - نارنجی کوچک */}
-          <div
-            className="absolute rounded-full transform-gpu"
-            style={{
-              width: '484px',
-              height: '484px',
-              left: 'calc(50% - 242px - 495px)',
-              top: '64px',
-              background: 'rgba(251, 101, 20, 0.12)',
-              filter: 'blur(50px)',
-              opacity: '0.9'
-            }}
-          />
-          
-          {/* Ellipse های اضافی */}
-          <div
-            className="absolute rounded-full transform-gpu"
-            style={{
-              width: '600px',
-              height: '600px',
-              right: '-20%',
-              bottom: '-10%',
-              background: 'rgba(143, 101, 255, 0.15)',
-              filter: 'blur(180px)',
-              opacity: '0.7'
-            }}
-          />
-        </div>
-      </div>
-
-      {/* Main Content Box */}
-      <div 
-        className="relative flex flex-col justify-center items-center z-10 transform-gpu"
-        style={{
-          width: '1480px',
-          maxWidth: '90vw',
-          height: '372px',
-          padding: '80px 0px',
-          gap: '24px',
-          background: 'rgba(250, 250, 250, 0.1)',
-          border: '1px solid #3F3F46',
-          borderRadius: '24px',
-          boxSizing: 'border-box',
-          marginBottom: '40px', // فاصله با باکس‌های پایین
-        }}
-      >
-        
-        {/* Title */}
-        <div 
-          className="morabba-text flex items-center justify-center text-right"
-          style={{
-            width: '90%',
-            height: '92px',
-            fontSize: '60px',
-            lineHeight: '92px',
-            color: '#FAFAFA',
-          }}
-        >
-          {title}
-        </div>
-
-        {/* Description */}
-        <p 
-          className="yekanbakh-text text-center"
-          style={{
-            width: '720px',
-            maxWidth: '90%',
-            height: '96px',
-            fontSize: '16px',
-            lineHeight: '32px',
-            color: '#E4E4E7',
-          }}
-        >
-          {description}
-        </p>
-      </div>
-
-      {/* 4 Boxes Section - در یک ردیف زیر باکس بزرگ */}
-      <div className="relative w-full max-w-[1480px] ">
-        <div className="flex flex-wrap justify-center gap-6 w-full">
-          {boxes.map((box) => (
-            <div 
-              key={box.id}
-              className="box-border flex flex-col items-center p-6 gap-2 w-full sm:w-[45%] lg:w-[23%] h-auto min-h-[212px]"
+    <>
+      <style>{`
+        .platform-box:hover h3 {
+          font-size: 17px !important;
+        }
+        .platform-box:hover p {
+          font-size: 15px !important;
+        }
+        .platform-box:hover {
+          box-shadow: 0 10px 40px rgba(251, 101, 20, 0.3), 0 0 20px rgba(143, 101, 255, 0.2) !important;
+        }
+        .platform-box:hover .icon-wrapper svg path,
+        .platform-box:hover .icon-wrapper svg g path {
+          fill: #FB6514 !important;
+          stroke: #FB6514 !important;
+        }
+        .platform-box:hover .icon-wrapper svg {
+          filter: drop-shadow(0 0 8px rgba(251, 101, 20, 0.6));
+        }
+        .main-content-box:hover {
+          box-shadow: 0 10px 40px rgba(251, 101, 20, 0.3), 0 0 20px rgba(143, 101, 255, 0.2) !important;
+        }
+      `}</style>
+      <section className="relative w-full flex flex-col items-center px-4 pt-6">
+        {/* Background Container */}
+        <div className="absolute inset-0 overflow-visible pointer-events-none hidden md:block">
+          <div className="absolute inset-0">
+            {/* Ellipse نارنجی */}
+            <div
+              className="absolute rounded-full transform-gpu"
               style={{
-                background: 'rgba(250, 250, 250, 0.1)',
-                border: '1px solid #FAFAFA',
-                borderRadius: '16px',
-                backdropFilter: 'blur(10px)',
+                width: "484px",
+                height: "484px",
+                left: "calc(50% - 242px - 495px)",
+                top: "64px",
+                background: "rgba(251, 101, 20, 0.12)",
+                filter: "blur(50px)",
+                opacity: "0.9",
               }}
-            >
-              {/* Icon */}
-              <div className="flex items-center justify-center mb-2 w-14 h-14">
-                {box.icon}
-              </div>
+            />
 
-              {/* Title */}
-              <div 
-                className="text-center mb-1"
-                style={{
-                  fontFamily: "'Morabba'",
-                  fontStyle: 'normal',
-                  fontWeight: '600',
-                  fontSize: '18px',
-                  lineHeight: '32px',
-                  color: '#FAFAFA',
-                }}
-              >
-                {box.title}
-              </div>
-
-              {/* Description */}
-              <div 
-                className="text-center"
-                style={{
-                  fontFamily: "'Yekan Bakh'",
-                  fontStyle: 'normal',
-                  fontWeight: '400',
-                  fontSize: '16px',
-                  lineHeight: '19px',
-                  color: '#FAFAFA',
-                  textAlign: 'center',
-                }}
-              >
-                {box.description}
-              </div>
-            </div>
-          ))}
+            {/* Ellipse بنفش */}
+            <div
+              className="absolute rounded-full transform-gpu"
+              style={{
+                width: "600px",
+                height: "600px",
+                right: "-20%",
+                bottom: "-10%",
+                background: "rgba(143, 101, 255, 0.15)",
+                filter: "blur(180px)",
+                opacity: "0.7",
+              }}
+            />
+          </div>
         </div>
-      </div>
-    </section>
+
+        {/* Main Content Box */}
+        <div
+          className="main-content-box relative flex flex-col justify-center items-center z-10 mb-6 md:mb-10 py-8 px-4 md:py-16 md:px-10 mt-[90px] gap-6 rounded-3xl box-border w-full max-w-[90vw] md:max-w-[1480px] transition-all duration-300 ease-in-out cursor-pointer"
+          style={glassEffectStyle}
+        >
+          {/* Title */}
+          <h1
+            className="w-full text-center mb-4 text-white leading-tight text-3xl md:text-[48px]"
+            style={{
+              fontFamily: "'Morabba', sans-serif",
+              fontWeight: "700",
+            }}
+          >
+            {title}
+          </h1>
+
+          {/* Description */}
+          <p
+            className="w-full max-w-[740px] text-center m-0 text-[#AAAAAA] leading-[1.8]"
+            style={{
+              fontFamily: "'Yekan Bakh', sans-serif",
+              fontWeight: "400",
+              fontSize: "14px",
+            }}
+          >
+            {description}
+          </p>
+        </div>
+
+        {/* 4 Boxes Section */}
+        <div className="relative z-10 w-full max-w-[90vw] md:max-w-[1480px]">
+          <div className="flex flex-col md:flex-row flex-wrap justify-center gap-4 md:gap-6 w-full relative">
+            {boxes.map((box) => (
+              <div
+                key={box.id}
+                className="platform-box group flex flex-col items-center relative w-full md:flex-1 md:max-w-[calc((100%-72px)/4)] p-4 md:p-6 gap-2 min-w-0 rounded-2xl transition-all duration-300 ease-in-out cursor-pointer hover:scale-105"
+                style={{
+                  height: "232px",
+                  ...glassEffectStyle,
+                }}
+              >
+                {/* Icon */}
+                <div className="icon-wrapper flex items-center justify-center w-14 h-14 flex-none order-0 grow-0 transition-all duration-300 group-hover:scale-110">
+                  {box.icon}
+                </div>
+
+                {/* Title */}
+                <h3
+                  className="text-center w-full h-8 flex-none order-1 self-stretch grow-0 leading-8 transition-all duration-300 group-hover:text-white"
+                  style={{
+                    fontFamily: "'Morabba', sans-serif",
+                    fontWeight: "600",
+                    fontSize: "16px",
+                    color: "#E4E4E7",
+                  }}
+                >
+                  {box.title}
+                </h3>
+
+                {/* Description */}
+                <p
+                  className="text-center w-full h-20 flex-none order-2 self-stretch grow-0 leading-[19px] transition-all duration-300 group-hover:text-[#E4E4E7]"
+                  style={{
+                    fontFamily: "'Yekan Bakh', sans-serif",
+                    fontWeight: "400",
+                    fontSize: "14px",
+                    color: "#D4D4D8",
+                  }}
+                >
+                  {box.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

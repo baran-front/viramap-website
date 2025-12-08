@@ -3,7 +3,7 @@
 
 const CTASection = () => {
   return (
-    <section className="bg-[#141414] text-white flex flex-col items-center justify-center py-12 md:py-20 lg:py-30 px-4 sm:px-6 md:px-10 lg:px-20 font-[family-name:Vazirmatn,system-ui] text-center">
+    <section className="bg-[#141414] text-white flex flex-col items-center justify-center py-12 md:py-20 lg:py-30 px-4 sm:px-6 md:px-10 lg:px-20 font-[family-name:Ravi,system-ui] text-center">
       {/* Main Container */}
       <div className="flex flex-col items-center gap-6 md:gap-8 max-w-[800px] w-full">
         {/* Badge - مشاوره رایگان */}

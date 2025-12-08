@@ -4,74 +4,87 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { DotIcon, SearchIcon, StarIcon } from "lucide-react";
+import {
+  DotIcon,
+  StarIcon,
+  ThumbsUp,
+  ThumbsDown,
+  User,
+  Mail,
+  Pencil,
+} from "lucide-react";
 import ArticleCard from "@/components/modules/articleCard";
+import "./ArticleDetail.css";
 
 // کامپوننت فرم نظرات
 function ArticleCommentForm({ blogId }: { blogId: number }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [comment, setComment] = useState("");
-  const [rating, setRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // شبیه‌سازی ارسال نظر
     setTimeout(() => {
-      console.log("نظر ارسال شد:", { blogId, comment, rating });
+      console.log("نظر ارسال شد:", { blogId, name, email, comment });
+      setName("");
+      setEmail("");
       setComment("");
-      setRating(0);
       setIsSubmitting(false);
       alert("نظر شما با موفقیت ثبت شد!");
     }, 1000);
   };
 
   return (
-    <div className="card bordered-glassy-card">
-      <p className="heading max-lg:text-center">ثبت نظر</p>
-      <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-2">امتیاز شما</label>
-          <div className="flex gap-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                type="button"
-                onClick={() => setRating(star)}
-                className="p-1"
-              >
-                <StarIcon
-                  className={`w-6 h-6 ${
-                    star <= rating
-                      ? "text-yellow-500 fill-yellow-500"
-                      : "text-gray-400"
-                  }`}
-                />
-              </button>
-            ))}
+    <div className="article-comment-form-container">
+      <h2 className="article-comment-form-title">ثبت نظر</h2>
+      <form onSubmit={handleSubmit} className="article-comment-form">
+        <div className="article-comment-form-row">
+          <div className="article-comment-form-input-wrapper">
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="نام و نام خانوادگی"
+              className="article-comment-form-input"
+              required
+            />
+            <User className="article-comment-form-icon" />
+          </div>
+          <div className="article-comment-form-input-wrapper">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="آدرس ایمیل"
+              className="article-comment-form-input"
+              required
+            />
+            <Mail className="article-comment-form-icon" />
           </div>
         </div>
-        
-        <div>
-          <Input
+        <div className="article-comment-form-textarea-wrapper">
+          <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            placeholder="نظر خود را بنویسید..."
-            className="w-full"
+            placeholder="ثبت نظر"
+            className="article-comment-form-textarea"
             required
           />
+          <Pencil className="article-comment-form-icon" />
         </div>
-        
-        <Button 
-          type="submit" 
-          disabled={isSubmitting || !comment.trim()}
-          className="w-full"
+        <button
+          type="submit"
+          disabled={
+            isSubmitting || !comment.trim() || !name.trim() || !email.trim()
+          }
+          className="article-comment-form-submit"
         >
-          {isSubmitting ? "در حال ثبت..." : "ثبت نظر"}
-        </Button>
+          {isSubmitting ? "در حال ثبت..." : "ارسال"}
+        </button>
       </form>
     </div>
   );
@@ -81,7 +94,8 @@ function ArticleCommentForm({ blogId }: { blogId: number }) {
 const mockArticle = {
   id: 1,
   title: "نقش هوش مصنوعی در تحول کسب‌وکارهای نوین",
-  summery: "هوش مصنوعی چگونه می‌تواند فرآیندهای کسب‌وکار را متحول کند و به رشد اقتصادی کمک نماید؟ در این مقاله به بررسی کاربردهای عملی AI در صنایع مختلف می‌پردازیم.",
+  summery:
+    "هوش مصنوعی چگونه می‌تواند فرآیندهای کسب‌وکار را متحول کند و به رشد اقتصادی کمک نماید؟ در این مقاله به بررسی کاربردهای عملی AI در صنایع مختلف می‌پردازیم.",
   content: `
     <h2>مقدمه</h2>
     <p>هوش مصنوعی (AI) یکی از انقلابی‌ترین فناوری‌های قرن بیست و یکم است که در حال تغییر شکل صنایع و کسب‌وکارها در سراسر جهان می‌باشد. از اتوماسیون فرآیندهای ساده تا تحلیل‌های پیچیده داده‌ها، AI ظرفیت بی‌نظیری برای بهبود کارایی و ایجاد ارزش افزوده دارد.</p>
@@ -99,7 +113,7 @@ const mockArticle = {
   authorName: "دکتر علی محمدی",
   authorImage: "/images/avatar-placeholder.png",
   imageUrl: "/images/article-sample.jpg",
-  categories: "فناوری, کسب‌وکار"
+  categories: "فناوری, کسب‌وکار",
 };
 
 // داده‌های نمونه برای مقالات مرتبط
@@ -107,27 +121,69 @@ const mockArticles = [
   {
     id: 1,
     title: "تحول دیجیتال در صنعت بانکداری",
-    summery: "نقش فناوری در تغییر صنعت مالی و بانکداری",
+    summery:
+      "نقش فناوری در تغییر صنعت مالی و بانکداری. بررسی چالش‌ها و فرصت‌های پیش روی بانک‌ها در عصر دیجیتال و راهکارهای نوین برای ارائه خدمات بهتر به مشتریان.",
     imageUrl: "/images/article1.jpg",
     published: "2024-12-10T08:15:00.000Z",
-    authorName: "محمد رضایی"
+    authorName: "محمد رضایی",
+    authorImage: "/images/avatar-placeholder.png",
+    categories: "کسب‌وکار, فناوری",
   },
   {
     id: 2,
     title: "بلاکچین و آینده تراکنش‌ها",
-    summery: "تأثیر فناوری بلاکچین بر سیستم‌های مالی",
+    summery:
+      "تأثیر فناوری بلاکچین بر سیستم‌های مالی و تراکنش‌های آینده. بررسی کاربردهای عملی این فناوری در صنایع مختلف و مزایای آن برای امنیت و شفافیت تراکنش‌ها.",
     imageUrl: "/images/article2.jpg",
     published: "2024-12-05T14:20:00.000Z",
-    authorName: "سارا کریمی"
+    authorName: "سارا کریمی",
+    authorImage: "/images/avatar-placeholder.png",
+    categories: "فناوری",
   },
   {
     id: 3,
     title: "اینترنت اشیاء در زندگی روزمره",
-    summery: "کاربردهای عملی IoT در خانه‌های هوشمند",
+    summery:
+      "کاربردهای عملی IoT در خانه‌های هوشمند و زندگی روزمره. بررسی دستگاه‌های هوشمند و تأثیر آن‌ها بر بهبود کیفیت زندگی و بهینه‌سازی مصرف انرژی.",
     imageUrl: "/images/article3.jpg",
     published: "2024-12-01T11:45:00.000Z",
-    authorName: "رضا احمدی"
-  }
+    authorName: "رضا احمدی",
+    authorImage: "/images/avatar-placeholder.png",
+    categories: "فناوری",
+  },
+  {
+    id: 4,
+    title: "راهکارهای افزایش بهره‌وری تیم‌های دورکار",
+    summery:
+      "ابزارها و روش‌های مدیریت تیم‌های دورکار برای افزایش بهره‌وری. بررسی بهترین شیوه‌های ارتباط، هماهنگی و مدیریت پروژه‌ها در محیط کار از راه دور.",
+    imageUrl: "/images/article6.jpg",
+    published: "2024-11-28T09:30:00.000Z",
+    authorName: "فاطمه غفاری",
+    authorImage: "/images/avatar-placeholder.png",
+    categories: "کسب‌وکار",
+  },
+  {
+    id: 5,
+    title: "نقش ERP در بهینه‌سازی فرآیندهای سازمانی",
+    summery:
+      "سیستم‌های ERP چگونه می‌توانند فرآیندهای کسب‌وکار را یکپارچه کرده و کارایی سازمان را افزایش دهند. بررسی مزایای پیاده‌سازی ERP و چالش‌های پیش رو در این مسیر.",
+    imageUrl: "/images/article7.jpg",
+    published: "2024-11-25T10:15:00.000Z",
+    authorName: "امیرحسین نوری",
+    authorImage: "/images/avatar-placeholder.png",
+    categories: "کسب‌وکار, فناوری",
+  },
+  {
+    id: 6,
+    title: "راهنمای جامع انتخاب سیستم مدیریت مشتریان (CRM)",
+    summery:
+      "انتخاب سیستم CRM مناسب برای کسب‌وکار شما. بررسی معیارهای مهم در انتخاب CRM، مقایسه پلتفرم‌های مختلف و راهکارهای پیاده‌سازی موفق این سیستم‌ها.",
+    imageUrl: "/images/article8.jpg",
+    published: "2024-11-22T14:00:00.000Z",
+    authorName: "زهرا موسوی",
+    authorImage: "/images/avatar-placeholder.png",
+    categories: "کسب‌وکار, دیجیتال مارکتینگ",
+  },
 ];
 
 // داده‌های نمونه برای دسته‌بندی‌ها
@@ -137,7 +193,7 @@ const mockCategories = [
   { id: 3, title: "دیجیتال مارکتینگ" },
   { id: 4, title: "طراحی UI/UX" },
   { id: 5, title: "کسب‌وکار" },
-  { id: 6, title: "استارتاپ" }
+  { id: 6, title: "استارتاپ" },
 ];
 
 // داده‌های نمونه برای نظرات
@@ -150,7 +206,7 @@ const mockComments = [
     rate: 5,
     title: "مقاله بسیار عالی",
     text: "تحلیل بسیار جامع و کاربردی بود. مخصوصاً بخش مربوط به کاربردهای عملی خیلی مفید بود.",
-    children: []
+    children: [],
   },
   {
     id: 2,
@@ -169,9 +225,9 @@ const mockComments = [
         rate: 0,
         title: "پاسخ",
         text: "سپاس از نظر شما. در مقالات آتی به تفصیل بیشتری به این موضوع خواهیم پرداخت.",
-        children: []
-      }
-    ]
+        children: [],
+      },
+    ],
   },
   {
     id: 3,
@@ -181,51 +237,26 @@ const mockComments = [
     rate: 5,
     title: "کاربردی و به روز",
     text: "دقیقاً با چالش‌هایی که در شرکت ما وجود داشت تطابق داشت. منتظر مقالات بعدی هستیم.",
-    children: []
-  }
+    children: [],
+  },
 ];
-
-// کامپوننت ArticleCard نمونه
-function MockArticleCard({ article }: { article: any }) {
-  return (
-    <div className="card bordered-glassy-card hover:shadow-lg transition-shadow">
-      <div className="relative h-48 w-full overflow-hidden rounded-lg">
-        <Image
-          src={article.imageUrl || "/images/placeholder.jpg"}
-          alt={article.title}
-          fill
-          className="object-cover"
-        />
-      </div>
-      <div className="p-4">
-        <h3 className="font-yekan-bakh-bold text-lg mb-2 line-clamp-2">{article.title}</h3>
-        <p className="text-gray-400 text-sm mb-3 line-clamp-2">{article.summery}</p>
-        <div className="flex justify-between items-center text-sm">
-          <span className="text-gray-400">{article.authorName}</span>
-          <span className="text-gray-400">
-            {new Date(article.published).toLocaleDateString('fa-IR')}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function ArticleDetailPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   // فیلتر مقالات بر اساس جستجو
-  const filteredArticles = mockArticles.filter(article =>
-    article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    article.summery.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredArticles = mockArticles.filter(
+    (article) =>
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.summery.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <>
       {/* Header افکت */}
-      <div className=" overflow-hidden">
+      <div className="article-detail-page overflow-hidden">
         {/* افکت Ellipse */}
-        <div 
+        <div
           className="absolute w-[623px] h-[623px]"
           style={{
             left: "calc(50% - 311.5px - 725.5px)",
@@ -236,235 +267,362 @@ export default function ArticleDetailPage() {
             zIndex: 0,
           }}
         />
-        
-        <div className="container relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-          {/* محتوای اصلی مقاله */}
-          <div className="lg:col-span-2">
-            {/* کارت مقاله */}
-            <div className="card bordered-glassy-card">
-              <h1 className="font-morabba text-3xl md:text-4xl font-medium text-white mb-6">
-                {mockArticle.title}
-              </h1>
-              
-              {/* اطلاعات نویسنده */}
-              <div className="flex items-center gap-3 mb-6">
-                <div className="relative w-10 h-10 rounded-full overflow-hidden">
-                  <Image
-                    src={mockArticle.authorImage}
-                    alt={mockArticle.authorName}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex items-center gap-1.5 text-gray-300">
-                  <span>{mockArticle.authorName}</span>
-                  <DotIcon className="w-5 h-5 text-primary" />
-                  <span>
-                    {new Date(mockArticle.published).toLocaleDateString('fa-IR')}
+
+        {/* Hero Section - تصویر مقاله در بالای صفحه */}
+        <div className="article-hero-section">
+          <Image
+            src={mockArticle.imageUrl}
+            alt={mockArticle.title}
+            fill
+            className="article-hero-background"
+            priority
+          />
+          <div className="article-hero-overlay" />
+          <div className="article-hero-content">
+            <h1 className="article-hero-title">{mockArticle.title}</h1>
+            <div className="article-hero-divider"></div>
+            <div className="article-hero-meta">
+              {mockArticle.categories
+                .split(", ")
+                .map((category, index, array) => (
+                  <span key={index}>
+                    {category}
+                    {index < array.length - 1 && (
+                      <span className="article-hero-meta-separator" />
+                    )}
                   </span>
-                  <DotIcon className="w-5 h-5 text-primary" />
-                  <span>{mockArticle.categories}</span>
-                </div>
-              </div>
-
-              {/* تصویر اصلی مقاله */}
-              <div className="relative w-full h-[400px] md:h-[438px] rounded-lg overflow-hidden mb-6">
-                <Image
-                  src={mockArticle.imageUrl}
-                  alt={mockArticle.title}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-
-              {/* خلاصه مقاله */}
-              <div className="prose prose-invert max-w-none mb-6">
-                <p className="font-yekan-bakh text-lg text-gray-300 leading-relaxed">
-                  {mockArticle.summery}
-                </p>
-              </div>
-
-              {/* محتوای کامل مقاله */}
-              <div 
-                className="prose prose-invert max-w-none"
-                dangerouslySetInnerHTML={{ __html: mockArticle.content }}
-              />
-            </div>
-          </div>
-
-          {/* سایدبار */}
-          <div className="card bordered-glassy-card lg:h-max lg:sticky lg:top-29">
-            {/* جستجو */}
-            <div className="flex gap-3 mb-6">
-              <Input 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="جستجو در مقالات..."
-                className="flex-1"
-              />
-              <Button size="icon">
-                <SearchIcon className="w-4 h-4" />
-              </Button>
-            </div>
-
-            {/* مقالات مشابه */}
-            <div className="mb-6">
-              <h3 className="font-morabba-medium text-xl mb-3">مقالات مشابه</h3>
-              <div className="space-y-2">
-                {filteredArticles.map((article) => (
-                  <Link
-                    key={article.id}
-                    href={`/articles/${article.id}`}
-                    className="block"
-                  >
-                    <Button className="w-full justify-start" variant="ghost">
-                      <DotIcon className="w-4 h-4 ml-2" />
-                      <span className="truncate">{article.title}</span>
-                    </Button>
-                  </Link>
                 ))}
-              </div>
-            </div>
-
-            {/* دسته‌بندی‌ها */}
-            <div>
-              <h3 className="font-morabba-medium text-xl mb-3">دسته‌بندی‌ها</h3>
-              <div className="space-y-2">
-                {mockCategories.map((category) => (
-                  <Link
-                    key={category.id}
-                    href={`/articles?category=${category.id}`}
-                    className="block"
-                  >
-                    <Button className="w-full justify-start" variant="ghost">
-                      <DotIcon className="w-4 h-4 ml-2" />
-                      <span>{category.title}</span>
-                    </Button>
-                  </Link>
-                ))}
-              </div>
+              <span className="article-hero-meta-separator" />
+              <span>{mockArticle.authorName}</span>
+              <span className="article-hero-meta-separator" />
+              <span>
+                {new Date(mockArticle.published).toLocaleDateString("fa-IR")}
+              </span>
             </div>
           </div>
         </div>
 
-        {/* بخش نظرات */}
-        <div className="container grid grid-cols-1 lg:grid-cols-3 gap-6 mt-12">
-          {/* فرم ثبت نظر */}
-          <ArticleCommentForm blogId={mockArticle.id} />
+        {/* محتوا و جزئیات */}
+        <div className="article-main-wrapper relative z-10">
+          <div className="article-main-content">
+            {/* محتوای اصلی مقاله */}
+            <div className="article-content-wrapper">
+              <h2 className="article-content-title">تایتل بلاگ</h2>
+              <div
+                className="article-content-body"
+                dangerouslySetInnerHTML={{ __html: mockArticle.content }}
+              />
+              <Image
+                src={mockArticle.imageUrl}
+                alt={mockArticle.title}
+                width={1200}
+                height={600}
+                className="article-content-image"
+              />
 
-          {/* لیست نظرات */}
-          <div className="lg:col-span-2">
-            <h2 className="font-morabba text-2xl font-medium text-white mb-6">
-              نظرات ({mockComments.length})
-            </h2>
-            
-            {mockComments.length > 0 ? (
-              <div className="space-y-6">
-                {mockComments.map((comment) => (
-                  <div key={comment.id} className="card bordered-glassy-card">
-                    {/* نظر اصلی */}
-                    <div className="flex items-start gap-3">
-                      {/* آواتار کاربر */}
-                      <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+              {/* بخش مقالات مرتبط */}
+              <div className="related-articles-in-content">
+                <h2 className="related-articles-in-content-title">
+                  مقالات مرتبط
+                </h2>
+                <div className="related-articles-in-content-container">
+                  {mockArticles.slice(0, 2).map((article) => (
+                    <Link
+                      key={article.id}
+                      href={`/articles/${article.id}`}
+                      className="related-article-in-content-card"
+                    >
+                      {/* تصویر */}
+                      <div className="related-article-in-content-image">
                         <Image
-                          src={comment.userThumbnail}
-                          alt={comment.userFullName}
+                          src={article.imageUrl}
+                          alt={article.title}
                           fill
                           className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 50vw"
                         />
                       </div>
-                      
-                      {/* اطلاعات کاربر و نظر */}
-                      <div className="flex-1">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h4 className="font-yekan-bakh-bold text-white">
-                              {comment.userFullName}
-                            </h4>
-                            <p className="text-sm text-gray-400 mt-1">
-                              {new Date(comment.createdOn).toLocaleDateString('fa-IR')}
+
+                      {/* محتوا */}
+                      <div className="related-article-in-content-content">
+                        {/* عنوان */}
+                        <h3 className="related-article-in-content-title">
+                          {article.title}
+                        </h3>
+
+                        {/* خلاصه */}
+                        <p className="related-article-in-content-description">
+                          {article.summery}
+                        </p>
+
+                        {/* اطلاعات نویسنده و تاریخ */}
+                        <div className="related-article-in-content-author">
+                          <div className="related-article-in-content-avatar">
+                            <Image
+                              src={
+                                article.authorImage ||
+                                "/images/avatar-placeholder.png"
+                              }
+                              alt={article.authorName}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <div className="related-article-in-content-author-info">
+                            <p className="related-article-in-content-author-name">
+                              {article.authorName}
+                            </p>
+                            <p className="related-article-in-content-date">
+                              {new Date(article.published).toLocaleDateString(
+                                "fa-IR",
+                                {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                }
+                              )}
                             </p>
                           </div>
-                          
-                          {/* امتیاز */}
-                          <div className="flex items-center gap-1">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                              <StarIcon
-                                key={star}
-                                className={`w-4 h-4 ${
-                                  star <= comment.rate
-                                    ? "text-yellow-500 fill-yellow-500"
-                                    : "text-gray-600"
-                                }`}
-                              />
-                            ))}
-                          </div>
                         </div>
-                        
-                        {/* متن نظر */}
-                        <div className="mt-3">
-                          {comment.title && (
-                            <h5 className="font-medium text-white mb-2">
-                              {comment.title}
-                            </h5>
-                          )}
-                          <p className="text-gray-300 leading-relaxed">
-                            {comment.text}
-                          </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* بخش نظرات کاربران */}
+              <div className="user-comments-section">
+                <h2 className="user-comments-title">نظرات کاربران</h2>
+                <div className="user-comments-list">
+                  {/* نظر اول با پاسخ */}
+                  <div className="user-comment-card">
+                    <div className="user-comment-header">
+                      <div className="user-comment-stars">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <StarIcon
+                            key={star}
+                            className={`user-comment-star ${
+                              star <= 5 ? "filled" : "empty"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <div className="user-comment-info">
+                        <div className="user-comment-avatar">
+                          <Image
+                            src="/images/avatar-placeholder.png"
+                            alt="شهرام طالبی"
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="user-comment-details">
+                          <p className="user-comment-name">شهرام طالبی</p>
+                          <p className="user-comment-date">۱۴۰۳/۰۹/۰۱</p>
                         </div>
                       </div>
                     </div>
-                    
-                    {/* پاسخ‌ها */}
-                    {comment.children && comment.children.length > 0 && (
-                      <div className="mt-4 pr-6 mr-6 border-r-2 border-gray-800 space-y-4">
-                        {comment.children.map((child) => (
-                          <div key={child.id} className="flex items-start gap-3">
-                            <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                    <p className="user-comment-text">بسیار عالی و مفید</p>
+                    <div className="user-comment-actions">
+                      <button className="user-comment-action-btn">
+                        <ThumbsDown className="user-comment-action-icon" />
+                      </button>
+                      <button className="user-comment-action-btn">
+                        <ThumbsUp className="user-comment-action-icon" />
+                      </button>
+                    </div>
+
+                    {/* پاسخ به نظر */}
+                    <div className="user-comment-reply">
+                      <div className="user-comment-reply-line"></div>
+                      <div className="user-comment-card user-comment-reply-card">
+                        <div className="user-comment-header">
+                          <div className="user-comment-info">
+                            <div className="user-comment-avatar">
                               <Image
-                                src={child.userThumbnail}
-                                alt={child.userFullName}
+                                src="/images/avatar-placeholder.png"
+                                alt="سمانه جوادی"
                                 fill
                                 className="object-cover"
                               />
                             </div>
-                            <div className="flex-1">
-                              <div className="flex justify-between items-start">
-                                <h5 className="font-yekan-bakh-bold text-white">
-                                  {child.userFullName}
-                                </h5>
-                                <p className="text-sm text-gray-400">
-                                  {new Date(child.createdOn).toLocaleDateString('fa-IR')}
-                                </p>
-                              </div>
-                              <p className="text-gray-300 mt-2">
-                                {child.text}
-                              </p>
+                            <div className="user-comment-details">
+                              <p className="user-comment-name">سمانه جوادی</p>
+                              <p className="user-comment-date">۱۴۰۳/۰۹/۰۱</p>
                             </div>
                           </div>
+                        </div>
+                        <p className="user-comment-text">
+                          ممنون از بازخورد شما دوست عزیز
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* نظر دوم */}
+                  <div className="user-comment-card">
+                    <div className="user-comment-header">
+                      <div className="user-comment-stars">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <StarIcon
+                            key={star}
+                            className={`user-comment-star ${
+                              star <= 5 ? "filled" : "empty"
+                            }`}
+                          />
                         ))}
                       </div>
-                    )}
+                      <div className="user-comment-info">
+                        <div className="user-comment-avatar">
+                          <Image
+                            src="/images/avatar-placeholder.png"
+                            alt="شهرام طالبی"
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="user-comment-details">
+                          <p className="user-comment-name">شهرام طالبی</p>
+                          <p className="user-comment-date">۱۴۰۳/۰۹/۰۱</p>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="user-comment-text">
+                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
+                    </p>
                   </div>
-                ))}
+
+                  {/* نظر سوم */}
+                  <div className="user-comment-card">
+                    <div className="user-comment-header">
+                      <div className="user-comment-stars">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <StarIcon
+                            key={star}
+                            className={`user-comment-star ${
+                              star <= 5 ? "filled" : "empty"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <div className="user-comment-info">
+                        <div className="user-comment-avatar">
+                          <Image
+                            src="/images/avatar-placeholder.png"
+                            alt="شهرام طالبی"
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="user-comment-details">
+                          <p className="user-comment-name">شهرام طالبی</p>
+                          <p className="user-comment-date">۱۴۰۳/۰۹/۰۱</p>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="user-comment-text">
+                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
+                    </p>
+                  </div>
+                </div>
               </div>
-            ) : (
-              <div className="card bordered-glassy-card text-center py-8">
-                <p className="text-gray-400">هیچ نظری ثبت نشده است</p>
+
+              {/* فرم ثبت نظر */}
+              <ArticleCommentForm blogId={mockArticle.id} />
+            </div>
+
+            {/* سایدبار */}
+            <div className="article-sidebar">
+              {/* جستجو */}
+              <div className="article-search-container">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="جستجوی مقاله"
+                  className="article-search-input"
+                />
+                <button className="article-search-button">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="article-search-icon"
+                  >
+                    <path
+                      d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M22 22L20 20"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
               </div>
-            )}
+
+              {/* دسته‌بندی‌ها */}
+              <div className="article-sidebar-section">
+                <h3 className="article-sidebar-title">دسته بندی ها</h3>
+                <div className="article-sidebar-divider"></div>
+                <div className="article-sidebar-list">
+                  {mockCategories.slice(0, 3).map((category) => (
+                    <Link
+                      key={category.id}
+                      href={`/articles?category=${category.id}`}
+                      className="article-sidebar-item"
+                    >
+                      <span className="article-sidebar-bullet" />
+                      <span className="article-sidebar-item-text">
+                        {category.title}
+                      </span>
+                      <span className="article-sidebar-item-count">
+                        ۲۳ بلاگ
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* مقالات جدید */}
+              <div className="article-sidebar-section">
+                <h3 className="article-sidebar-title">مقالات جديد</h3>
+                <div className="article-sidebar-divider"></div>
+                <div className="article-sidebar-list">
+                  {filteredArticles.slice(0, 6).map((article) => (
+                    <Link
+                      key={article.id}
+                      href={`/articles/${article.id}`}
+                      className="article-sidebar-item"
+                    >
+                      <span className="article-sidebar-bullet" />
+                      <span className="article-sidebar-item-text">
+                        {article.title}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* مقالات محبوب */}
         <div className="container mt-12">
-          <h2 className="font-morabba text-2xl font-medium text-white mb-6 text-center">
+          <h2 className="font-ravi text-2xl font-medium text-white mb-6 text-center">
             مقالات محبوب
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockArticles.map((article) => (
-              <MockArticleCard key={article.id} article={article} />
+            {mockArticles.slice(0, 6).map((article) => (
+              <ArticleCard key={article.id} article={article} />
             ))}
           </div>
         </div>

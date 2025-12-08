@@ -1,338 +1,188 @@
 // components/platform/PlatformSection3.tsx
-'use client';
+"use client";
 
-interface FeatureItem {
-  id: number;
+interface SectionItem {
   title: string;
-  description: string;
+  caption?: string;
+  image: string;
+  alt: string;
+  items: string[];
 }
 
 export default function PlatformSection3() {
-  // ویژگی‌های بخش اول (سمت چپ)
-  const leftFeatures: FeatureItem[] = [
+  const sections: SectionItem[] = [
     {
-      id: 1,
-      title: "موقعیت‌یابی دقیق",
-      description: "دقت بالا در محیط‌های داخلی و خارجی با استفاده از فناوری پیشرفته"
+      title: "مشاهده‌گر نقشه",
+      caption: "راهنمای بصری یکپارچه برای فضای باز و داخلی",
+      image: "/images/platform/p2.png",
+      alt: "نمایشگر نقشه",
+      items: [
+        "راهنمایی در فضای باز و داخلی را با نقشه های گام به گام ارائه دهید.",
+        "مسیرهای مختلف را برای کاربران مختلف ایجاد کنید.",
+        "نقشه های خود را در لحظه و با سرعت به روز کنید، آن را در سطح درب، مسیرهای هدایت به فروشگاه ها و کدهای هوشمند ارائه کنید.",
+      ],
     },
     {
-      id: 2,
-      title: "نقشه‌های تعاملی",
-      description: "نقشه‌های سه‌بعدی و پویا با قابلیت زوم و چرخش ۳۶۰ درجه"
+      title: "ابزار نقشه برداری ویرامپ",
+      caption: "جعبه ابزار کامل برای ساخت و آزمون نقشه ها",
+      image: "/images/platform/p3.png",
+      alt: "اپلیکیشن موبایل",
+      items: [
+        "برنامه اندروید برای پیمایش و آزمایش نقشه ویرامپ ارائه می دهد.",
+        "شناسه‌های مورد استفاده برای ایجاد سیگنال های BLE/WiFi و بررسی پوشش.",
+        "تشخیص موقعیت کاربران، مسیرهای داخلی و بررسی دقت.",
+        "اعمال تراکنش‌ها، حافظه مورد علاقه و بروزدهی موقعیت جغرافیایی.",
+      ],
     },
-    {
-      id: 3,
-      title: "ناوبری بلادرنگ",
-      description: "هدایت لحظه‌ای به مقصد با کمترین تاخیر و بیشترین دقت"
-    }
   ];
 
-  // ویژگی‌های بخش دوم (سمت راست)
-  const rightFeatures: FeatureItem[] = [
-    {
-      id: 4,
-      title: "تحلیل داده",
-      description: "آنالیز رفت‌وآمد و بهینه‌سازی مسیرها با هوش مصنوعی"
-    },
-    {
-      id: 5,
-      title: "هشدار هوشمند",
-      description: "اعلان‌های لحظه‌ای بر اساس موقعیت و شرایط محیطی"
-    },
-    {
-      id: 6,
-      title: "ادغام API",
-      description: "قابلیت اتصال به سیستم‌های موجود و توسعه آسان"
-    }
-  ];
+  const renderImage = (
+    image: string,
+    alt: string,
+    isLarge: boolean = false
+  ) => (
+    <div
+      className="relative overflow-hidden shadow-2xl"
+      style={{
+        width: isLarge ? "min(700px, 90vw)" : "min(560px, 90vw)",
+        borderRadius: "40px",
+      }}
+    >
+      <img
+        src={image}
+        alt={alt}
+        className="w-full h-auto object-contain"
+        style={{
+          borderRadius: "40px",
+        }}
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          const src = target.src;
+          const extensions = [".jpg", ".jpeg", ".webp", ".svg"];
+          const basePath = src.replace(/\.(png|jpg|jpeg|webp|svg)$/i, "");
+          let currentExtIndex = extensions.findIndex((ext) =>
+            src.includes(ext)
+          );
+
+          if (currentExtIndex < extensions.length - 1) {
+            target.src = basePath + extensions[currentExtIndex + 1];
+          } else {
+            target.style.display = "none";
+            if (target.parentElement) {
+              target.parentElement.style.backgroundColor = "#FFFFFF";
+              target.parentElement.innerHTML =
+                '<div class="w-full h-full flex items-center justify-center text-gray-400" style="font-family: \'Yekan Bakh\'">Image</div>';
+            }
+          }
+        }}
+      />
+    </div>
+  );
 
   return (
-    <div className="w-full py-40">
+    <div className="w-full pt-10 pb-20">
       <div className="max-w-[1480px] mx-auto px-8">
-        
-        {/* بخش اول - عکس سمت راست، ویژگی‌ها سمت چپ */}
-        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24 mb-40">
-
-            <div className="w-full lg:w-1/2">
-            <div 
-              className="relative w-full h-[500px] rounded-3xl overflow-hidden group transition-all duration-500"
-              style={{
-                background: 'linear-gradient(135deg, rgba(63, 63, 70, 0.15) 0%, rgba(82, 82, 91, 0.15) 100%)',
-                border: '1px solid rgba(63, 63, 70, 0.3)',
-              }}
+        <div className="flex flex-col gap-12">
+          {sections.map((section, index) => (
+            <div
+              key={section.title}
+              className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16"
             >
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-[rgba(251,101,20,0.05)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              {/* Content */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
-                <div className="text-center space-y-6 transform transition-all duration-500 group-hover:scale-[1.02]">
-                  {/* Icon */}
-                  <div className="inline-block p-5 rounded-2xl mb-4">
-                    <div 
-                      className="w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:rotate-6"
-                      style={{
-                        background: 'linear-gradient(135deg, rgba(251, 101, 20, 0.15) 0%, rgba(143, 101, 255, 0.15) 100%)',
-                        border: '1px solid rgba(251, 101, 20, 0.3)'
-                      }}
-                    >
-                      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="opacity-80">
-                        <circle cx="20" cy="20" r="15" stroke="rgba(251,101,20,0.8)" strokeWidth="2"/>
-                        <path d="M20 10V20" stroke="rgba(251,101,20,0.8)" strokeWidth="2"/>
-                        <path d="M20 20L30 20" stroke="rgba(251,101,20,0.8)" strokeWidth="2"/>
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  {/* Text */}
-                  <div className="space-y-3">
-                    <div 
-                      className="text-white text-2xl font-bold transition-all duration-500 group-hover:text-[#FB6514]"
-                      style={{
-                        fontFamily: "'Morabba'",
-                      }}
-                    >
-                      سیستم موقعیت‌یابی
-                    </div>
-                    <div 
-                      className="text-gray-400 text-sm max-w-xs mx-auto leading-6"
-                      style={{
-                        fontFamily: "'Yekan Bakh'",
-                      }}
-                    >
-                      نمایش پیشرفته قابلیت‌های ناوبری داخلی در محیط‌های پیچیده
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/*
+                Swap image/text order for the first section to create variety while
+                keeping the default layout for the rest.
+              */}
+              {(() => {
+                const isFirst = index === 0;
+                const isSecond = index === 1;
+                // Second section: swap image/text positions only on desktop
+                const imageOrder = isFirst
+                  ? "order-2 lg:order-1"
+                  : isSecond
+                  ? "order-2 lg:order-2"
+                  : "order-1 lg:order-2";
+                const textOrder = isFirst
+                  ? "order-1 lg:order-2"
+                  : isSecond
+                  ? "order-1 lg:order-1"
+                  : "order-2 lg:order-1";
 
-              {/* Corner Accents */}
-              <div className="absolute top-0 left-0 w-20 h-20 border-t-2 border-l-2 border-[rgba(251,101,20,0.2)] rounded-tl-3xl transition-all duration-500 group-hover:border-[rgba(251,101,20,0.6)]"></div>
-              <div className="absolute bottom-0 right-0 w-20 h-20 border-b-2 border-r-2 border-[rgba(251,101,20,0.2)] rounded-br-3xl transition-all duration-500 group-hover:border-[rgba(251,101,20,0.6)]"></div>
-            </div>
-          </div>
-          
-          {/* سمت چپ - ویژگی‌ها */}
-          <div className="w-full lg:w-1/2 space-y-10">
-            {/* تایتل بخش */}
-            <div className="space-y-6">
-              <h2 
-                className="text-3xl lg:text-4xl font-bold text-white text-right leading-[57px]"
-                style={{
-                  fontFamily: "'Morabba'",
-                  fontWeight: '500',
-                }}
-              >
-                قابلیت‌های پیشرفته موقعیت‌یابی
-              </h2>
-              <p 
-                className="text-gray-300 text-right leading-8"
-                style={{
-                  fontFamily: "'Yekan Bakh'",
-                  fontSize: '16px',
-                  lineHeight: '32px',
-                }}
-              >
-                سیستم جامع ما با ترکیب فناوری‌های نوین، تجربه‌ای بی‌نظیر از موقعیت‌یابی داخلی ارائه می‌دهد.
-              </p>
-            </div>
-
-            {/* لیست ویژگی‌ها */}
-            <div className="space-y-8">
-              {leftFeatures.map((feature, index) => (
-                <div 
-                  key={feature.id}
-                  className="flex items-start gap-4 group transition-all duration-300 hover:translate-x-[-6px]"
-                >
-                  {/* شماره */}
-                  <div className="flex-shrink-0">
-                    <div 
-                      className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-                      style={{
-                        background: 'linear-gradient(135deg, rgba(251, 101, 20, 0.1) 0%, rgba(143, 101, 255, 0.1) 100%)',
-                        border: '1px solid rgba(251, 101, 20, 0.2)'
-                      }}
+                return (
+                  <>
+                    <div
+                      className={`w-full lg:w-1/2 flex justify-center lg:justify-start ${imageOrder}`}
                     >
-                      <span 
-                        className="text-white text-lg font-bold"
+                      {renderImage(section.image, section.alt, isSecond)}
+                    </div>
+
+                    <div
+                      className={`w-full lg:w-1/2 space-y-8 flex flex-col justify-center ${textOrder}`}
+                    >
+                      <h3
+                        className="text-right text-[28px] lg:text-[24px]"
                         style={{
-                          fontFamily: "'Yekan Bakh'",
+                          fontFamily: "'Ravi'",
+                          fontWeight: "600",
+                          paddingTop: index === 1 ? "60px" : undefined,
                         }}
                       >
-                        {index + 1}
-                      </span>
+                        {section.title}
+                      </h3>
+
+                      {section.caption && (
+                        <p
+                          className="text-right text-[16px] lg:text-[14px]"
+                          style={{
+                            fontFamily: "'Ravi'",
+                            fontWeight: "400",
+                            color: "#FAFAFA",
+                          }}
+                        >
+                          {section.caption}
+                        </p>
+                      )}
+
+                      <div className="space-y-6 relative">
+                        <div
+                          className={`absolute right-[13px] w-[2px] bg-[#4B4B4B] z-0 ${
+                            index === 0 ? "" : "top-5 -bottom-3"
+                          }`}
+                          style={
+                            index === 0
+                              ? {
+                                  top: "28px",
+                                  bottom: "28px",
+                                }
+                              : undefined
+                          }
+                          aria-hidden="true"
+                        ></div>
+                        {section.items.map((feature) => (
+                          <div
+                            key={feature}
+                            className="flex items-start gap-4 pr-2 relative z-10"
+                          >
+                            <div className="w-3 h-3 rounded-full mt-2 shrink-0 border-2 border-[#9CA3AF] bg-[#FB6514]"></div>
+                            <div
+                              className="text-right flex-1 text-[16px] lg:text-[14px] leading-[28px] lg:leading-[24px]"
+                              style={{
+                                fontFamily: "'Ravi'",
+                                fontWeight: "400",
+                                color: "#FAFAFA",
+                              }}
+                            >
+                              {feature}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-
-                  {/* محتوا */}
-                  <div className="flex-1 text-right">
-                    <h3 
-                      className="text-xl font-bold text-white mb-2 transition-colors duration-300 group-hover:text-[#FB6514]"
-                      style={{
-                        fontFamily: "'Morabba'",
-                      }}
-                    >
-                      {feature.title}
-                    </h3>
-                    <p 
-                      className="text-gray-400 leading-7"
-                      style={{
-                        fontFamily: "'Yekan Bakh'",
-                        fontSize: '15px',
-                        lineHeight: '28px',
-                      }}
-                    >
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                  </>
+                );
+              })()}
             </div>
-          </div>
-
-          
+          ))}
         </div>
-
-        {/* بخش دوم - معکوس بخش اول */}
-        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-          {/* سمت چپ - عکس */}
-          <div className="w-full lg:w-1/2 order-2 lg:order-1">
-            <div 
-              className="relative w-full h-[500px] rounded-3xl overflow-hidden group transition-all duration-500"
-              style={{
-                background: 'linear-gradient(135deg, rgba(82, 82, 91, 0.15) 0%, rgba(63, 63, 70, 0.15) 100%)',
-                border: '1px solid rgba(143, 101, 255, 0.3)',
-              }}
-            >
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-tl from-transparent via-transparent to-[rgba(143,101,255,0.05)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              {/* Content */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
-                <div className="text-center space-y-6 transform transition-all duration-500 group-hover:scale-[1.02]">
-                  {/* Icon */}
-                  <div className="inline-block p-5 rounded-2xl mb-4">
-                    <div 
-                      className="w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:rotate-[-6]"
-                      style={{
-                        background: 'linear-gradient(135deg, rgba(143, 101, 255, 0.15) 0%, rgba(251, 101, 20, 0.15) 100%)',
-                        border: '1px solid rgba(143, 101, 255, 0.3)'
-                      }}
-                    >
-                      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="opacity-80">
-                        <rect x="8" y="8" width="24" height="24" stroke="rgba(143,101,255,0.8)" strokeWidth="2"/>
-                        <rect x="14" y="14" width="12" height="12" stroke="rgba(143,101,255,0.8)" strokeWidth="2"/>
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  {/* Text */}
-                  <div className="space-y-3">
-                    <div 
-                      className="text-white text-2xl font-bold transition-all duration-500 group-hover:text-[#8F65FF]"
-                      style={{
-                        fontFamily: "'Morabba'",
-                      }}
-                    >
-                      تجزیه و تحلیل داده
-                    </div>
-                    <div 
-                      className="text-gray-400 text-sm max-w-xs mx-auto leading-6"
-                      style={{
-                        fontFamily: "'Yekan Bakh'",
-                      }}
-                    >
-                      آنالیز پیشرفته رفتارها و بهینه‌سازی جریان‌های حرکتی
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Corner Accents */}
-              <div className="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-[rgba(143,101,255,0.2)] rounded-tr-3xl transition-all duration-500 group-hover:border-[rgba(143,101,255,0.6)]"></div>
-              <div className="absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-[rgba(143,101,255,0.2)] rounded-bl-3xl transition-all duration-500 group-hover:border-[rgba(143,101,255,0.6)]"></div>
-            </div>
-          </div>
-
-          {/* سمت راست - ویژگی‌ها */}
-          <div className="w-full lg:w-1/2 space-y-10 order-1 lg:order-2">
-            {/* تایتل بخش */}
-            <div className="space-y-6">
-              <h2 
-                className="text-3xl lg:text-4xl font-bold text-white text-right leading-[57px]"
-                style={{
-                  fontFamily: "'Morabba'",
-                  fontWeight: '500',
-                }}
-              >
-                تحلیل و گزارش‌گیری هوشمند
-              </h2>
-              <p 
-                className="text-gray-300 text-right leading-8"
-                style={{
-                  fontFamily: "'Yekan Bakh'",
-                  fontSize: '16px',
-                  lineHeight: '32px',
-                }}
-              >
-                با ابزارهای تحلیلی قدرتمند ما، از داده‌های موقعیتی بیشترین بهره را ببرید.
-              </p>
-            </div>
-
-            {/* لیست ویژگی‌ها */}
-            <div className="space-y-8">
-              {rightFeatures.map((feature, index) => (
-                <div 
-                  key={feature.id}
-                  className="flex items-start gap-4 group transition-all duration-300 hover:translate-x-[6px]"
-                >
-                  {/* شماره */}
-                  <div className="flex-shrink-0">
-                    <div 
-                      className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-                      style={{
-                        background: 'linear-gradient(135deg, rgba(143, 101, 255, 0.1) 0%, rgba(251, 101, 20, 0.1) 100%)',
-                        border: '1px solid rgba(143, 101, 255, 0.2)'
-                      }}
-                    >
-                      <span 
-                        className="text-white text-lg font-bold"
-                        style={{
-                          fontFamily: "'Yekan Bakh'",
-                        }}
-                      >
-                        {index + 4}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* محتوا */}
-                  <div className="flex-1 text-right">
-                    <h3 
-                      className="text-xl font-bold text-white mb-2 transition-colors duration-300 group-hover:text-[#8F65FF]"
-                      style={{
-                        fontFamily: "'Morabba'",
-                      }}
-                    >
-                      {feature.title}
-                    </h3>
-                    <p 
-                      className="text-gray-400 leading-7"
-                      style={{
-                        fontFamily: "'Yekan Bakh'",
-                        fontSize: '15px',
-                        lineHeight: '28px',
-                      }}
-                    >
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   );

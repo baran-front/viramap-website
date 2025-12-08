@@ -14,7 +14,7 @@ const CEOQuote = () => {
         alignItems: "center",
         justifyContent: "center",
         padding: "120px 40px",
-        fontFamily: "Vazirmatn, system-ui",
+        fontFamily: "Ravi, system-ui",
       }}
     >
       {/* Background SVG Pattern */}
@@ -91,7 +91,7 @@ const CEOQuote = () => {
           <div
             className="ceo-title"
             style={{
-              fontFamily: "'Morabba', 'Vazirmatn', system-ui",
+              fontFamily: "'Morabba', 'Ravi', system-ui",
               fontWeight: 600,
               fontSize: "16px",
               lineHeight: "32px",
@@ -142,7 +142,7 @@ const CEOQuote = () => {
           className="ceo-quote-text"
           style={{
             width: "654px",
-            fontFamily: "'Yekan Bakh', 'Vazirmatn', system-ui",
+            fontFamily: "'Yekan Bakh', 'Ravi', system-ui",
             fontWeight: 400,
             fontSize: "16px",
             lineHeight: "32px",
