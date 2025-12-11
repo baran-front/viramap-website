@@ -36,12 +36,14 @@ export default function MallLowerSection({
               minWidth: "88px",
               height: "32px",
               borderRadius: "8px",
-              border: "1px solid rgba(63, 63, 70, 0.8)",
+              border: "1px solid #344054",
               fontFamily: "'Yekan Bakh'",
               fontWeight: 400,
               fontSize: "12px",
               lineHeight: "22px",
               color: "#FFFFFF",
+              background:
+                "linear-gradient(270deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%)",
             }}
           >
             راه‌اندازی
@@ -71,6 +73,8 @@ export default function MallLowerSection({
               style={{
                 border: "1px solid #3F3F46",
                 borderRadius: "16px",
+                backgroundColor: "rgba(82, 82, 91, 0.1)", // #52525B1A at 10%
+                backdropFilter: "blur(12px)",
                 flex: "none",
                 flexGrow: 0,
               }}
@@ -81,6 +85,7 @@ export default function MallLowerSection({
                 style={{
                   border: "1px solid #FAFAFA",
                   borderRadius: "10px",
+                  backgroundColor: "rgba(250, 250, 250, 0.1)", // #FAFAFA at 10%
                   backdropFilter: "blur(12px)",
                   fontFamily: "'Morabba'",
                   fontWeight: 500,
@@ -122,6 +127,7 @@ export default function MallLowerSection({
                           style={{
                             borderRadius: "50%",
                             border: "3px solid #3F3F46",
+                            backgroundColor: "#FB6514",
                           }}
                         />
 
@@ -138,12 +144,13 @@ export default function MallLowerSection({
                       </div>
 
                       {!isLast && (
-                        <div className="flex justify-start w-[18px] h-11 mb-2">
+                        <div className="flex justify-center w-[18px] h-11 mb-2">
                           <div
                             style={{
                               width: "2px",
                               height: "100%",
-                              borderLeft: "2px solid #3F3F46",
+                              backgroundColor: "#3F3F46",
+                              margin: "0 auto",
                             }}
                           />
                         </div>

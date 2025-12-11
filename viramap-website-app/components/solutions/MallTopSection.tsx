@@ -135,7 +135,9 @@ export default function MallTopSection({
               width: "80px",
               height: "30px",
               borderRadius: "8px",
-              border: "1px solid rgb(52, 64, 84)",
+              border: "1px solid #344054",
+              background:
+                "linear-gradient(270deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%)",
             }}
           >
             <div

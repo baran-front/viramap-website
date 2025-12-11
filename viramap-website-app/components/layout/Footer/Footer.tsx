@@ -423,7 +423,7 @@ const Footer = () => {
       </div>
 
       {/* خط جداکننده */}
-      <div className="w-full border-t border-[#3F3F46]"></div>
+      <div className="w-[75%] mx-auto border-t border-[#3F3F46]"></div>
 
       {/* بخش پایینی */}
       <div className="container mx-auto px-5 sm:px-8 lg:px-32 py-6">
