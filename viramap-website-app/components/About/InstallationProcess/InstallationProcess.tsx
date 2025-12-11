@@ -6,20 +6,20 @@
  */
 export default function InstallationProcess() {
   return (
-    <div className="flex flex-col lg:flex-row justify-between items-center px-4 sm:px-6 lg:px-0 gap-8 sm:gap-12 lg:gap-20 w-full max-w-[1280px] mx-auto mt-12 sm:mt-16 lg:mt-20 relative">
+    <div className="flex flex-col lg:flex-row justify-between items-center px-5 sm:px-6 lg:px-0 gap-8 sm:gap-12 lg:gap-16 installation-process-container w-full max-w-[1280px] mx-auto mt-8 sm:mt-12 lg:mt-16 relative">
       {/* Left Side: Text Content Container */}
-      <div className="flex flex-col justify-center items-start gap-4 sm:gap-6 w-full lg:w-[616px]">
+      <div className="flex flex-col justify-center items-start gap-4 sm:gap-6 lg:gap-8 w-full lg:w-[616px] lg:shrink-0">
         {/* Title Section */}
         <div className="flex flex-col items-start w-full gap-1">
           {/* Title Text */}
-          <h2 className="w-full font-morabba font-medium text-2xl sm:text-3xl lg:text-[32px] leading-[1.5] lg:leading-[57px] text-right text-white m-0">
+          <h2 className="w-full font-ravi font-medium text-2xl sm:text-3xl lg:text-[32px] leading-normal lg:leading-[57px] text-right text-white m-0">
             نصب و راه‌اندازی ایندور مپ‌ها چگونه است؟
           </h2>
         </div>
 
         {/* Description Text */}
         <div
-          className="w-full font-yekanbakh font-normal text-sm sm:text-base leading-7 sm:leading-8 text-justify text-gray-300"
+          className="w-full font-ravi font-normal text-sm sm:text-base leading-7 sm:leading-8 text-justify text-gray-300"
           style={{
             textAlignLast: "right",
             direction: "rtl",
@@ -50,9 +50,9 @@ export default function InstallationProcess() {
 
         {/* Button */}
         {/* Button Container با justify-content: flex-end */}
-        <div className="flex justify-end w-full mt-2">
+        <div className="flex justify-end w-full mt-4 sm:mt-6 lg:mt-8">
           {/* Button */}
-          <button className="flex flex-row items-center justify-end gap-2 w-[195px] h-6 font-yekanbakh font-semibold text-sm leading-[26px] text-[#FB6514] bg-transparent border-none cursor-pointer p-0 transition-all duration-300">
+          <button className="flex flex-row items-center justify-end gap-2 w-[195px] h-6 font-ravi font-semibold text-sm leading-[26px] text-[#FB6514] bg-transparent border-none cursor-pointer p-0 transition-all duration-300">
             <span className="flex items-center">درباره ویرامپ</span>
             <svg
               width="24"
@@ -74,19 +74,61 @@ export default function InstallationProcess() {
         </div>
       </div>
 
-      {/* Right Side: Image Container */}
-      <div className="relative w-full lg:w-[480px] h-[300px] sm:h-[400px] lg:h-[480px] flex-none order-1 lg:order-1">
+      {/* Right Side: Image Container - Hidden on mobile, visible on desktop */}
+      <div className="hidden lg:block relative w-[480px] h-[480px] shrink-0">
         {/* Main Image */}
         <div
           className="w-full h-full bg-cover bg-center rounded-xl"
           style={{
-            background: "url(/images/About/about3.png)",
+            backgroundImage: "url(/images/About/about3.png)",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
+            filter: "drop-shadow(10px 15px 20px rgba(248, 248, 248, 0.24))",
           }}
         />
       </div>
+      <style jsx>{`
+        .installation-process-container {
+          width: calc(100% - 160px);
+          max-width: 1280px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        /* iPad and 1280x800 adjustments */
+        @media (max-width: 1280px) and (max-height: 800px) {
+          .installation-process-container {
+            width: calc(100% - 80px);
+            max-width: calc(100% - 80px);
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-top: 24px;
+            gap: 24px;
+          }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+          .installation-process-container {
+            width: calc(100% - 80px);
+            max-width: calc(100% - 80px);
+            padding-left: 24px;
+            padding-right: 24px;
+            margin-top: 32px;
+            gap: 32px;
+          }
+        }
+
+        /* Mobile adjustments - keep original width behavior */
+        @media (max-width: 900px) {
+          .installation-process-container {
+            width: 100%;
+            max-width: 1280px;
+            padding-left: 20px;
+            padding-right: 20px;
+          }
+        }
+      `}</style>
     </div>
   );
 }

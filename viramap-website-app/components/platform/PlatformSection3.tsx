@@ -71,7 +71,7 @@ export default function PlatformSection3() {
             if (target.parentElement) {
               target.parentElement.style.backgroundColor = "#FFFFFF";
               target.parentElement.innerHTML =
-                '<div class="w-full h-full flex items-center justify-center text-gray-400" style="font-family: \'Yekan Bakh\'">Image</div>';
+                '<div class="w-full h-full flex items-center justify-center text-gray-400" style="font-family: \'Ravi\', sans-serif">Image</div>';
             }
           }
         }}
@@ -119,7 +119,7 @@ export default function PlatformSection3() {
                       className={`w-full lg:w-1/2 space-y-8 flex flex-col justify-center ${textOrder}`}
                     >
                       <h3
-                        className="text-right text-[28px] lg:text-[24px]"
+                        className="text-right text-[28px] lg:text-[24px] px-4 md:px-0"
                         style={{
                           fontFamily: "'Ravi'",
                           fontWeight: "600",
@@ -131,11 +131,13 @@ export default function PlatformSection3() {
 
                       {section.caption && (
                         <p
-                          className="text-right text-[16px] lg:text-[14px]"
+                          className="text-right text-[16px] lg:text-[14px] px-4 md:px-0"
                           style={{
                             fontFamily: "'Ravi'",
                             fontWeight: "400",
                             color: "#FAFAFA",
+                            textAlign: "justify",
+                            textAlignLast: "right",
                           }}
                         >
                           {section.caption}

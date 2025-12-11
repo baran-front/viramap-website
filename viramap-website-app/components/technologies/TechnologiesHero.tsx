@@ -12,7 +12,7 @@ export default function TechnologiesHero({
   description,
 }: TechnologiesHeroProps) {
   return (
-    <section className="relative w-full flex justify-center items-center min-h-[372px] px-4 py-20 overflow-x-hidden">
+    <section className="relative w-full flex justify-center items-center min-h-[372px] px-5 py-20 overflow-x-hidden">
       {/* Main Content Box */}
       <div
         className="tech-hero-container relative flex flex-col justify-center items-center z-10 transform-gpu"
@@ -22,10 +22,12 @@ export default function TechnologiesHero({
           height: "372px",
           padding: "80px 0px",
           gap: "24px",
-          background: "rgba(250, 250, 250, 0.1)",
           border: "1px solid #3F3F46",
           borderRadius: "24px",
           boxSizing: "border-box",
+          background: "#FAFAFA1A",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
         }}
       >
         {/* Title */}
@@ -45,7 +47,7 @@ export default function TechnologiesHero({
 
         {/* Description */}
         <p
-          className="yekanbakh-text text-center"
+          className="yekanbakh-text text-center tech-hero-description"
           style={{
             width: "720px",
             maxWidth: "90%",

@@ -65,7 +65,7 @@ export default function PlatformSection4({
             if (target.parentElement) {
               target.parentElement.style.backgroundColor = "#FFFFFF";
               target.parentElement.innerHTML =
-                '<div class="w-full h-full flex items-center justify-center text-gray-400" style="font-family: \'Yekan Bakh\'">Image</div>';
+                '<div class="w-full h-full flex items-center justify-center text-gray-400" style="font-family: \'Ravi\', sans-serif">Image</div>';
             }
           }
         }}
@@ -84,7 +84,7 @@ export default function PlatformSection4({
 
             <div className="w-full lg:w-1/2 space-y-8 flex flex-col justify-center order-1 lg:order-2">
               <h3
-                className="text-right text-[28px] lg:text-[24px]"
+                className="text-right text-[28px] lg:text-[24px] px-4 md:px-0"
                 style={{
                   fontFamily: "'Ravi'",
                   fontWeight: "600",
@@ -95,11 +95,13 @@ export default function PlatformSection4({
 
               {firstSection.caption && (
                 <p
-                  className="text-right text-[16px] lg:text-[14px]"
+                  className="text-right text-[16px] lg:text-[14px] px-4 md:px-0"
                   style={{
                     fontFamily: "'Ravi'",
                     fontWeight: "400",
                     color: "#FAFAFA",
+                    textAlign: "justify",
+                    textAlignLast: "right",
                   }}
                 >
                   {firstSection.caption}
@@ -135,12 +137,20 @@ export default function PlatformSection4({
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-10 w-full max-w-[1480px] mx-auto py-16 px-4">
+      <div className="flex flex-col items-center gap-10 w-full max-w-[1480px] mx-auto py-16 px-5">
         {/* Title and Description */}
         <div className="flex flex-col items-center gap-8 w-full">
-          <h1 className=" text-[64px] text-white text-center">{title}</h1>
+          <h1 className="text-[64px] text-white text-center px-4 md:px-0">
+            {title}
+          </h1>
 
-          <div className="font-yekanbakh text-[16px] leading-[28px] text-[#E4E4E7] text-center max-w-[480px] px-4">
+          <div
+            className="font-ravi text-[16px] leading-[28px] text-[#E4E4E7] text-center max-w-[480px] px-4"
+            style={{
+              textAlign: "justify",
+              textAlignLast: "right",
+            }}
+          >
             {description}
           </div>
         </div>

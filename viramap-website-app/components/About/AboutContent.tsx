@@ -16,7 +16,6 @@ export default function AboutContent() {
     <div
       style={{
         minHeight: "100vh",
-        backgroundColor: "#141414",
         color: "#FAFAFA",
         fontFamily: "Ravi, system-ui",
       }}

@@ -1,5 +1,5 @@
 // components/solutions/MallLowerSection.tsx
-'use client';
+"use client";
 
 interface BenefitItem {
   title: string;
@@ -11,169 +11,178 @@ interface MallLowerSectionProps {
   benefits: BenefitItem[];
 }
 
-export default function MallLowerSection({ title, benefits }: MallLowerSectionProps) {
+export default function MallLowerSection({
+  title,
+  benefits,
+}: MallLowerSectionProps) {
+  // تابع تبدیل اعداد انگلیسی به فارسی
+  const toPersianNumber = (num: number): string => {
+    const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+    return num
+      .toString()
+      .split("")
+      .map((digit) => persianDigits[parseInt(digit)])
+      .join("");
+  };
+
   return (
-    <div className="flex flex-col items-center p-0 gap-12 w-full max-w-[1480px] mx-auto">
-      {/* Title Section */}
-      <div className="flex flex-col justify-center items-center p-0 gap-1 w-full">
-        {/* Feature Badge */}
-        <div 
-          className="box-border flex flex-row justify-end items-start px-4 py-1 gap-6"
-          style={{
-            width: '69px',
-            height: '30px',
-            background: 'linear-gradient(270deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%)',
-            borderRadius: '8px',
-          }}
-        >
-          <div 
-            className="flex items-center text-right"
+    <>
+      <div className="relative flex flex-col items-center gap-6 md:gap-8 lg:gap-12 w-full max-w-[1480px] mx-auto px-5 lg:px-0 mall-lower-section">
+        {/* Title Section */}
+        <div className="flex flex-col items-center gap-2 w-full">
+          <div
+            className="flex items-center justify-center px-4 py-[6px]"
             style={{
-              width: '37px',
-              height: '22px',
+              minWidth: "88px",
+              height: "32px",
+              borderRadius: "8px",
+              border: "1px solid rgba(63, 63, 70, 0.8)",
               fontFamily: "'Yekan Bakh'",
-              fontStyle: 'normal',
-              fontWeight: '400',
-              fontSize: '12px',
-              lineHeight: '22px',
-              color: '#FFFFFF',
+              fontWeight: 400,
+              fontSize: "12px",
+              lineHeight: "22px",
+              color: "#FFFFFF",
             }}
           >
-            فروشگاه
+            راه‌اندازی
+          </div>
+
+          <div
+            className="text-center text-[20px] lg:text-[30px] leading-[36px] lg:leading-[57px] h-auto lg:h-[57px]"
+            style={{
+              fontFamily: "'Morabba'",
+              fontWeight: 500,
+              color: "#FAFAFA",
+            }}
+          >
+            {title}
           </div>
         </div>
 
-        {/* Main Title */}
-        <div 
-          className="flex items-center justify-center text-center w-full"
-          style={{
-            height: '57px',
-            fontFamily: "'Morabba'",
-            fontStyle: 'normal',
-            fontWeight: '500',
-            fontSize: '30px',
-            lineHeight: '57px',
-            color: '#FAFAFA',
-          }}
+        {/* Benefits Grid */}
+        <div
+          className="relative flex flex-col-reverse lg:flex-row-reverse items-stretch justify-center gap-6 lg:gap-24 w-full"
+          style={{ width: "100%", maxWidth: "1480px" }}
         >
-          {title}
-        </div>
-      </div>
-
-      {/* Benefits Grid */}
-      <div className="flex flex-col lg:flex-row items-center p-0 gap-2 w-full">
-        {benefits.map((benefit, index) => (
-          <div 
-            key={index}
-            className="box-border flex flex-col items-end p-12 lg:p-6 gap-3 relative w-full lg:w-[352px] h-[308px]"
-            style={{
-              background: 'rgba(82, 82, 91, 0.1)',
-              border: '1px solid #3F3F46',
-              borderRadius: '16px',
-            }}
-          >
-            {/* Benefit Title */}
-            <div 
-              className="text-right w-full"
+          {benefits.map((benefit, index) => (
+            <div
+              key={index}
+              className="group relative box-border flex flex-col items-start gap-4 lg:gap-5 w-full min-h-[280px] lg:min-h-[320px] px-6 py-8 lg:px-9 lg:py-12 lg:w-[calc((1480px-192px)/3)] lg:max-w-[calc((1480px-192px)/3)] transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-orange-500/50 hover:border-[#FB6514] cursor-pointer"
               style={{
-                height: '32px',
-                fontFamily: "'Morabba'",
-                fontStyle: 'normal',
-                fontWeight: '600',
-                fontSize: '18px',
-                lineHeight: '32px',
-                color: '#FAFAFA',
+                border: "1px solid #3F3F46",
+                borderRadius: "16px",
+                flex: "none",
+                flexGrow: 0,
               }}
             >
-              {benefit.title}
-            </div>
-
-            {/* Benefit Items */}
-            <div className="flex flex-col items-end p-0 w-full">
-              {benefit.items.map((item, itemIndex) => (
-                <div key={itemIndex} className="flex flex-col items-end w-full">
-                  {/* Item Row */}
-                  <div className="flex flex-row justify-end items-center p-0 gap-1.5 w-full h-8 mb-3">
-                    {/* Item Text */}
-                    <div 
-                      className="text-center lg:text-right"
-                      style={{
-                        fontFamily: "'Yekan Bakh'",
-                        fontStyle: 'normal',
-                        fontWeight: '600',
-                        fontSize: '16px',
-                        lineHeight: '32px',
-                        color: '#FAFAFA',
-                      }}
-                    >
-                      {item}
-                    </div>
-                    
-                    {/* Orange Dot */}
-                    <div 
-                      className="w-[18px] h-[18px] rounded-full"
-                      style={{
-                        background: '#FB6514',
-                        border: '3px solid #3F3F46',
-                      }}
-                    />
-                  </div>
-                  
-                  {/* Vertical Line */}
-                  {itemIndex < benefit.items.length - 1 && (
-                    <div className="flex justify-center w-[18px] h-12 mb-3">
-                      <div 
-                        className="w-px h-full"
-                        style={{
-                          border: '2px solid #3F3F46',
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Icon Container */}
-            <div 
-              className="box-border flex flex-row justify-center items-center p-3 gap-2.5 absolute left-[280px] lg:left-auto lg:right-6 -top-6"
-              style={{
-                width: '48px',
-                height: '48px',
-                background: 'rgba(250, 250, 250, 0.1)',
-                border: '1px solid #FAFAFA',
-                backdropFilter: 'blur(12px)',
-                borderRadius: '8px',
-              }}
-            >
-              <div 
-                className="text-center"
+              {/* Step Badge */}
+              <div
+                className="absolute -top-6 lg:-top-7 right-4 lg:right-6 lg:left-auto flex items-center justify-center transition-all duration-300 ease-in-out group-hover:border-[#FB6514] group-hover:shadow-lg group-hover:shadow-orange-500/50 text-[#FAFAFA] group-hover:text-[#FB6514] w-10 h-10 lg:w-12 lg:h-12 text-[18px] lg:text-[24px] leading-[32px] lg:leading-[42px]"
                 style={{
+                  border: "1px solid #FAFAFA",
+                  borderRadius: "10px",
+                  backdropFilter: "blur(12px)",
                   fontFamily: "'Morabba'",
-                  fontStyle: 'normal',
-                  fontWeight: '500',
-                  fontSize: '24px',
-                  lineHeight: '42px',
-                  color: '#FAFAFA',
+                  fontWeight: 500,
                 }}
               >
-                {index + 1}
+                {toPersianNumber(benefits.length - index)}
               </div>
-            </div>
 
-            {/* Dashed Line */}
-            <div 
-              className="absolute -right-24 top-1/2 transform -translate-y-1/2 hidden lg:block"
-              style={{
-                width: '95px',
-                height: '0px',
-                border: '2px dashed #FAFAFA',
-                transform: 'rotate(-180deg)',
-              }}
-            />
-          </div>
-        ))}
+              {/* Benefit Title */}
+              <div
+                className="w-full text-right text-[16px] lg:text-[20px] leading-[24px] lg:leading-[32px]"
+                style={{
+                  fontFamily: "'Morabba'",
+                  fontWeight: 600,
+                  color: "#FAFAFA",
+                }}
+              >
+                {benefit.title}
+              </div>
+
+              {/* Benefit Items */}
+              <div className="flex flex-col items-start w-full gap-0.5">
+                {benefit.items.map((item, itemIndex) => {
+                  const isLast = itemIndex === benefit.items.length - 1;
+                  return (
+                    <div
+                      key={itemIndex}
+                      className="flex flex-col items-start w-full"
+                    >
+                      <div
+                        className="flex flex-row justify-start items-center gap-2 w-full h-auto lg:h-10 min-h-[32px] lg:min-h-0"
+                        style={{
+                          borderRadius: "8px",
+                          padding: "4px 8px",
+                        }}
+                      >
+                        <div
+                          className="shrink-0 transition-all duration-300 ease-in-out group-hover:shadow-md group-hover:shadow-orange-500/50 group-hover:border-[#FB6514] w-4 h-4 lg:w-[18px] lg:h-[18px]"
+                          style={{
+                            borderRadius: "50%",
+                            border: "3px solid #3F3F46",
+                          }}
+                        />
+
+                        <div
+                          className="text-left text-[14px] lg:text-[16px] leading-[24px] lg:leading-[32px]"
+                          style={{
+                            fontFamily: "'Yekan Bakh'",
+                            fontWeight: 600,
+                            color: "#FAFAFA",
+                          }}
+                        >
+                          {item}
+                        </div>
+                      </div>
+
+                      {!isLast && (
+                        <div className="flex justify-start w-[18px] h-11 mb-2">
+                          <div
+                            style={{
+                              width: "2px",
+                              height: "100%",
+                              borderLeft: "2px solid #3F3F46",
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Dashed Arrow to next card */}
+              {index < benefits.length - 1 && (
+                <div
+                  className="hidden lg:flex items-center gap-0 absolute top-1/2 -translate-y-1/2 z-10"
+                  style={{
+                    right: "-92px",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "80px",
+                      borderTop: "2px dashed #FAFAFA",
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: 0,
+                      height: 0,
+                      borderTop: "7px solid transparent",
+                      borderBottom: "7px solid transparent",
+                      borderRight: "11px solid #FAFAFA",
+                      marginRight: "-1px",
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

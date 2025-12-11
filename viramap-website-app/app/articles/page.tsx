@@ -26,9 +26,9 @@ const mockArticles = [
     title: "۲۰ راه حل ساده برای کاهش هزینه های سازمان",
     summery:
       "در این بخش ۲۰ روش ساده و کار آمد برای کاهش هزینه های سازمان که توسط موفق ترین کمپانی های دنیا اجرا شده اند را بررسی می‌کنیم. این راهکارها شامل بهینه‌سازی فرآیندها، استفاده از فناوری‌های نوین و مدیریت منابع می‌باشد.",
-    imageUrl: "/images/article1.jpg",
+    imageUrl: "/images/article/header.png",
     authorName: "سمانه جوادی",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     published: "2022-12-05T10:30:00.000Z",
     categories: "کسب‌وکار, مدیریت",
   },
@@ -37,9 +37,9 @@ const mockArticles = [
     title: "نقش هوش مصنوعی در تحول کسب‌وکارهای نوین",
     summery:
       "هوش مصنوعی چگونه می‌تواند فرآیندهای کسب‌وکار را متحول کند و به رشد اقتصادی کمک نماید؟ در این مقاله به بررسی کاربردهای عملی AI در صنایع مختلف می‌پردازیم و راهکارهای پیاده‌سازی آن را بررسی می‌کنیم.",
-    imageUrl: "/images/article2.jpg",
+    imageUrl: "/images/article/header.png",
     authorName: "دکتر علی محمدی",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     published: "2024-12-15T10:30:00.000Z",
     categories: "فناوری, کسب‌وکار",
   },
@@ -48,9 +48,9 @@ const mockArticles = [
     title: "تحول دیجیتال در صنعت بانکداری",
     summery:
       "نقش فناوری در تغییر صنعت مالی و بانکداری. بررسی چالش‌ها و فرصت‌های پیش روی بانک‌ها در عصر دیجیتال و راهکارهای نوین برای ارائه خدمات بهتر به مشتریان.",
-    imageUrl: "/images/article3.jpg",
+    imageUrl: "/images/article/header.png",
     authorName: "محمد رضایی",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     published: "2024-12-10T08:15:00.000Z",
     categories: "کسب‌وکار, فناوری",
   },
@@ -59,9 +59,9 @@ const mockArticles = [
     title: "بلاکچین و آینده تراکنش‌ها",
     summery:
       "تأثیر فناوری بلاکچین بر سیستم‌های مالی و تراکنش‌های آینده. بررسی کاربردهای عملی این فناوری در صنایع مختلف و مزایای آن برای امنیت و شفافیت تراکنش‌ها.",
-    imageUrl: "/images/article4.jpg",
+    imageUrl: "/images/article/header.png",
     authorName: "سارا کریمی",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     published: "2024-12-05T14:20:00.000Z",
     categories: "فناوری",
   },
@@ -70,9 +70,9 @@ const mockArticles = [
     title: "اینترنت اشیاء در زندگی روزمره",
     summery:
       "کاربردهای عملی IoT در خانه‌های هوشمند و زندگی روزمره. بررسی دستگاه‌های هوشمند و تأثیر آن‌ها بر بهبود کیفیت زندگی و بهینه‌سازی مصرف انرژی.",
-    imageUrl: "/images/article5.jpg",
+    imageUrl: "/images/article/header.png",
     authorName: "رضا احمدی",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     published: "2024-12-01T11:45:00.000Z",
     categories: "فناوری",
   },
@@ -81,9 +81,9 @@ const mockArticles = [
     title: "راهکارهای افزایش بهره‌وری تیم‌های دورکار",
     summery:
       "ابزارها و روش‌های مدیریت تیم‌های دورکار برای افزایش بهره‌وری. بررسی بهترین شیوه‌های ارتباط، هماهنگی و مدیریت پروژه‌ها در محیط کار از راه دور.",
-    imageUrl: "/images/article6.jpg",
+    imageUrl: "/images/article/header.png",
     authorName: "فاطمه غفاری",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     published: "2024-11-28T09:30:00.000Z",
     categories: "کسب‌وکار",
   },
@@ -92,9 +92,9 @@ const mockArticles = [
     title: "نقش ERP در بهینه‌سازی فرآیندهای سازمانی",
     summery:
       "سیستم‌های ERP چگونه می‌توانند فرآیندهای کسب‌وکار را یکپارچه کرده و کارایی سازمان را افزایش دهند. بررسی مزایای پیاده‌سازی ERP و چالش‌های پیش رو در این مسیر.",
-    imageUrl: "/images/article7.jpg",
+    imageUrl: "/images/article/header.png",
     authorName: "امیرحسین نوری",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     published: "2024-11-25T10:15:00.000Z",
     categories: "کسب‌وکار, فناوری",
   },
@@ -103,9 +103,9 @@ const mockArticles = [
     title: "راهنمای جامع انتخاب سیستم مدیریت مشتریان (CRM)",
     summery:
       "انتخاب سیستم CRM مناسب برای کسب‌وکار شما. بررسی معیارهای مهم در انتخاب CRM، مقایسه پلتفرم‌های مختلف و راهکارهای پیاده‌سازی موفق این سیستم‌ها.",
-    imageUrl: "/images/article8.jpg",
+    imageUrl: "/images/article/header.png",
     authorName: "زهرا موسوی",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     published: "2024-11-22T14:00:00.000Z",
     categories: "کسب‌وکار, دیجیتال مارکتینگ",
   },
@@ -114,9 +114,9 @@ const mockArticles = [
     title: "تحلیل داده‌ها و هوش تجاری در تصمیم‌گیری‌های استراتژیک",
     summery:
       "چگونه تحلیل داده‌ها و ابزارهای هوش تجاری می‌توانند به تصمیم‌گیری‌های بهتر در سازمان کمک کنند. بررسی تکنیک‌های تحلیل داده و کاربرد آن‌ها در مدیریت استراتژیک.",
-    imageUrl: "/images/article9.jpg",
+    imageUrl: "/images/article/header.png",
     authorName: "حسین رضوانی",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     published: "2024-11-20T11:30:00.000Z",
     categories: "کسب‌وکار, فناوری",
   },
@@ -143,7 +143,10 @@ function ArticlesPage() {
   return (
     <>
       {/* Page Hero */}
-      <div className="relative w-full" style={{ minHeight: "427px" }}>
+      <div
+        className="relative w-full articles-hero-container"
+        style={{ minHeight: "427px" }}
+      >
         {/* Union - Header Background */}
         <div
           className="absolute box-border articles-hero-bg"
@@ -154,9 +157,6 @@ function ArticlesPage() {
             left: "50%",
             transform: "translateX(-50%)",
             top: "123px",
-            background: "rgba(250, 250, 250, 0.1)",
-            border: "1px solid #3F3F46",
-            backdropFilter: "blur(12px)",
             borderRadius: "32px",
           }}
         />
@@ -188,12 +188,12 @@ function ArticlesPage() {
             justifyContent: "center",
           }}
         >
-          <div className="w-full px-8 md:px-12 py-8 md:py-12">
-            <div className="text-center">
+          <div className="w-full px-8 md:px-12 md:py-12 h-full flex items-center">
+            <div className="text-center w-full">
               <h1 className="font-ravi text-4xl md:text-5xl font-medium text-white mb-4">
                 اخبار و مقالات
               </h1>
-              <p className="font-ravi text-base md:text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
+              <p className="font-ravi text-base md:text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto px-4">
                 در بخش اخبار و مقالات، جدید ترین اطلاعات و تحلیل ها درباره ERP و
                 مدیریت سازمانی را مطالعه کنید. این محتوا شامل مقالات تخصصی و
                 اخبار به روز است تا شما را در بهبود کسب و کارتان یاری دهد.
@@ -206,7 +206,7 @@ function ArticlesPage() {
       <div className="w-full">
         <div className="container mt-12 mx-auto">
           {/* دسته‌بندی‌ها */}
-          <div className="mb-6 flex justify-center">
+          <div className="mb-6 w-full">
             <ArticlesCategoryTabs
               categories={mockCategories}
               selectedCategory={selectedCategory}

@@ -390,7 +390,7 @@ const FAQItem = ({ item, isOpen, onToggle }: FAQItemProps) => {
                 w-full
                 font-['Yekan_Bakh']
                 font-normal text-[16px] leading-[32px]
-                flex items-center text-right
+                flex items-center text-justify
                 text-[#E4E4E7]
                 pr-2
               "

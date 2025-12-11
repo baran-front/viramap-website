@@ -9,15 +9,16 @@ const CEOQuote = () => {
       style={{
         position: "relative",
         minHeight: "65vh",
-        backgroundColor: "#141414",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         padding: "120px 40px",
         fontFamily: "Ravi, system-ui",
+        backgroundColor: "rgba(20, 20, 20, 0.7)",
+        backdropFilter: "blur(12px)",
       }}
     >
-      {/* Background SVG Pattern */}
+      {/* Background SVG Pattern - Clear Center */}
       <div
         style={{
           position: "absolute",
@@ -25,10 +26,38 @@ const CEOQuote = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage: "url('/images/CEOQuote/Abstract - 3.svg')",
+          backgroundImage: "url('/images/CEOQuote/vector.svg')",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
+          backgroundSize: "80%",
           opacity: 0.9,
+          zIndex: 0,
+          maskImage:
+            "radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 60%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 60%)",
+        }}
+      ></div>
+
+      {/* Background SVG Pattern - Blurred Edges */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: "url('/images/CEOQuote/vector.svg')",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "60%",
+          filter: "blur(25px)",
+          opacity: 0.4,
+          zIndex: 0,
+          maskImage:
+            "radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,1) 60%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,1) 60%)",
         }}
       ></div>
 
@@ -46,11 +75,11 @@ const CEOQuote = () => {
           position: "relative",
           width: "846px",
           minHeight: "184px",
-          background: "rgba(250, 250, 250, 0.1)",
           border: "1px solid #3F3F46",
           backdropFilter: "blur(4px)",
           borderRadius: "24px",
           isolation: "isolate",
+          zIndex: 10,
         }}
       >
         {/* CEO Info Section (Overlapping at top right) */}

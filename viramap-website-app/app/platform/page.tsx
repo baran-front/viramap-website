@@ -189,7 +189,7 @@ export default function PlatformPage() {
   }
 
   return (
-    <div>
+    <div className="platform-page">
       {/* Hero Section */}
       <div>
         <PlatformHero
@@ -219,6 +219,33 @@ export default function PlatformPage() {
           <PlatformSection4 />
         </div>
       </div>
+
+      <style jsx>{`
+        .platform-page {
+          width: calc(100% - 160px);
+          max-width: 1480px;
+          margin: 0 auto;
+          box-sizing: border-box;
+        }
+
+        /* Match header width on 1280x800 and similar desktop breakpoints */
+        @media (max-width: 1280px) and (max-height: 800px) {
+          .platform-page {
+            width: calc(100% - 160px);
+            max-width: calc(100% - 160px);
+            padding: 0 16px;
+          }
+        }
+
+        /* Mobile: let content stretch edge-to-edge with small padding */
+        @media (max-width: 900px) {
+          .platform-page {
+            width: 100%;
+            max-width: 100%;
+            padding: 0 16px;
+          }
+        }
+      `}</style>
     </div>
   );
 }

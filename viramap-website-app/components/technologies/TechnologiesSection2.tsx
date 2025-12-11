@@ -17,7 +17,7 @@ export default function TechnologiesSection2({
   imageSrc = "/images/technologies/tech-diagram.png",
 }: TechnologiesSection2Props) {
   return (
-    <div className="flex flex-col items-center p-0 gap-4 md:gap-6 lg:gap-8 w-full max-w-[1480px] mx-auto py-4 md:py-6 lg:py-8 px-4 md:px-6 lg:px-8 relative overflow-hidden">
+    <div className="flex flex-col items-center p-0 gap-4 md:gap-6 lg:gap-8 xl:gap-6 w-full max-w-[1480px] xl:max-w-[1200px] mx-auto py-4 md:py-6 lg:py-8 xl:py-6 px-5 md:px-6 lg:px-8 xl:px-6 relative overflow-hidden">
       {/* Title Section */}
       <div className="flex flex-col justify-center items-center p-0 gap-2 md:gap-3 lg:gap-4 w-full relative z-10">
         {/* Feature Badge */}
@@ -27,8 +27,6 @@ export default function TechnologiesSection2({
             width: "auto",
             minWidth: "100px",
             height: "28px",
-            background:
-              "linear-gradient(270deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%)",
             borderRadius: "8px",
             border: "1px solid #3F3F46",
           }}
@@ -89,9 +87,9 @@ export default function TechnologiesSection2({
       </div>
 
       {/* Image Section - بزرگتر و مرکز */}
-      <div className="w-full flex justify-center relative z-10 -mt-20 md:-mt-24 lg:-mt-28">
-        <div className="relative flex justify-center items-center w-full max-w-[1200px]">
-          <div className="relative w-full max-w-[900px] md:max-w-[1000px] lg:max-w-[1100px] h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px] rounded-2xl overflow-hidden">
+      <div className="w-full flex justify-center relative z-10 -mt-20 md:-mt-24 lg:-mt-28 xl:-mt-20">
+        <div className="relative flex justify-center items-center w-full max-w-[1200px] xl:max-w-[1080px]">
+          <div className="relative w-full max-w-[900px] md:max-w-[1000px] lg:max-w-[1100px] xl:max-w-[980px] h-[250px] sm:h-[350px] md:h-[450px] lg:h-[520px] xl:h-[430px] rounded-2xl overflow-hidden">
             <Image
               src={imageSrc}
               alt="تکنولوژی‌های ویرامپ"

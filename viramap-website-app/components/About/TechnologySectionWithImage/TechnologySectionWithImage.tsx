@@ -2,23 +2,22 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 
 export default function TechnologySectionWithImage() {
   return (
-    <section className="relative w-full px-4 sm:px-6 lg:px-8 py-16 lg:py-24 overflow-hidden">
-      <div className="relative max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
+    <section className="relative w-full px-5 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16 overflow-hidden lg:overflow-visible min-h-0 technology-section-container">
+      <div className="relative max-w-7xl mx-auto z-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-12 lg:gap-20">
           {/* Text Content - Left Side */}
-          <div className="lg:w-1/2">
-            <div className="space-y-8 text-right">
+          <div className="w-full lg:w-1/2">
+            <div className="space-y-6 md:space-y-8 text-right">
               {/* Title - سایز کمی کوچکتر */}
-              <h2 className="font-morabba font-medium text-2xl sm:text-3xl md:text-4xl leading-tight sm:leading-snug md:leading-[48px] text-white">
+              <h2 className="font-ravi font-medium text-2xl sm:text-3xl md:text-4xl leading-tight sm:leading-snug md:leading-[48px] text-white">
                 تکنولوژی استفاده شده در ویرامپ
               </h2>
 
               {/* Description */}
-              <p className="font-yekanbakh font-normal text-base md:text-lg leading-7 md:leading-8 text-gray-300 text-justify">
+              <p className="font-ravi font-normal text-base md:text-lg leading-7 md:leading-8 text-gray-300 text-justify">
                 ویرامپ با استفاده از پیشرفته‌ترین تکنولوژی‌های موقعیت‌یابی
                 داخلی، مسیریابی دقیق و کارآمدی را در فضاهای پیچیده ارائه می‌دهد.
                 سیستم ما ترکیبی از فناوری‌های نوین برای ایجاد تجربه‌ای بی‌نظیر
@@ -54,7 +53,6 @@ export default function TechnologySectionWithImage() {
                     fontSize: "14px",
                     lineHeight: "26px",
                     color: "#FB6514",
-                    background: "transparent",
                     border: "none",
                     cursor: "pointer",
                     padding: "0",
@@ -86,17 +84,32 @@ export default function TechnologySectionWithImage() {
           </div>
 
           {/* Image Content - Right Side */}
-          <div className="lg:w-1/2">
-            {/* Container اصلی تصویر */}
-            <div className="relative w-full h-[350px] lg:h-[400px]">
+          <div className="hidden lg:block lg:w-1/2 lg:overflow-visible">
+            {/* Container اصلی تصویر با padding برای نمایش کامل سایه */}
+            <div
+              className="relative w-full h-[400px]"
+              style={{
+                padding: "40px",
+                margin: "-40px -40px -40px -120px",
+                transform: "translateZ(0)",
+              }}
+            >
               {/* تصویر اصلی با سایه روی خود عکس */}
-              <div className="relative w-full h-full">
+              <div
+                className="relative w-full h-full"
+                style={{
+                  transform: "translateZ(0)",
+                }}
+              >
                 <Image
                   src="/images/About/Technology.png"
                   alt="تکنولوژی پیشرفته ویرامپ"
                   fill
-                  className="object-contain drop-shadow-[0_25px_60px_rgba(248,248,248,0.4)]"
-                  sizes="(max-width: 800px) 100vw, 50vw"
+                  className="object-contain"
+                  style={{
+                    filter: "drop-shadow(0 25px 60px rgba(248, 248, 248, 0.4))",
+                  }}
+                  sizes="(max-width: 1024px) 0vw, 50vw"
                   priority
                   quality={90}
                   onError={(e) => {
@@ -120,6 +133,47 @@ export default function TechnologySectionWithImage() {
           </div>
         </div>
       </div>
+      <style jsx>{`
+        .technology-section-container {
+          width: calc(100% - 160px);
+          max-width: 1480px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        /* iPad and 1280x800 adjustments */
+        @media (max-width: 1280px) and (max-height: 800px) {
+          .technology-section-container {
+            width: calc(100% - 80px);
+            max-width: calc(100% - 80px);
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 24px;
+            padding-bottom: 24px;
+          }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+          .technology-section-container {
+            width: calc(100% - 80px);
+            max-width: calc(100% - 80px);
+            padding-left: 24px;
+            padding-right: 24px;
+            padding-top: 32px;
+            padding-bottom: 32px;
+          }
+        }
+
+        /* Mobile adjustments - keep original width behavior */
+        @media (max-width: 900px) {
+          .technology-section-container {
+            width: 100%;
+            max-width: 1480px;
+            padding-left: 20px;
+            padding-right: 20px;
+          }
+        }
+      `}</style>
     </section>
   );
 }

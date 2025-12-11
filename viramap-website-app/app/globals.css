@@ -4,10 +4,11 @@
 :root {
   --background: #141414;
   --foreground: #e2e8f0;
-  --font-sans: "Ravi", system-ui, sans-serif;
-  --font-ravi: "Ravi", sans-serif;
-  --font-ravi-fanum: "Ravi FaNum", sans-serif;
-  --font-ravi-noen: "Ravi NoEn", sans-serif;
+  /* Apply Raavi across the site with Ravi as fallback for legacy usage */
+  --font-sans: "Raavi", "Ravi", system-ui, sans-serif;
+  --font-ravi: "Raavi", "Ravi", sans-serif;
+  --font-ravi-fanum: "Raavi FaNum", "Ravi FaNum", "Raavi", "Ravi", sans-serif;
+  --font-ravi-noen: "Raavi NoEn", "Ravi NoEn", "Raavi", "Ravi", sans-serif;
 }
 
 /* Ravi Family Fonts */
@@ -221,9 +222,19 @@
   display: none; /* Chrome, Safari, Opera */
 }
 
+/* Optimize scrolling performance on touch devices */
+main {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+  will-change: scroll-position;
+}
+
 html {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+  font-family: var(--font-ravi);
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS/iPad */
+  overflow-scrolling: touch; /* Smooth scrolling on iOS/iPad */
 }
 
 html::-webkit-scrollbar {
@@ -233,16 +244,76 @@ html::-webkit-scrollbar {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  font-family: var(--font-ravi);
   direction: rtl;
   margin: 0;
   padding: 0;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS/iPad */
+  overflow-scrolling: touch; /* Smooth scrolling on iOS/iPad */
+  overscroll-behavior-y: contain; /* Prevent overscroll bounce on iOS */
+  touch-action: pan-y; /* Enable vertical panning for touch devices */
+  overflow-x: hidden; /* Prevent horizontal scroll for BackgroundBlur component */
+}
+
+/* Apply Ravi font to all elements with !important to override any other font declarations */
+*,
+*::before,
+*::after {
+  font-family: var(--font-ravi) !important;
+}
+
+/* Explicitly apply Ravi font to all text elements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div,
+a,
+button,
+input,
+textarea,
+select,
+label,
+li,
+ul,
+ol,
+td,
+th,
+tr,
+table,
+section,
+article,
+aside,
+header,
+footer,
+main,
+nav {
+  font-family: var(--font-ravi) !important;
 }
 
 body::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
+}
+
+/* Smooth scrolling for iPad and iOS devices */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+  }
+
+  html,
+  body {
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
 }
 
 .ravi-text {
@@ -259,11 +330,11 @@ body::-webkit-scrollbar {
 }
 
 .morabba-text {
-  font-family: "Morabba", sans-serif;
+  font-family: "Ravi", sans-serif !important;
 }
 
 .yekanbakh-text {
-  font-family: "Yekan Bakh", sans-serif;
+  font-family: "Ravi", sans-serif !important;
 }
 
 /* Tailwind utility classes for Ravi fonts */
@@ -385,6 +456,12 @@ body::-webkit-scrollbar {
   font-family: var(--font-ravi);
 }
 
+/* Articles hero sizing controls (editable) */
+:root {
+  --articles-hero-gap: 160px; /* desktop gap (matches header card) */
+  --articles-hero-max: 1480px; /* desktop max width */
+}
+
 .prose h1,
 .prose h2,
 .prose h3,
@@ -399,36 +476,432 @@ body::-webkit-scrollbar {
 }
 
 /* Articles Page Hero Responsive */
-@media (max-width: 1440px) {
-  .articles-hero-bg {
-    width: calc(100% - 160px) !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-  }
+.articles-hero-bg {
+  width: calc(100% - var(--articles-hero-gap)) !important;
+  max-width: var(--articles-hero-max) !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  box-sizing: border-box !important;
+  background: rgba(250, 250, 250, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+}
 
-  .articles-hero-content {
-    width: calc(100% - 160px) !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
+.articles-hero-content {
+  width: calc(100% - var(--articles-hero-gap)) !important;
+  max-width: var(--articles-hero-max) !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 1440px) {
+  :root {
+    --articles-hero-gap: 190px; /* adjust here to match header on 1290px/iPad landscape */
+  }
+}
+
+/* Optional finer tweak for iPad / mid-width */
+@media (max-width: 1180px) {
+  :root {
+    --articles-hero-gap: 32px; /* slightly wider on iPad */
   }
 }
 
 @media (max-width: 768px) {
+  :root {
+    --articles-hero-gap: 32px;
+  }
+
   .articles-hero-bg {
-    width: calc(100% - 40px) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    top: 100px !important;
+    top: 120px !important;
     height: auto !important;
-    min-height: 304px !important;
+    min-height: 360px !important;
+    padding: 0px !important;
   }
 
   .articles-hero-content {
-    width: calc(100% - 40px) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    top: 100px !important;
+    top: 120px !important;
     height: auto !important;
-    min-height: 304px !important;
+    min-height: 360px !important;
+  }
+
+  .articles-hero-content h1 {
+    font-size: 1.75rem !important;
+    margin-bottom: 1rem !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .articles-hero-content p {
+    font-size: 0.875rem !important;
+    line-height: 1.6 !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding: 0 8px !important;
+  }
+
+  .articles-hero-container {
+    min-height: 460px !important;
+    margin-bottom: 40px !important;
+  }
+}
+
+/* Hide scrollbar for category tabs */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Prevent autofill from changing input background color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgba(82, 82, 91, 0.1) inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background-color: rgba(82, 82, 91, 0.1) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-webkit-autofill::first-line,
+textarea:-webkit-autofill::first-line {
+  color: #ffffff !important;
+}
+
+/* iPad specific styles for IndoorMap images (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Reduce IndoorMap image sizes for iPad */
+  .indoormap-image-container {
+    max-width: 500px !important;
+  }
+
+  .indoormap-image-container > div[class*="bg-"] {
+    height: 350px !important;
+    max-height: 350px !important;
+  }
+
+  .phone-image-container {
+    max-width: 400px !important;
+  }
+
+  .phone-image-container > div[class*="bg-"] {
+    height: 300px !important;
+    max-height: 300px !important;
+  }
+}
+
+/* Solutions page responsive styles for 1280x800 */
+@media (min-width: 1280px) and (max-width: 1280px) and (max-height: 800px) {
+  .solutions-section-spacing {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
+
+  /* SolutionHero styles */
+  .solution-hero-section {
+    min-height: 420px !important;
+    padding-top: 0 !important;
+    padding-bottom: 4px !important;
+    margin-top: -16px !important;
+  }
+
+  .solution-hero-content {
+    max-width: 1090px !important;
+    padding: 6px 16px 10px 16px !important;
+    gap: 5px !important;
+  }
+
+  .solution-hero-title {
+    min-height: 100px !important;
+    font-size: 48px !important;
+    line-height: 72px !important;
+  }
+
+  .solution-hero-description {
+    width: 600px !important;
+    min-height: 120px !important;
+    font-size: 15px !important;
+    line-height: 30px !important;
+  }
+
+  /* MallTopSection styles */
+  .mall-top-section {
+    max-width: 1090px !important;
+    gap: 8px !important;
+    padding: 0 16px !important;
+  }
+
+  /* Title section */
+  .mall-top-section > div:first-child {
+    gap: 4px !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* Feature badge */
+  .mall-top-section > div:first-child > div:first-child {
+    width: 70px !important;
+    height: 26px !important;
+    padding: 2px 8px !important;
+  }
+
+  .mall-top-section > div:first-child > div:first-child > div {
+    width: 70px !important;
+    height: 20px !important;
+    font-size: 11px !important;
+    line-height: 20px !important;
+  }
+
+  /* Main title */
+  .mall-top-section > div:first-child > div:last-child {
+    font-size: 24px !important;
+    line-height: 42px !important;
+    height: auto !important;
+    min-height: 42px !important;
+  }
+
+  /* Main content section */
+  .mall-top-section > div:last-child {
+    gap: 12px !important;
+    align-items: flex-end !important;
+  }
+
+  /* Text container */
+  .mall-top-section > div:last-child > div:first-child {
+    width: 100% !important;
+    max-width: 520px !important;
+    gap: 2px !important;
+  }
+
+  /* Feature items */
+  .mall-top-section > div:last-child > div:first-child > div {
+    min-height: 28px !important;
+    height: auto !important;
+  }
+
+  .mall-top-section > div:last-child > div:first-child > div > div:first-child {
+    height: auto !important;
+    min-height: 28px !important;
+    gap: 2px !important;
+  }
+
+  /* Icon container */
+  .mall-top-section
+    > div:last-child
+    > div:first-child
+    > div
+    > div:first-child
+    > div:first-child {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .mall-top-section
+    > div:last-child
+    > div:first-child
+    > div
+    > div:first-child
+    > div:first-child
+    svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* Feature text */
+  .mall-top-section
+    > div:last-child
+    > div:first-child
+    > div
+    > div:first-child
+    > div:last-child {
+    font-size: 14px !important;
+    line-height: 28px !important;
+  }
+
+  /* Divider */
+  .mall-top-section > div:last-child > div:first-child > div > div:last-child {
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+  }
+
+  /* Image container */
+  .mall-top-section > div:last-child > div:last-child {
+    width: 100% !important;
+    max-width: 500px !important;
+    height: 280px !important;
+    min-height: 280px !important;
+  }
+
+  /* MallLowerSection styles */
+  .mall-lower-section {
+    max-width: 1090px !important;
+    gap: 6px !important;
+    margin-top: 32px !important;
+    padding-top: 0 !important;
+  }
+
+  /* Title section */
+  .mall-lower-section > div:first-child {
+    gap: 4px !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* Badge */
+  .mall-lower-section > div:first-child > div:first-child {
+    min-width: 70px !important;
+    width: 70px !important;
+    height: 26px !important;
+    padding: 2px 8px !important;
+    font-size: 11px !important;
+    line-height: 20px !important;
+  }
+
+  /* Main title */
+  .mall-lower-section > div:first-child > div:last-child {
+    font-size: 24px !important;
+    line-height: 42px !important;
+    height: auto !important;
+    min-height: 42px !important;
+  }
+
+  /* Benefits grid container */
+  .mall-lower-section > div:last-child {
+    gap: 12px !important;
+    margin-top: 4px !important;
+  }
+
+  /* Benefit cards */
+  .mall-lower-section > div:last-child > div {
+    min-height: 360px !important;
+    padding: 8px 10px 12px 10px !important;
+    width: calc((1090px - 24px) / 3) !important;
+    max-width: calc((1090px - 24px) / 3) !important;
+    gap: 4px !important;
+  }
+
+  /* Step badge */
+  .mall-lower-section > div:last-child > div > div:first-child {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 18px !important;
+    line-height: 32px !important;
+    top: -20px !important;
+    right: 10px !important;
+  }
+
+  /* Benefit title */
+  .mall-lower-section > div:last-child > div > div:nth-child(2) {
+    font-size: 18px !important;
+    line-height: 28px !important;
+    margin-top: 8px !important;
+  }
+
+  /* Benefit items container */
+  .mall-lower-section > div:last-child > div > div:last-child {
+    gap: 2px !important;
+    margin-top: 4px !important;
+  }
+
+  /* Benefit item */
+  .mall-lower-section > div:last-child > div > div:last-child > div {
+    gap: 0 !important;
+  }
+
+  /* Benefit item row */
+  .mall-lower-section
+    > div:last-child
+    > div
+    > div:last-child
+    > div
+    > div:first-child {
+    min-height: 28px !important;
+    height: auto !important;
+    padding: 2px 6px !important;
+    gap: 2px !important;
+  }
+
+  /* Benefit item dot */
+  .mall-lower-section
+    > div:last-child
+    > div
+    > div:last-child
+    > div
+    > div:first-child
+    > div:first-child {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* Benefit item text */
+  .mall-lower-section
+    > div:last-child
+    > div
+    > div:last-child
+    > div
+    > div:first-child
+    > div:last-child {
+    font-size: 13px !important;
+    line-height: 24px !important;
+  }
+
+  /* Divider line */
+  .mall-lower-section
+    > div:last-child
+    > div
+    > div:last-child
+    > div
+    > div:last-child {
+    height: 36px !important;
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+  }
+
+  /* SolutionChallenges styles */
+  .solution-challenges-section {
+    padding-top: 8px !important;
+    padding-bottom: 16px !important;
+  }
+
+  .solution-challenges-container {
+    max-width: 1090px !important;
+  }
+
+  .solution-challenges-container > div:first-child {
+    margin-bottom: 12px !important;
+    height: auto !important;
+    font-size: 26px !important;
+    line-height: 48px !important;
+  }
+
+  .solution-challenges-container .grid {
+    gap: 8px !important;
+  }
+
+  .solution-challenges-container .grid > div {
+    max-width: 530px !important;
+    min-height: 280px !important;
+    padding: 10px 14px 14px 14px !important;
+    gap: 4px !important;
+  }
+
+  .solution-challenges-container .grid > div > div:last-child {
+    height: auto !important;
+    min-height: 100px !important;
+    font-size: 13px !important;
+    line-height: 28px !important;
   }
 }

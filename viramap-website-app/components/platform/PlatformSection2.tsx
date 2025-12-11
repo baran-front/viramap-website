@@ -21,7 +21,7 @@ export default function PlatformSection2({
         {/* Top Section - Title and Description */}
         <div className="flex flex-col items-center gap-6 mb-8">
           {/* Title */}
-          <div className="w-full text-center space-y-2">
+          <div className="w-full text-center space-y-2 px-4 md:px-0">
             <h2
               className="text-white text-[28px] lg:text-[24px] leading-[50px] lg:leading-[42px]"
               style={{
@@ -77,7 +77,7 @@ export default function PlatformSection2({
               style={{
                 fontFamily: "'Ravi'",
                 fontWeight: "600",
-                paddingTop:"60px",
+                paddingTop: "60px",
               }}
             >
               داشبورد
@@ -168,7 +168,7 @@ export default function PlatformSection2({
                     if (target.parentElement) {
                       target.parentElement.style.backgroundColor = "#FFFFFF";
                       target.parentElement.innerHTML =
-                        '<div class="w-full h-full flex items-center justify-center text-gray-400" style="font-family: \'Yekan Bakh\'">Dashboard Image</div>';
+                        '<div class="w-full h-full flex items-center justify-center text-gray-400" style="font-family: \'Ravi\', sans-serif">Dashboard Image</div>';
                     }
                   }
                 }}

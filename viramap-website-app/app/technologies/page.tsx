@@ -135,7 +135,7 @@ export default function TechnologiesPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-[#141414]">
+      <div className="flex justify-center items-center min-h-screen ">
         <div className="text-white text-lg">
           در حال بارگذاری صفحه تکنولوژی‌ها...
         </div>
@@ -144,7 +144,7 @@ export default function TechnologiesPage() {
   }
 
   return (
-    <div className="bg-[#141414] min-h-screen overflow-x-hidden">
+    <div className=" min-h-screen overflow-x-hidden">
       {/* Hero Section */}
       <div className="pt-8">
         <TechnologiesHero

@@ -76,19 +76,19 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="bg-[#141414] py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 w-full flex justify-center font-[family-name:Ravi,system-ui]">
+    <section className="bg-[#141414]/70 backdrop-blur-md py-12 md:py-16 lg:py-20 px-5 sm:px-6 lg:px-8 w-full flex justify-center font-[family-name:Ravi,system-ui]">
       <div className="w-full max-w-[1280px] flex flex-col items-center gap-4 md:gap-6">
         {/* Title Container */}
         <div className="w-full flex flex-col items-center gap-1">
           {/* Badge */}
           <div className="flex flex-row justify-end items-start px-4 py-1.5 gap-6 w-auto min-w-[110px] h-[35px] bg-gradient-to-l from-[rgba(255,255,255,0.05)] to-transparent rounded-lg border border-[#344054]">
-            <span className="font-yekan font-normal text-[12px] leading-[22px] text-white text-right">
+            <span className="font-ravi font-normal text-[12px] leading-[22px] text-white text-right">
               سوالات متداول
             </span>
           </div>
 
           {/* Subtitle */}
-          <h2 className="w-full max-w-[361px] font-morabba font-medium text-[24px] sm:text-[26px] md:text-[28px] lg:text-[30px] leading-[36px] sm:leading-[42px] md:leading-[48px] lg:leading-[57px] text-[#FAFAFA] mt-1 text-center">
+          <h2 className="w-full max-w-[361px] font-ravi font-medium text-[24px] sm:text-[26px] md:text-[28px] lg:text-[30px] leading-[36px] sm:leading-[42px] md:leading-[48px] lg:leading-[57px] text-[#FAFAFA] mt-1 text-center">
             سوالات متداول کاربران
           </h2>
         </div>

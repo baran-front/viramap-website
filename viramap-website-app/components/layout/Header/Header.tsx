@@ -11,11 +11,14 @@ const Header = () => {
   const [activeLink, setActiveLink] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const [showPhoneNumber, setShowPhoneNumber] = useState(false);
+  const [showDesktopPhoneNumber, setShowDesktopPhoneNumber] = useState(false);
+  const [isPhoneHovered, setIsPhoneHovered] = useState(false);
   const pathname = usePathname();
 
   const solutionsDropdownRef = useRef<HTMLDivElement>(null);
   const techDropdownRef = useRef<HTMLDivElement>(null);
   const phoneDropdownRef = useRef<HTMLDivElement>(null);
+  const desktopPhoneDropdownRef = useRef<HTMLDivElement>(null);
 
   const solutions = [
     {
@@ -79,6 +82,12 @@ const Header = () => {
       ) {
         setShowPhoneNumber(false);
       }
+      if (
+        desktopPhoneDropdownRef.current &&
+        !desktopPhoneDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowDesktopPhoneNumber(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -90,6 +99,7 @@ const Header = () => {
     setIsTechOpen(false);
     setIsMenuOpen(false);
     setShowPhoneNumber(false);
+    setShowDesktopPhoneNumber(false);
   }, [pathname]);
 
   const dropdownStyle = (isOpen: boolean): React.CSSProperties => ({
@@ -369,24 +379,66 @@ const Header = () => {
             className="header-cta"
             style={{ display: "flex", alignItems: "center", gap: "16px" }}
           >
-            <button
-              className="desktop-contact-btn"
-              style={{
-                backgroundColor: isHovered ? "#B2480E" : "#FB6514",
-                color: "white",
-                padding: "8px 24px",
-                borderRadius: "8px",
-                fontWeight: 600,
-                fontSize: "14px",
-                border: "none",
-                cursor: "pointer",
-                transition: "0.3s",
-              }}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+            {/* DESKTOP CONTACT BUTTON WITH PHONE DROPDOWN */}
+            <div
+              ref={desktopPhoneDropdownRef}
+              className="desktop-contact-wrapper"
+              style={{ position: "relative" }}
             >
-              تماس با ما
-            </button>
+              <button
+                className="desktop-contact-btn"
+                style={{
+                  backgroundColor: isHovered ? "#B2480E" : "#FB6514",
+                  color: "white",
+                  padding: "8px 24px",
+                  borderRadius: "8px",
+                  fontWeight: 600,
+                  fontSize: "14px",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "0.3s",
+                }}
+                onClick={() =>
+                  setShowDesktopPhoneNumber(!showDesktopPhoneNumber)
+                }
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                تماس با ما
+              </button>
+              {showDesktopPhoneNumber && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "calc(100% + 8px)",
+                    right: "0",
+                    backgroundColor: "rgba(30, 30, 30, 0.95)",
+                    backdropFilter: "blur(12px)",
+                    borderRadius: "8px",
+                    padding: "8px 12px",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
+                    whiteSpace: "nowrap",
+                    zIndex: 1001,
+                  }}
+                >
+                  <a
+                    href="tel:09129090990"
+                    style={{
+                      color: isPhoneHovered ? "#FB6514" : "#E4E4E7",
+                      fontSize: "14px",
+                      textDecoration: "none",
+                      transition: "color 0.3s",
+                      display: "block",
+                    }}
+                    onMouseEnter={() => setIsPhoneHovered(true)}
+                    onMouseLeave={() => setIsPhoneHovered(false)}
+                  >
+                    ۰۹۱۲۹۰۹۰۹۹۰
+                  </a>
+                </div>
+              )}
+            </div>
 
             {/* MOBILE PHONE ICON */}
             <div
@@ -566,6 +618,13 @@ const Header = () => {
 
       {/* CSS FOR RESPONSIVE */}
       <style jsx global>{`
+        /* Hide mobile phone dropdown on desktop */
+        @media (min-width: 901px) {
+          .mobile-phone-icon {
+            display: none !important;
+          }
+        }
+
         @media (max-width: 900px) {
           .desktop-nav {
             display: none !important;
@@ -574,6 +633,9 @@ const Header = () => {
             display: block !important;
           }
           .desktop-contact-btn {
+            display: none !important;
+          }
+          .desktop-contact-wrapper {
             display: none !important;
           }
           .mobile-phone-icon button {

@@ -10,7 +10,6 @@ import {
   ThumbsUp,
   ThumbsDown,
   User,
-  Mail,
   Pencil,
 } from "lucide-react";
 import ArticleCard from "@/components/modules/articleCard";
@@ -19,9 +18,13 @@ import "./ArticleDetail.css";
 // کامپوننت فرم نظرات
 function ArticleCommentForm({ blogId }: { blogId: number }) {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleStarClick = (starValue: number) => {
+    setRating(starValue);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,9 +32,9 @@ function ArticleCommentForm({ blogId }: { blogId: number }) {
 
     // شبیه‌سازی ارسال نظر
     setTimeout(() => {
-      console.log("نظر ارسال شد:", { blogId, name, email, comment });
+      console.log("نظر ارسال شد:", { blogId, name, rating, comment });
       setName("");
-      setEmail("");
+      setRating(5);
       setComment("");
       setIsSubmitting(false);
       alert("نظر شما با موفقیت ثبت شد!");
@@ -54,16 +57,31 @@ function ArticleCommentForm({ blogId }: { blogId: number }) {
             />
             <User className="article-comment-form-icon" />
           </div>
-          <div className="article-comment-form-input-wrapper">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="آدرس ایمیل"
-              className="article-comment-form-input"
-              required
-            />
-            <Mail className="article-comment-form-icon" />
+          <div className="article-comment-form-rating-wrapper">
+            <label className="article-comment-form-rating-label">
+              به مقاله چه امتیازی می‌دهید؟
+            </label>
+            <div className="article-comment-form-rating">
+              <div className="article-comment-form-stars">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => handleStarClick(star)}
+                    className="article-comment-form-star-btn"
+                  >
+                    <StarIcon
+                      className={`article-comment-form-star ${
+                        star <= rating ? "filled" : "empty"
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
+              <span className="article-comment-form-rating-value">
+                {rating}/5
+              </span>
+            </div>
           </div>
         </div>
         <div className="article-comment-form-textarea-wrapper">
@@ -79,7 +97,7 @@ function ArticleCommentForm({ blogId }: { blogId: number }) {
         <button
           type="submit"
           disabled={
-            isSubmitting || !comment.trim() || !name.trim() || !email.trim()
+            isSubmitting || !comment.trim() || !name.trim() || rating === 0
           }
           className="article-comment-form-submit"
         >
@@ -111,8 +129,8 @@ const mockArticle = {
   `,
   published: "2024-12-15T10:30:00.000Z",
   authorName: "دکتر علی محمدی",
-  authorImage: "/images/avatar-placeholder.png",
-  imageUrl: "/images/article-sample.jpg",
+  authorImage: "/images/article/kitten.png",
+  imageUrl: "/images/article/header.png",
   categories: "فناوری, کسب‌وکار",
 };
 
@@ -123,10 +141,10 @@ const mockArticles = [
     title: "تحول دیجیتال در صنعت بانکداری",
     summery:
       "نقش فناوری در تغییر صنعت مالی و بانکداری. بررسی چالش‌ها و فرصت‌های پیش روی بانک‌ها در عصر دیجیتال و راهکارهای نوین برای ارائه خدمات بهتر به مشتریان.",
-    imageUrl: "/images/article1.jpg",
+    imageUrl: "/images/article/header.png",
     published: "2024-12-10T08:15:00.000Z",
     authorName: "محمد رضایی",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     categories: "کسب‌وکار, فناوری",
   },
   {
@@ -134,10 +152,10 @@ const mockArticles = [
     title: "بلاکچین و آینده تراکنش‌ها",
     summery:
       "تأثیر فناوری بلاکچین بر سیستم‌های مالی و تراکنش‌های آینده. بررسی کاربردهای عملی این فناوری در صنایع مختلف و مزایای آن برای امنیت و شفافیت تراکنش‌ها.",
-    imageUrl: "/images/article2.jpg",
+    imageUrl: "/images/article/header.png",
     published: "2024-12-05T14:20:00.000Z",
     authorName: "سارا کریمی",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     categories: "فناوری",
   },
   {
@@ -145,10 +163,10 @@ const mockArticles = [
     title: "اینترنت اشیاء در زندگی روزمره",
     summery:
       "کاربردهای عملی IoT در خانه‌های هوشمند و زندگی روزمره. بررسی دستگاه‌های هوشمند و تأثیر آن‌ها بر بهبود کیفیت زندگی و بهینه‌سازی مصرف انرژی.",
-    imageUrl: "/images/article3.jpg",
+    imageUrl: "/images/article/header.png",
     published: "2024-12-01T11:45:00.000Z",
     authorName: "رضا احمدی",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     categories: "فناوری",
   },
   {
@@ -156,10 +174,10 @@ const mockArticles = [
     title: "راهکارهای افزایش بهره‌وری تیم‌های دورکار",
     summery:
       "ابزارها و روش‌های مدیریت تیم‌های دورکار برای افزایش بهره‌وری. بررسی بهترین شیوه‌های ارتباط، هماهنگی و مدیریت پروژه‌ها در محیط کار از راه دور.",
-    imageUrl: "/images/article6.jpg",
+    imageUrl: "/images/article/header.png",
     published: "2024-11-28T09:30:00.000Z",
     authorName: "فاطمه غفاری",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     categories: "کسب‌وکار",
   },
   {
@@ -167,10 +185,10 @@ const mockArticles = [
     title: "نقش ERP در بهینه‌سازی فرآیندهای سازمانی",
     summery:
       "سیستم‌های ERP چگونه می‌توانند فرآیندهای کسب‌وکار را یکپارچه کرده و کارایی سازمان را افزایش دهند. بررسی مزایای پیاده‌سازی ERP و چالش‌های پیش رو در این مسیر.",
-    imageUrl: "/images/article7.jpg",
+    imageUrl: "/images/article/header.png",
     published: "2024-11-25T10:15:00.000Z",
     authorName: "امیرحسین نوری",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     categories: "کسب‌وکار, فناوری",
   },
   {
@@ -178,10 +196,10 @@ const mockArticles = [
     title: "راهنمای جامع انتخاب سیستم مدیریت مشتریان (CRM)",
     summery:
       "انتخاب سیستم CRM مناسب برای کسب‌وکار شما. بررسی معیارهای مهم در انتخاب CRM، مقایسه پلتفرم‌های مختلف و راهکارهای پیاده‌سازی موفق این سیستم‌ها.",
-    imageUrl: "/images/article8.jpg",
+    imageUrl: "/images/article/header.png",
     published: "2024-11-22T14:00:00.000Z",
     authorName: "زهرا موسوی",
-    authorImage: "/images/avatar-placeholder.png",
+    authorImage: "/images/article/kitten.png",
     categories: "کسب‌وکار, دیجیتال مارکتینگ",
   },
 ];
@@ -201,7 +219,7 @@ const mockComments = [
   {
     id: 1,
     userFullName: "احمد محمودی",
-    userThumbnail: "/images/avatar-placeholder.png",
+    userThumbnail: "/images/article/kitten.png",
     createdOn: "2024-12-14T16:30:00.000Z",
     rate: 5,
     title: "مقاله بسیار عالی",
@@ -211,7 +229,7 @@ const mockComments = [
   {
     id: 2,
     userFullName: "فاطمه کریمی",
-    userThumbnail: "/images/avatar-placeholder.png",
+    userThumbnail: "/images/article/kitten.png",
     createdOn: "2024-12-13T09:15:00.000Z",
     rate: 4,
     title: "مفید اما نیاز به جزئیات بیشتر",
@@ -220,7 +238,7 @@ const mockComments = [
       {
         id: 21,
         userFullName: "مدیر ویرامپ",
-        userThumbnail: "/images/avatar-placeholder.png",
+        userThumbnail: "/images/article/kitten.png",
         createdOn: "2024-12-13T11:20:00.000Z",
         rate: 0,
         title: "پاسخ",
@@ -232,7 +250,7 @@ const mockComments = [
   {
     id: 3,
     userFullName: "مهران نظری",
-    userThumbnail: "/images/avatar-placeholder.png",
+    userThumbnail: "/images/article/kitten.png",
     createdOn: "2024-12-12T14:45:00.000Z",
     rate: 5,
     title: "کاربردی و به روز",
@@ -255,25 +273,13 @@ export default function ArticleDetailPage() {
     <>
       {/* Header افکت */}
       <div className="article-detail-page overflow-hidden">
-        {/* افکت Ellipse */}
-        <div
-          className="absolute w-[623px] h-[623px]"
-          style={{
-            left: "calc(50% - 311.5px - 725.5px)",
-            top: "328px",
-            background: "rgba(251, 101, 20, 0.1)",
-            filter: "blur(250px)",
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
-        />
-
         {/* Hero Section - تصویر مقاله در بالای صفحه */}
         <div className="article-hero-section">
           <Image
             src={mockArticle.imageUrl}
             alt={mockArticle.title}
-            fill
+            width={1480}
+            height={616}
             className="article-hero-background"
             priority
           />
@@ -322,9 +328,34 @@ export default function ArticleDetailPage() {
 
               {/* بخش مقالات مرتبط */}
               <div className="related-articles-in-content">
-                <h2 className="related-articles-in-content-title">
-                  مقالات مرتبط
-                </h2>
+                <div className="related-articles-in-content-header">
+                  <h2 className="related-articles-in-content-title">
+                    مقالات مرتبط
+                  </h2>
+                  <Link
+                    href="/articles"
+                    className="related-articles-in-content-view-all"
+                  >
+                    <svg
+                      className="related-articles-in-content-view-all-icon"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M15 19.9201L8.48003 13.4001C7.71003 12.6301 7.71003 11.3701 8.48003 10.6001L15 4.08008"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeMiterlimit="10"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    مشاهده همه
+                  </Link>
+                </div>
                 <div className="related-articles-in-content-container">
                   {mockArticles.slice(0, 2).map((article) => (
                     <Link
@@ -361,7 +392,7 @@ export default function ArticleDetailPage() {
                             <Image
                               src={
                                 article.authorImage ||
-                                "/images/avatar-placeholder.png"
+                                "/images/article/kitten.png"
                               }
                               alt={article.authorName}
                               fill
@@ -410,7 +441,7 @@ export default function ArticleDetailPage() {
                       <div className="user-comment-info">
                         <div className="user-comment-avatar">
                           <Image
-                            src="/images/avatar-placeholder.png"
+                            src="/images/article/kitten.png"
                             alt="شهرام طالبی"
                             fill
                             className="object-cover"
@@ -440,7 +471,7 @@ export default function ArticleDetailPage() {
                           <div className="user-comment-info">
                             <div className="user-comment-avatar">
                               <Image
-                                src="/images/avatar-placeholder.png"
+                                src="/images/article/kitten.png"
                                 alt="سمانه جوادی"
                                 fill
                                 className="object-cover"
@@ -475,7 +506,7 @@ export default function ArticleDetailPage() {
                       <div className="user-comment-info">
                         <div className="user-comment-avatar">
                           <Image
-                            src="/images/avatar-placeholder.png"
+                            src="/images/article/kitten.png"
                             alt="شهرام طالبی"
                             fill
                             className="object-cover"
@@ -508,7 +539,7 @@ export default function ArticleDetailPage() {
                       <div className="user-comment-info">
                         <div className="user-comment-avatar">
                           <Image
-                            src="/images/avatar-placeholder.png"
+                            src="/images/article/kitten.png"
                             alt="شهرام طالبی"
                             fill
                             className="object-cover"

@@ -24,6 +24,11 @@
     max-width: 654px !important;
     padding: 0 8px !important;
   }
+
+  /* Hide decorative quote icons on tablet (e.g. iPad) */
+  .quote-icon {
+    display: none !important;
+  }
 }
 
 /* Mobile styles */

@@ -1,0 +1,22 @@
+.indoormap-hero-img,
+.indoormap-phone-img {
+  background-size: cover;
+}
+
+@media (max-width: 1280px) and (max-height: 800px) {
+  .indoormap-hero-img {
+    max-width: 520px;
+    height: 420px;
+    background-size: contain !important;
+  }
+
+  .indoormap-phone-img {
+    max-width: 380px;
+    height: 340px;
+    background-size: contain !important;
+  }
+
+  .indoormap-phone-img img {
+    object-fit: contain !important;
+  }
+}

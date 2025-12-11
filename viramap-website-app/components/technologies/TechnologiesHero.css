@@ -13,6 +13,40 @@
   }
 }
 
+/* 1280px responsive */
+@media (max-width: 1280px) {
+  .tech-hero-container {
+    width: 1090px !important;
+    max-width: 92vw !important;
+    padding: 72px 24px !important;
+    gap: 28px !important;
+    height: auto !important;
+  }
+
+  .tech-hero-title {
+    font-size: 52px !important;
+    line-height: 78px !important;
+  }
+}
+
+/* iPad landscape (and 11"/12.9") : match header card width and override 1280 rule */
+@media only screen and (min-width: 901px) and (max-width: 1366px) {
+  .tech-hero-container {
+    width: calc(100% - 160px) !important;
+    max-width: calc(100% - 160px) !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* iPad portrait: match full-width header */
+@media only screen and (min-width: 768px) and (max-width: 900px) {
+  .tech-hero-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+}
+
 /* Mobile styles */
 @media (max-width: 768px) {
   .tech-hero-title {

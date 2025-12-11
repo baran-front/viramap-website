@@ -1,0 +1,70 @@
+.why-viramap-section {
+  width: calc(100% - 160px);
+  max-width: 1480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* iPad and 1280x800 adjustments */
+@media (max-width: 1280px) and (max-height: 800px) {
+  .why-viramap-section {
+    width: calc(100% - 80px);
+    max-width: calc(100% - 80px);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .why-viramap-content-wrapper {
+    gap: 24px !important;
+  }
+}
+
+/* iPad specific styles */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .why-viramap-section {
+    width: calc(100% - 80px);
+    max-width: calc(100% - 80px);
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 0px !important;
+    padding-bottom: 1.5rem !important;
+    margin-top: -15rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .why-viramap-content-wrapper {
+    gap: 1.5rem !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .why-viramap-title-container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    text-align: right !important;
+  }
+
+  .why-viramap-image-wrapper {
+    max-width: 280px !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  .why-viramap-image-container {
+    height: 250px !important;
+  }
+}
+
+/* Mobile adjustments - keep original width behavior */
+@media (max-width: 900px) {
+  .why-viramap-section {
+    width: 100%;
+    max-width: 1480px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

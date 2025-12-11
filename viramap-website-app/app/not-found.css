@@ -7,7 +7,7 @@
   justify-content: center;
   padding: 20px;
   width: 100%;
-  font-family: Ravi, system-ui;
+  font-family: "Ravi", sans-serif !important;
 }
 
 .not-found-content {
@@ -65,4 +65,39 @@
 
 .not-found-link:hover {
   background-color: #b2480e;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .not-found-container {
+    padding: 16px;
+  }
+
+  .not-found-image {
+    max-width: 280px;
+    max-height: 280px;
+    margin-bottom: 32px;
+  }
+
+  .not-found-link {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .not-found-container {
+    padding: 12px;
+  }
+
+  .not-found-image {
+    max-width: 220px;
+    max-height: 220px;
+    margin-bottom: 24px;
+  }
+
+  .not-found-link {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
 }

@@ -39,7 +39,7 @@ function ArticleCommentForm({ blogId }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -59,17 +59,19 @@ function ArticleCommentForm({ blogId }: Props) {
   };
 
   const handleStarClick = (starValue: number) => {
-    setFormData(prev => ({ ...prev, rating: starValue }));
+    setFormData((prev) => ({ ...prev, rating: starValue }));
     if (errors.rating) {
-      setErrors(prev => ({ ...prev, rating: "" }));
+      setErrors((prev) => ({ ...prev, rating: "" }));
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: "" }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -78,7 +80,7 @@ function ArticleCommentForm({ blogId }: Props) {
       onSubmit={handleSubmit}
       className="bg-gradient-to-b from-gray-900/50 to-gray-900/30 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 space-y-4"
     >
-      <h3 className="font-morabba text-xl font-medium text-white">ثبت دیدگاه</h3>
+      <h3 className="font-ravi text-xl font-medium text-white">ثبت دیدگاه</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* نام و نام خانوادگی */}
@@ -126,7 +128,9 @@ function ArticleCommentForm({ blogId }: Props) {
                 </button>
               ))}
             </div>
-            <span className="text-gray-300 font-medium">{formData.rating}/5</span>
+            <span className="text-gray-300 font-medium">
+              {formData.rating}/5
+            </span>
           </div>
         </div>
       </div>
