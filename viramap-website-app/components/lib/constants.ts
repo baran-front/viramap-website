@@ -1,3 +1,10 @@
+// تنظیمات API
+export const API_CONFIG = {
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL || "https://api.arvinvira.com",
+  DEFAULT_TENANT: process.env.NEXT_PUBLIC_API_TENANT || "map",
+  DEFAULT_LOCALE: "fa",
+} as const;
+
 export const CATEGORY_TYPE = {
   Faq: 0,
   Product: 1,
@@ -41,4 +48,4 @@ export const CATEGORY_TYPE = {
   SocialCampignItem: 46,
   SocialPlatformProperties: 47,
   SaleTransactionCredit: 51,
-}
+};

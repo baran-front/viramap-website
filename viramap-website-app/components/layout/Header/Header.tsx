@@ -3,6 +3,137 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import useSWR from "swr";
+import { safeFetch } from "@/components/lib/api";
+import { API_CONFIG } from "@/components/lib/constants";
+
+type MenuItem = {
+  id: number;
+  name: string;
+  linkUrl: string | null;
+  description: string | null;
+  groupName: string;
+  title?: string;
+};
+
+type MenuApiResponse = {
+  data: MenuItem[];
+  succeeded: boolean;
+};
+
+type SolutionItem = {
+  id: string;
+  label: string;
+  path: string;
+};
+
+type TechnologyItem = {
+  id: string;
+  label: string;
+  path: string;
+};
+
+type NavItem = {
+  href: string;
+  label: string;
+};
+
+const MENU_ENDPOINT = "/v1/menulinks/client/groupnames";
+
+const NAME_FA_LABEL_MAP: Record<string, string> = {
+  home: "خانه",
+  articles: "اخبار و مقالات",
+  "about-viramap": "درباره ویرامپ",
+  "about-us": "همکاری با ما",
+  // تکنولوژی‌ها
+  "technologies-overview": "تکنولوژی‌ها",
+  platform: "پلتفرم",
+  // راهکارها
+  healthcare: "مراکز بهداشتی و درمانی",
+  airports: "فرودگاه‌ها",
+  exhibitions: "نمایشگاه‌ها",
+  pilgrimage: "اماکن زیارتی",
+  universities: "دانشگاه‌ها و مراکز آموزشی",
+  malls: "مجتمع‌های تجاری و مال‌ها",
+  stadiums: "ورزشگاه‌ها و استادیوم‌ها",
+  industrial: "واحد‌های صنعتی و تولیدی",
+};
+
+const DEFAULT_SOLUTIONS: SolutionItem[] = [
+  {
+    id: "healthcare",
+    label: "مراکز بهداشتی و درمانی",
+    path: "/solutions/healthcare",
+  },
+  { id: "airports", label: "فرودگاه‌ها", path: "/solutions/airports" },
+  { id: "exhibitions", label: "نمایشگاه‌ها", path: "/solutions/exhibitions" },
+  { id: "pilgrimage", label: "اماکن زیارتی", path: "/solutions/pilgrimage" },
+  {
+    id: "universities",
+    label: "دانشگاه‌ها و مراکز آموزشی",
+    path: "/solutions/universities",
+  },
+  {
+    id: "malls",
+    label: "مجتمع‌های تجاری و مال‌ها",
+    path: "/solutions/malls",
+  },
+  {
+    id: "stadiums",
+    label: "ورزشگاه‌ها و استادیوم‌ها",
+    path: "/solutions/stadiums",
+  },
+  {
+    id: "industrial",
+    label: "واحد‌های صنعتی و تولیدی",
+    path: "/solutions/industrial",
+  },
+];
+
+const DEFAULT_TECHNOLOGIES: TechnologyItem[] = [
+  { id: "technologies-overview", label: "تکنولوژی‌ها", path: "/technologies" },
+  { id: "platform", label: "پلتفرم", path: "/platform" },
+];
+
+const DEFAULT_NAV_ITEMS: NavItem[] = [
+  { href: "/articles", label: "اخبار و مقالات" },
+  { href: "/about", label: "درباره ویرامپ" },
+  { href: "/about-us", label: "همکاری با ما" },
+];
+
+async function fetchMenuByGroup(groupName: string): Promise<MenuItem[]> {
+  try {
+    const response = await safeFetch<MenuApiResponse>(
+      MENU_ENDPOINT,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          groupnames: groupName,
+        }),
+      },
+      {
+        tenant: API_CONFIG.DEFAULT_TENANT,
+        locale: API_CONFIG.DEFAULT_LOCALE,
+        skipAuth: true,
+      }
+    );
+
+    if (!response.ok || !response.result?.data) {
+      return [];
+    }
+
+    const apiData = response.result.data;
+
+    if (!apiData || !Array.isArray(apiData.data) || !apiData.succeeded) {
+      return [];
+    }
+
+    return apiData.data;
+  } catch (error) {
+    console.error("خطا در دریافت منو:", error);
+    return [];
+  }
+}
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,47 +151,64 @@ const Header = () => {
   const phoneDropdownRef = useRef<HTMLDivElement>(null);
   const desktopPhoneDropdownRef = useRef<HTMLDivElement>(null);
 
-  const solutions = [
+  const { data: headerMainData } = useSWR<MenuItem[]>(
+    "header-main",
+    () => fetchMenuByGroup("header-main"),
     {
-      id: "healthcare",
-      label: "مراکز بهداشتی و درمانی",
-      path: "/solutions/healthcare",
-    },
-    { id: "airports", label: "فرودگاه‌ها", path: "/solutions/airports" },
-    { id: "exhibitions", label: "نمایشگاه‌ها", path: "/solutions/exhibitions" },
-    { id: "pilgrimage", label: "اماکن زیارتی", path: "/solutions/pilgrimage" },
-    {
-      id: "universities",
-      label: "دانشگاه‌ها و مراکز آموزشی",
-      path: "/solutions/universities",
-    },
-    {
-      id: "malls",
-      label: "مجتمع‌های تجاری و مال‌ها",
-      path: "/solutions/malls",
-    },
-    {
-      id: "stadiums",
-      label: "ورزشگاه‌ها و استادیوم‌ها",
-      path: "/solutions/stadiums",
-    },
-    {
-      id: "industrial",
-      label: "واحد‌های صنعتی و تولیدی",
-      path: "/solutions/industrial",
-    },
-  ];
+      revalidateOnFocus: false,
+    }
+  );
 
-  const technologies = [
-    { id: "technologies", label: "تکنولوژی‌ها", path: "/technologies" },
-    { id: "platform", label: "پلتفرم", path: "/platform" },
-  ];
+  const { data: headerSolutionsData } = useSWR<MenuItem[]>(
+    "header-solutions",
+    () => fetchMenuByGroup("header-solutions"),
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
-  const navItems = [
-    { href: "/articles", label: "اخبار و مقالات" },
-    { href: "/about", label: "درباره ویرامپ" },
-    { href: "/about-us", label: "همکاری با ما" },
-  ];
+  const { data: headerTechnologiesData } = useSWR<MenuItem[]>(
+    "header-technologies",
+    () => fetchMenuByGroup("header-technologies"),
+    {
+      revalidateOnFocus: false,
+    }
+  );
+
+  const solutionsSource: MenuItem[] = headerSolutionsData ?? [];
+  const technologiesSource: MenuItem[] = headerTechnologiesData ?? [];
+  const headerMainSource: MenuItem[] = headerMainData ?? [];
+
+  const solutions: SolutionItem[] =
+    solutionsSource.length > 0
+      ? solutionsSource.map((item: MenuItem) => ({
+          id: item.name,
+          label: item.description || NAME_FA_LABEL_MAP[item.name] || item.name,
+          path: item.linkUrl || "#",
+        }))
+      : DEFAULT_SOLUTIONS;
+
+  const technologies: TechnologyItem[] =
+    technologiesSource.length > 0
+      ? technologiesSource.map((item: MenuItem) => ({
+          id: item.name,
+          label: item.description || NAME_FA_LABEL_MAP[item.name] || item.name,
+          path: item.linkUrl || "#",
+        }))
+      : DEFAULT_TECHNOLOGIES;
+
+  const navItems: NavItem[] =
+    headerMainSource.length > 0
+      ? headerMainSource
+          .filter((item: MenuItem) =>
+            ["articles", "about-viramap", "about-us"].includes(item.name)
+          )
+          .map((item: MenuItem) => ({
+            href: item.linkUrl || "#",
+            label:
+              item.description || NAME_FA_LABEL_MAP[item.name] || item.name,
+          }))
+      : DEFAULT_NAV_ITEMS;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

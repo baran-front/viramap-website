@@ -9,7 +9,7 @@ import SolutionsSlider from "@/components/Home/SolutionsSlider/SolutionsSlider";
 
 export default function HomePage() {
   return (
-    <div style={{ fontFamily: "Ravi, system-ui" }}>
+    <div>
       <HeroSection />
       <IndoorMap />
       <DynamicSlider />

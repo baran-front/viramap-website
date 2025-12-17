@@ -7,7 +7,7 @@ import { CTASection } from "@/components";
 import BackgroundBlur from "../components/BackgroundBlur";
 
 export const metadata: Metadata = {
-  title: "Vira Map",
+  title: "viramap | ویرامپ",
   description: "viramapdescription ",
 };
 
@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa" dir="rtl">
-      <body>
+      <body className="font-ravi">
         <BackgroundBlur />
         <Header />
         <main>{children}</main>
