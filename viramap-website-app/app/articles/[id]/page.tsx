@@ -13,6 +13,8 @@ import {
   Pencil,
 } from "lucide-react";
 import ArticleCard from "@/components/modules/articleCard";
+import { ArticleStructuredData } from "@/components/lib/ArticleStructuredData";
+import { BreadcrumbStructuredData } from "@/components/lib/BreadcrumbStructuredData";
 import "./ArticleDetail.css";
 
 // کامپوننت فرم نظرات
@@ -271,6 +273,22 @@ export default function ArticleDetailPage() {
 
   return (
     <>
+      {/* Structured Data */}
+      <ArticleStructuredData
+        title={mockArticle.title}
+        description={mockArticle.summery}
+        image={mockArticle.imageUrl}
+        datePublished={mockArticle.published}
+        authorName={mockArticle.authorName}
+      />
+      <BreadcrumbStructuredData
+        items={[
+          { name: "خانه", url: "/" },
+          { name: "مقالات", url: "/articles" },
+          { name: mockArticle.title },
+        ]}
+      />
+
       {/* Header افکت */}
       <div className="article-detail-page overflow-hidden">
         {/* Hero Section - تصویر مقاله در بالای صفحه */}

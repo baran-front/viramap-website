@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import SolutionHero from "@/components/solutions/SolutionHero";
 import MallTopSection from "@/components/solutions/MallTopSection";
 import MallLowerSection from "@/components/solutions/MallLowerSection";
+import { BreadcrumbStructuredData } from "@/components/lib/BreadcrumbStructuredData";
 
 const mallData = {
   title: "مجتمع‌های تجاری و مال‌ها",
@@ -70,6 +71,13 @@ export default function MallsSolutionPage() {
         overscrollBehaviorY: "contain",
       }}
     >
+      <BreadcrumbStructuredData
+        items={[
+          { name: "خانه", url: "/" },
+          { name: "راهکارها", url: "/solutions" },
+          { name: mallData.title },
+        ]}
+      />
       {/* Hero Section */}
       <div className="pt-32">
         <SolutionHero

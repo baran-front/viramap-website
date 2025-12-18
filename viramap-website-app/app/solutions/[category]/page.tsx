@@ -7,6 +7,7 @@ import SolutionHero from "@/components/solutions/SolutionHero";
 import SolutionChallenges from "@/components/solutions/SolutionChallenges";
 import MallTopSection from "@/components/solutions/MallTopSection";
 import MallLowerSection from "@/components/solutions/MallLowerSection";
+import { BreadcrumbStructuredData } from "@/components/lib/BreadcrumbStructuredData";
 
 interface SolutionData {
   id: string;
@@ -115,6 +116,13 @@ export default function SolutionPage() {
   if (data.isMall) {
     return (
       <div className=" min-h-screen">
+        <BreadcrumbStructuredData
+          items={[
+            { name: "خانه", url: "/" },
+            { name: "راهکارها", url: "/solutions" },
+            { name: data.title },
+          ]}
+        />
         <div className="pt-32">
           <SolutionHero title={data.title} description={data.description} />
         </div>
@@ -150,6 +158,13 @@ export default function SolutionPage() {
   // برای سایر دسته‌ها (غیر مال)
   return (
     <div className="min-h-screen">
+      <BreadcrumbStructuredData
+        items={[
+          { name: "خانه", url: "/" },
+          { name: "راهکارها", url: "/solutions" },
+          { name: data.title },
+        ]}
+      />
       <div className="pt-32">
         <SolutionHero title={data.title} description={data.description} />
       </div>

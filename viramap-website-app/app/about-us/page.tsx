@@ -6,8 +6,25 @@ import {
 } from "@/components/ContactUs";
 
 export const metadata: Metadata = {
-  title: "درباره ما | ویرامپ",
-  description: "صفحه درباره ما و فرم تماس با ما",
+  title: "تماس با ما | ویرامپ",
+  description:
+    "تماس با تیم ویرامپ برای دریافت مشاوره رایگان و اطلاعات بیشتر درباره راهکارهای مسیریابی داخلی. فرم تماس و اطلاعات تماس ما.",
+  keywords: [
+    "تماس با ویرامپ",
+    "فرم تماس",
+    "مشاوره رایگان",
+    "پشتیبانی ویرامپ",
+  ],
+  openGraph: {
+    title: "تماس با ما | ویرامپ",
+    description:
+      "تماس با تیم ویرامپ برای دریافت مشاوره رایگان و اطلاعات بیشتر",
+    type: "website",
+    url: "/about-us",
+  },
+  alternates: {
+    canonical: "/about-us",
+  },
 };
 
 type AboutUsPageProps = {

@@ -4,8 +4,20 @@ import Image from "next/image";
 import "./not-found.css";
 
 export const metadata: Metadata = {
-  title: "404 - صفحه یافت نشد",
-  description: "صفحه مورد نظر یافت نشد",
+  title: "404 - صفحه یافت نشد | ویرامپ",
+  description: "صفحه مورد نظر یافت نشد. لطفاً به صفحه اصلی بازگردید.",
+  robots: {
+    index: false,
+    follow: true,
+  },
+  openGraph: {
+    title: "404 - صفحه یافت نشد | ویرامپ",
+    description: "صفحه مورد نظر یافت نشد",
+    type: "website",
+  },
+  alternates: {
+    canonical: "/404",
+  },
 };
 
 export default function NotFound() {
