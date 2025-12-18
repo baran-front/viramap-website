@@ -1,11 +1,18 @@
 "use client";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import "./HeroSectionOverrides.css";
 
 // نسخه تصویر - در صورت تغییر تصویر این عدد را افزایش دهید
 const BACKGROUND_IMAGE_VERSION = "1.0";
 
 const HeroSection = () => {
+  const router = useRouter();
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+
+  const openDemoModal = () => setIsDemoModalOpen(true);
+  const closeDemoModal = () => setIsDemoModalOpen(false);
+
   // استفاده از useMemo برای جلوگیری از محاسبه مجدد در هر render
   const backgroundImageUrl = useMemo(
     () => `/images/hero/background.svg?v=${BACKGROUND_IMAGE_VERSION}`,
@@ -167,14 +174,20 @@ const HeroSection = () => {
         {/* Call to Action Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 md:gap-5 w-full sm:w-auto px-4 sm:px-0">
           {/* Primary Button - درخواست دمو */}
-          <button className="flex flex-row justify-center items-center px-5 sm:px-6 md:px-7 py-3 sm:py-3.5 gap-2 w-full sm:w-[135px] md:w-[145px] lg:w-[155px] h-12 sm:h-[48px] bg-[#FB6514] rounded-xl border-none cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#e55a12] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#FB6514]/30 active:scale-[0.98] active:translate-y-0">
+          <button
+            onClick={openDemoModal}
+            className="flex flex-row justify-center items-center px-5 sm:px-6 md:px-7 py-3 sm:py-3.5 gap-2 w-full sm:w-[135px] md:w-[145px] lg:w-[155px] h-12 sm:h-[48px] bg-[#FB6514] rounded-xl border-none cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#e55a12] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#FB6514]/30 active:scale-[0.98] active:translate-y-0"
+          >
             <span className="font-ravi font-semibold text-[14px] sm:text-[15px] md:text-base text-white whitespace-nowrap">
               درخواست دمو
             </span>
           </button>
 
           {/* Secondary Button - مشاوره رایگان */}
-          <button className="flex flex-row justify-center items-center px-5 sm:px-6 md:px-7 py-3 sm:py-3.5 w-full sm:w-[167px] md:w-[177px] lg:w-[187px] h-12 sm:h-[48px] bg-transparent rounded-lg text-[#FB6514] font-ravi font-semibold text-[14px] sm:text-[15px] md:text-base gap-2 transition-all duration-300 ease-in-out hover:bg-[#FB6514]/10 hover:border-[#FB6514]/50 hover:-translate-y-0.5 hover:shadow-md hover:shadow-[#FB6514]/20 active:scale-[0.98] active:translate-y-0">
+          <button
+            onClick={() => router.push("/about-us?free=1#free-consultation")}
+            className="flex flex-row justify-center items-center px-5 sm:px-6 md:px-7 py-3 sm:py-3.5 w-full sm:w-[167px] md:w-[177px] lg:w-[187px] h-12 sm:h-[48px] bg-transparent rounded-lg text-[#FB6514] font-ravi font-semibold text-[14px] sm:text-[15px] md:text-base gap-2 transition-all duration-300 ease-in-out hover:bg-[#FB6514]/10 hover:border-[#FB6514]/50 hover:-translate-y-0.5 hover:shadow-md hover:shadow-[#FB6514]/20 active:scale-[0.98] active:translate-y-0"
+          >
             <span className="whitespace-nowrap">مشاوره رایگان</span>
             <svg
               width="20"
@@ -195,6 +208,68 @@ const HeroSection = () => {
           </button>
         </div>
       </div>
+
+      {/* Demo Request Modal */}
+      {isDemoModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
+          onClick={closeDemoModal}
+        >
+          <div
+            dir="rtl"
+            className="relative w-full max-w-[520px] rounded-[32px] bg-[#05040A]/95 border border-white/5 shadow-[0_24px_80px_rgba(0,0,0,0.75)] px-6 sm:px-8 py-7 sm:py-8 text-right"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Title & Description */}
+            <div className="mb-6 sm:mb-7">
+              <h2 className="font-ravi font-semibold text-[18px] sm:text-[20px] md:text-[22px] text-[#F4F4F5] mb-2">
+                درخواست دمو
+              </h2>
+              <p className="font-ravi text-[13px] sm:text-[14px] text-[#A1A1AA] leading-relaxed">
+                لطفا اطلاعات خود را وارد کنید تا با شما تماس بگیریم.
+              </p>
+            </div>
+
+            {/* Form Fields */}
+            <div className="space-y-4 sm:space-y-5">
+              <div className="space-y-2">
+                <label className="block font-ravi text-[13px] sm:text-[14px] text-[#E4E4E7]">
+                  نام و نام خانوادگی
+                </label>
+                <input
+                  type="text"
+                  placeholder="نام و نام خانوادگی"
+                  className="w-full h-12 sm:h-13 rounded-2xl bg-[#05040A] border border-[#27272A] px-4 sm:px-5 text-[13px] sm:text-[14px] text-[#E4E4E7] placeholder:text-[#71717A] focus:outline-none focus:border-[#2A99FF] focus:ring-2 focus:ring-[#2A99FF]/30 transition-all"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block font-ravi text-[13px] sm:text-[14px] text-[#E4E4E7]">
+                  شماره موبایل
+                </label>
+                <input
+                  type="tel"
+                  placeholder="09*********"
+                  className="w-full h-12 sm:h-13 rounded-2xl bg-[#05040A] border border-[#27272A] px-4 sm:px-5 text-[13px] sm:text-[14px] text-[#E4E4E7] placeholder:text-[#71717A] focus:outline-none focus:border-[#2A99FF] focus:ring-2 focus:ring-[#2A99FF]/30 transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="mt-6 sm:mt-7 flex flex-row-reverse items-center gap-3 sm:gap-4">
+              <button className="flex-1 h-11 sm:h-12 rounded-2xl bg-[#FB6514] text-white font-ravi text-[13px] sm:text-[14px] font-semibold shadow-[0_10px_30px_rgba(42,153,255,0.35)] hover:bg-[#1f7cd0] transition-all">
+                ارسال درخواست
+              </button>
+              <button
+                onClick={closeDemoModal}
+                className="flex-1 h-11 sm:h-12 rounded-2xl bg-[#FB6514] text-[#E4E4E7] font-ravi text-[13px] sm:text-[14px] font-medium border border-[#27272A] hover:bg-[#27272A] transition-all"
+              >
+                بستن
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

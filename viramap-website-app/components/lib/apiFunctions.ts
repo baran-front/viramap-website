@@ -332,33 +332,37 @@ export async function getArticleCategories(
       }
     );
 
-    // بررسی اینکه آیا درخواست موفق بود
-    if (!response.ok) {
+    // اگر درخواست موفق نبود یا ساختار پاسخ معتبر نبود، نتیجه خالی برمی‌گردانیم
+    if (!response.ok || !response.result) {
       return {
-        ...response,
+        status: response.status,
+        ok: response.ok,
+        error: response.error,
+        result: response.result as { data?: GetArticleCategoriesResponse } | null,
         data: null,
       };
     }
 
-    // استخراج آرایه data از پاسخ API
-    // response.result شامل کل پاسخ JSON است: { data: [...], messages: [], succeeded: true }
-    // مشابه با fetchMenuByGroup که response.result را مستقیماً cast می‌کند
-    if (response.result) {
-      const apiResponse = response.result as unknown as ArticleCategoriesApiResponse;
-      
-      // بررسی ساختار پاسخ
-      if (apiResponse && apiResponse.data && Array.isArray(apiResponse.data)) {
-        return {
-          ...response,
-          data: apiResponse.data,
-        };
-      }
+    const apiResponse = response.result as unknown as ArticleCategoriesApiResponse;
+
+    if (!apiResponse || !Array.isArray(apiResponse.data)) {
+      return {
+        status: response.status,
+        ok: false,
+        error: response.error,
+        result: { data: undefined },
+        data: null,
+      };
     }
 
-    // اگر ساختار پاسخ معتبر نبود
+    const categories: GetArticleCategoriesResponse = apiResponse.data;
+
     return {
-      ...response,
-      data: null,
+      status: response.status,
+      ok: true,
+      error: response.error,
+      result: { data: categories },
+      data: categories,
     };
   } catch (error) {
     console.error("خطا در دریافت دسته‌بندی‌های مقالات:", error);
