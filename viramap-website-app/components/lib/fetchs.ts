@@ -1,3 +1,4 @@
+//componenets/lib/fetchs.ts
 /**
  * ماژول توابع سطح بالاتر برای دریافت داده از API
  * این ماژول شامل توابع آماده برای دریافت داده‌های مختلف از بک‌اند است
@@ -543,4 +544,17 @@ export async function fetchFooterAboutContent(
       },
     };
   }
+}
+
+export async function fetchFooterMenus() {
+  const groups = ["footer-quick", "footer-products", "footer-solutions", "footer-contact"];
+  
+  const results = await Promise.all(
+    groups.map(group => fetchHeaderMenu(group))
+  );
+  
+  return groups.reduce((acc, group, index) => {
+    acc[group] = results[index];
+    return acc;
+  }, {} as Record<string, any>);
 }

@@ -1,7 +1,7 @@
 // تنظیمات API
 export const API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || "https://api.arvinvira.com",
-  DEFAULT_TENANT: process.env.NEXT_PUBLIC_API_TENANT || "map",
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL || "https://api.arvinvira.com/api",
+  DEFAULT_TENANT: "map",
   DEFAULT_LOCALE: "fa",
 } as const;
 
