@@ -120,7 +120,7 @@ const Footer = async () => {
 
               {/* متن توضیحی */}
               <div className="mb-8">
-                <p
+                <div
                   className="text-[#E4E4E7] text-[14px] leading-[26px] font-normal max-w-[320px]"
                   dangerouslySetInnerHTML={{ __html: about.content }}
                 />

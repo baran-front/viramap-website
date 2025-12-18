@@ -1,7 +1,7 @@
 //app/articles/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { InfoIcon } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -9,16 +9,7 @@ import ArticlesCategoryTabs from "@/components/templates/articlesCategoryTabs";
 import Link from "next/link";
 import PageHero from "@/components/modules/pageHero";
 import ArticleCard from "@/components/modules/articleCard";
-
-// داده‌های نمونه
-const mockCategories = [
-  { id: 1, title: "فناوری" },
-  { id: 2, title: "برنامه‌نویسی" },
-  { id: 3, title: "دیجیتال مارکتینگ" },
-  { id: 4, title: "طراحی UI/UX" },
-  { id: 5, title: "کسب‌وکار" },
-  { id: 6, title: "استارتاپ" },
-];
+import { getArticleCategories, type ArticleCategory } from "@/components/lib/apiFunctions";
 
 const mockArticles = [
   {
@@ -125,6 +116,31 @@ const mockArticles = [
 function ArticlesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [categories, setCategories] = useState<ArticleCategory[]>([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+
+  // دریافت دسته‌بندی‌ها از API
+  useEffect(() => {
+    async function fetchCategories() {
+      setCategoriesLoading(true);
+      try {
+        const result = await getArticleCategories();
+        console.log("نتیجه دریافت دسته‌بندی‌ها:", { ok: result.ok, hasData: !!result.data, error: result.error, status: result.status });
+        
+        if (result.ok && result.data) {
+          setCategories(result.data);
+        } else {
+          console.error("خطا در دریافت دسته‌بندی‌ها:", result.error || result.status || "خطای نامشخص");
+        }
+      } catch (error) {
+        console.error("خطا در دریافت دسته‌بندی‌ها:", error);
+      } finally {
+        setCategoriesLoading(false);
+      }
+    }
+
+    fetchCategories();
+  }, []);
 
   // فیلتر مقالات بر اساس دسته‌بندی و جستجو
   const filteredArticles = mockArticles.filter((article) => {
@@ -207,11 +223,13 @@ function ArticlesPage() {
         <div className="container mt-12 mx-auto">
           {/* دسته‌بندی‌ها */}
           <div className="mb-6 w-full">
-            <ArticlesCategoryTabs
-              categories={mockCategories}
-              selectedCategory={selectedCategory}
-              onCategoryChange={setSelectedCategory}
-            />
+            {!categoriesLoading && (
+              <ArticlesCategoryTabs
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
+              />
+            )}
           </div>
 
           {/* جستجو */}

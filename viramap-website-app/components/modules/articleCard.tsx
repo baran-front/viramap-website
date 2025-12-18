@@ -54,6 +54,7 @@ function ArticleCard({ article }: ArticleCardProps) {
       href={`/articles/${article.id}`}
       className="group overflow-hidden transition-all duration-300 hover:opacity-90 h-full flex flex-col"
       style={{
+        padding: "8px",
         borderRadius: "12px",
         border: "1px solid rgba(255, 255, 255, 0.1)",
         background: "rgba(250, 250, 250, 0.1)",
@@ -68,7 +69,6 @@ function ArticleCard({ article }: ArticleCardProps) {
         style={{
           aspectRatio: "16/9",
           borderRadius: "8px",
-          margin: "8px",
         }}
       >
         <Image

@@ -260,11 +260,11 @@ export async function fetchFAQs(
 ): Promise<FetchResult<FAQResponse>> {
   try {
     // توجه: safeFetch همیشه endPoint را به BASE_URL اضافه می‌کند
-    // با توجه به اینکه baseURL شما `https://api.arvinvira.com/api` است،
-    // این endPoint باید با `/api/...` شروع شود تا آدرس کامل زیر ساخته شود:
-    // `${API_CONFIG.BASE_URL}/api/v1/faqs/client/search`
+    // با توجه به اینکه BASE_URL شامل `/api` است (مثل: https://api.arvinvira.com/api)
+    // endPoint باید بدون `/api` و از `/v1/...` شروع شود تا آدرس کامل زیر ساخته شود:
+    // `${API_CONFIG.BASE_URL}/v1/faqs/client/search`
     const response = await safeFetch<FAQResponse>(
-      "/api/v1/faqs/client/search",
+      "/v1/faqs/client/search",
       {
         method: "POST",
         body: JSON.stringify({}),
@@ -360,10 +360,9 @@ export async function fetchHeaderMenu(
     }
 
     // ارسال درخواست به API
-    // توجه: در حال حاضر خطای 404 برای مسیر /v1/menulinks/... دریافت می‌شود
-    // طبق الگوی سایر endpointها، آدرس صحیح به صورت /api/v1/... است
+    // توجه: BASE_URL شامل `/api` است، بنابراین endPoint باید از `/v1/...` شروع شود
     const response = await safeFetch<HeaderMenuResponse>(
-      "/api/v1/menulinks/client/groupnames",
+      "/v1/menulinks/client/groupnames",
       {
         method: "POST",
         body: JSON.stringify({
@@ -502,17 +501,17 @@ export async function fetchFooterAboutContent(
   locale: string = API_CONFIG.DEFAULT_LOCALE
 ): Promise<FetchResult<CmsContentResponse>> {
   try {
+    // توجه: footer-about نام گروه است، نه بخشی از خود آدرس API
+    // endpoint صحیح فقط /v1/cms/client/by-group-name است
     const response = await safeFetch<CmsContentResponse>(
-      // دقیقا مطابق Postman:
-      // {{baseUrl}}/v1/cms/client/by-group-name/footer-about
-      // که با BASE_URL = https://api.arvinvira.com/api می‌شود:
-      // https://api.arvinvira.com/api/v1/cms/client/by-group-name/footer-about
-      "/v1/cms/client/by-group-name/footer-about",
+      "/v1/cms/client/by-group-name",
       {
-        method: "GET",
-        // در Postman برای این درخواست یک body با groupnames هم ارسال می‌شود
-        // (هرچند نام گروه در URL هم آمده است)
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
+          // اینجا group name را می‌فرستیم
           groupnames: "footer-about",
         }),
       },

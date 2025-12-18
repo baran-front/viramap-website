@@ -107,8 +107,8 @@ const GROUP_TO_TITLE: Record<string, string> = {
 export async function fetchMenuByGroup(groupName: string): Promise<MenuItem[]> {
   try {
     console.log(`📡 در حال دریافت منوی ${groupName} از API...`);
-    
-    const response = await safeFetch<MenuApiResponse>(
+
+    const response = await safeFetch<MenuItem[]>(
       "/v1/menulinks/client/groupnames",
       {
         method: "POST",
@@ -131,20 +131,36 @@ export async function fetchMenuByGroup(groupName: string): Promise<MenuItem[]> {
       return [];
     }
 
-    if (!response.result?.data) {
-      console.warn(`⚠️ داده‌ای برای منوی ${groupName} دریافت نشد`);
+    const raw = response.result as unknown as MenuApiResponse | MenuItem[] | null;
+
+    let items: MenuItem[] = [];
+
+    // حالت ۱: پاسخ به شکل استاندارد ما { data, messages, succeeded }
+    if (raw && !Array.isArray(raw) && "data" in raw) {
+      const typed = raw as MenuApiResponse;
+
+      if (typed.succeeded === false) {
+        console.warn(`⚠️ API برای ${groupName} succeeded=false برگرداند`);
+        return [];
+      }
+
+      if (Array.isArray(typed.data)) {
+        items = typed.data;
+      }
+    }
+
+    // حالت ۲: خود API مستقیم آرایه منو را برمی‌گرداند
+    if (!items.length && Array.isArray(raw)) {
+      items = raw as MenuItem[];
+    }
+
+    if (!items.length) {
+      console.warn(`⚠️ داده معتبری برای منوی ${groupName} دریافت نشد`);
       return [];
     }
 
-    const apiData = response.result.data;
-
-    if (!apiData.succeeded || !Array.isArray(apiData.data)) {
-      console.warn(`⚠️ ساختار داده برای ${groupName} معتبر نیست`);
-      return [];
-    }
-
-    console.log(`✅ ${groupName} دریافت شد: ${apiData.data.length} آیتم`);
-    return apiData.data;
+    console.log(`✅ ${groupName} دریافت شد: ${items.length} آیتم`);
+    return items;
   } catch (error) {
     console.error(`💥 خطا در دریافت منوی ${groupName}:`, error);
     return [];
@@ -153,49 +169,31 @@ export async function fetchMenuByGroup(groupName: string): Promise<MenuItem[]> {
 
 /**
  * دریافت محتوای درباره ما از CMS
+ * از تابع سطح بالاتر fetchFooterAboutContent استفاده می‌کنیم
+ * تا تنظیمات endpoint و احراز هویت مطابق Postman باشد.
  */
+import type { CmsContentResponse } from "./fetchs";
+import { fetchFooterAboutContent } from "./fetchs";
+
 export async function fetchAboutContent(): Promise<string> {
   try {
-    console.log("📡 در حال دریافت متن درباره ما از CMS...");
-    
-    // تست دو endpoint مختلف
-    const endpoints = [
-      "/v1/cms/client/by-group-name/footer-about"
-    ];
+    console.log("📡 در حال دریافت متن درباره ما از CMS (footer-about)...");
 
-    for (const endpoint of endpoints) {
-      try {
-        const response = await safeFetch<{
-          data: Array<{ content: string }>;
-          succeeded: boolean;
-        }>(
-          endpoint,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              groupnames: "footer-about",
-            }),
-          },
-          {
-            tenant: API_CONFIG.DEFAULT_TENANT,
-            locale: API_CONFIG.DEFAULT_LOCALE,
-            skipAuth: true,
-          }
-        );
+    const result = await fetchFooterAboutContent();
 
-        if (response.ok && response.result?.data?.data?.length) {
-          console.log(`✅ متن درباره ما از ${endpoint} دریافت شد`);
-          return response.result.data.data[0].content;
-        }
-      } catch (error) {
-        console.log(`❌ ${endpoint} کار نکرد`);
-      }
+    if (!result.ok || !result.data) {
+      console.log("⚠️ پاسخ نامعتبر برای footer-about، استفاده از متن پیش‌فرض");
+      return DEFAULT_FOOTER_DATA.about.content;
     }
 
-    console.log("⚠️ از متن پیش‌فرض استفاده می‌شود");
+    const cmsResponse = result.data as CmsContentResponse;
+
+    if (Array.isArray(cmsResponse.data) && cmsResponse.data.length > 0) {
+      console.log("✅ متن درباره ما با موفقیت از CMS دریافت شد");
+      return cmsResponse.data[0].content;
+    }
+
+    console.log("⚠️ داده footer-about خالی است، استفاده از متن پیش‌فرض");
     return DEFAULT_FOOTER_DATA.about.content;
   } catch (error) {
     console.error("💥 خطا در دریافت محتوای درباره ما:", error);
@@ -262,6 +260,12 @@ export async function getFooterData(): Promise<FooterData> {
     const menuSections: FooterMenuSection[] = [];
 
     menuResults.forEach(({ groupName, items }) => {
+      // گروه footer-contact فقط برای استخراج اطلاعات تماس است،
+      // نباید به‌عنوان یک سکشن جدا در منو نمایش داده شود
+      if (groupName === "footer-contact") {
+        return;
+      }
+
       if (items && items.length > 0) {
         const sectionTitle = GROUP_TO_TITLE[groupName] || groupName;
         

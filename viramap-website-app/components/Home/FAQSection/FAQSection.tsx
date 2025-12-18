@@ -3,28 +3,17 @@
 
 import { useState, useEffect } from "react";
 import FAQItem from "./FAQItem";
-import { fetchFAQs } from "@/components/lib/fetchs";
+import { fetchFAQs } from "@/services/api";
+import { getFAQIconType, type FAQIconType } from "@/components/lib/faqHelpers";
 import "./FAQSection.css";
 
 interface FAQItemData {
   id: number;
   question: string;
   answer: string;
-  iconType: "message" | "bezier" | "brush" | "lock" | "cloud" | "headphone";
+  iconType: FAQIconType;
   isOpen: boolean;
 }
-
-// لیست آیکون‌های موجود
-const iconTypes: Array<
-  "message" | "bezier" | "brush" | "lock" | "cloud" | "headphone"
-> = ["message", "bezier", "brush", "lock", "cloud", "headphone"];
-
-// تابع برای انتخاب آیکون بر اساس index
-const getIconType = (
-  index: number
-): "message" | "bezier" | "brush" | "lock" | "cloud" | "headphone" => {
-  return iconTypes[index % iconTypes.length];
-};
 
 const FAQSection = () => {
   const [faqItems, setFaqItems] = useState<FAQItemData[]>([]);
@@ -49,7 +38,7 @@ const FAQSection = () => {
                 id: faq.id,
                 question: faq.title,
                 answer: faq.description,
-                iconType: getIconType(allFAQs.length + index),
+                iconType: getFAQIconType(allFAQs.length + index),
                 isOpen: false,
               });
             });
@@ -57,7 +46,12 @@ const FAQSection = () => {
 
           setFaqItems(allFAQs);
         } else {
-          setError(result.error?.message || "خطا در دریافت سوالات متداول");
+          // پیام خطای کاربرپسند در UI نمایش داده می‌شود
+          // جزئیات خطا (مثل 404) فقط در کنسول دیده می‌شود
+          if (result.error) {
+            console.error("FAQ API error:", result.error);
+          }
+          setError("در حال حاضر امکان دریافت سوالات متداول وجود ندارد.");
           // در صورت خطا، از داده‌های پیش‌فرض استفاده می‌کنیم
           setFaqItems([
             {
