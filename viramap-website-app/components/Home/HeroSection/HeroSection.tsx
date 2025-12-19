@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "./HeroSectionOverrides.css";
 
@@ -10,14 +10,15 @@ const HeroSection = () => {
   const router = useRouter();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
+  // پیش‌بارگذاری صفحه «تماس با ما» برای سریع‌تر شدن کلیک روی «مشاوره رایگان»
+  useEffect(() => {
+    router.prefetch("/about-us?free=1#free-consultation");
+  }, [router]);
+
   const openDemoModal = () => setIsDemoModalOpen(true);
   const closeDemoModal = () => setIsDemoModalOpen(false);
 
-  // استفاده از useMemo برای جلوگیری از محاسبه مجدد در هر render
-  const backgroundImageUrl = useMemo(
-    () => `/images/hero/background.svg?v=${BACKGROUND_IMAGE_VERSION}`,
-    []
-  );
+  const backgroundImageUrl = `/images/hero/background.svg?v=${BACKGROUND_IMAGE_VERSION}`;
 
   return (
     <section className="relative w-full min-h-screen bg-[#141414]/70 backdrop-blur-md text-white overflow-hidden flex flex-col items-center justify-center pt-12 pb-1 md:py-20 lg:py-0 hero-section-1280">

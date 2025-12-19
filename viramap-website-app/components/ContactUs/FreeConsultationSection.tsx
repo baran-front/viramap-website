@@ -69,8 +69,8 @@ const FreeConsultationSection = ({
   return (
     <section
       ref={sectionRef}
-      id="free-consultation-section"
-      className="w-full flex justify-center items-center pt-32 pb-20 px-4 sm:px-6 lg:px-10 bg-transparent scroll-mt-20"
+      id="free-consultation"
+      className="w-full flex justify-center items-center pt-32 pb-0 px-4 sm:px-6 lg:px-10 bg-transparent scroll-mt-20"
     >
       <div className="relative w-full max-w-[1480px] rounded-2xl md:rounded-[24px] lg:rounded-[28px] border border-white/10 bg-white/10 backdrop-blur-[10px] shadow-[0_24px_80px_rgba(15,23,42,0.85)] overflow-hidden min-h-[72px]">
         {/* محتوای اصلی */}
@@ -195,12 +195,24 @@ const FreeConsultationSection = ({
           {/* ستون تصویر / آیکون در سمت چپ برای دسکتاپ */}
           <div className="hidden lg:flex flex-1 items-center justify-center">
             <div className="relative w-full max-w-[360px] aspect-square flex items-center justify-center">
-              <div className="absolute inset-0 rounded-[40px] bg-gradient-to-br from-[#0EA5E9]/20 via-[#6366F1]/10 to-[#F97316]/10 blur-3xl" />
-              <div className="relative z-10 h-[220px] w-[220px] rounded-[40px] bg-gradient-to-br from-[#FACC15] via-[#F97316] to-[#2563EB] flex items-center justify-center shadow-[0_25px_60px_rgba(15,23,42,0.8)]">
-                <div className="h-[80px] w-[80px] rounded-full bg-white flex items-center justify-center shadow-[0_18px_40px_rgba(15,23,42,0.35)]">
-                  <span className="text-2xl" aria-hidden="true">
-                    📞
-                  </span>
+              <div className="absolute inset-0 rounded-[40px] bg-gradient-to-br from-[#0EA5E9]/15 via-[#6366F1]/8 to-[#F97316]/8 blur-3xl" />
+              <div className="relative z-10 h-[220px] w-[220px] rounded-[40px] bg-gradient-to-br from-[#1E293B] via-[#020617] to-[#020617] flex items-center justify-center shadow-[0_20px_50px_rgba(15,23,42,0.85)]">
+                <div className="h-[80px] w-[80px] rounded-full bg-white/95 flex items-center justify-center shadow-[0_16px_36px_rgba(15,23,42,0.35)]">
+                  <svg
+                    className="h-9 w-9 text-slate-900"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M6.5 4.5L9 4l2 3-1.5 1.5a10 10 0 004 4L15 11l3 2-.5 2.5a2 2 0 01-2 1.5C10.5 17 7 13.5 6 10a2 2 0 01.5-1.5L8 7z"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </div>
               </div>
             </div>

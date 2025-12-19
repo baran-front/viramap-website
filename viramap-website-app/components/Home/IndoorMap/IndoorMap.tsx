@@ -7,7 +7,7 @@ const IndoorMap = () => {
   return (
     <div>
       {/* Section 1 */}
-      <section className="bg-[#141414]/70 backdrop-blur-md text-white flex items-center justify-center py-8 sm:py-10 md:py-12 lg:py-16 px-5 sm:px-6 md:px-8 lg:px-12 xl:px-20 font-[family-name:Ravi,system-ui]">
+      <section className="bg-[#141414]/70 backdrop-blur-md text-white flex items-center justify-center py-8 sm:py-10 md:py-12 lg:py-16 px-5 sm:px-6 md:px-8 lg:px-12 xl:px-20 font-ravi">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 md:gap-6 lg:gap-12 xl:gap-16 max-w-[1400px] w-full">
           {/* Left Side - Content */}
           <div className="flex-1 lg:flex-[0_0_52%] flex flex-col items-start md:items-start lg:items-end w-full lg:w-auto order-1 lg:order-1">
@@ -72,7 +72,7 @@ const IndoorMap = () => {
       </section>
 
       {/* Section 2 */}
-      <section className="bg-[#141414]/70 backdrop-blur-md text-white flex items-center justify-center py-8 sm:py-10 md:py-12 lg:pt-2 lg:pb-16 px-5 sm:px-6 md:px-8 lg:px-12 xl:px-20 font-[family-name:Ravi,system-ui] relative overflow-hidden">
+      <section className="bg-[#141414]/70 backdrop-blur-md text-white flex items-center justify-center py-8 sm:py-10 md:py-12 lg:pt-2 lg:pb-16 px-5 sm:px-6 md:px-8 lg:px-12 xl:px-20 font-ravi relative overflow-hidden">
         {/* Background Ellipses */}
         <div className="absolute inset-0 overflow-visible pointer-events-none hidden lg:block z-0">
           {/* Ellipse 47 */}

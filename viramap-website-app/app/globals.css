@@ -1,6 +1,7 @@
 /* app/globals.css */
 @import "tailwindcss";
 
+/* Root design tokens */
 :root {
   --background: #141414;
   --foreground: #e2e8f0;
@@ -212,20 +213,19 @@
   font-display: swap;
 }
 
-/* Hide scrollbar but keep scrolling functionality */
-* {
+/* Hide scrollbar but keep scrolling functionality (opt-in with .scrollbar-hide) */
+.scrollbar-hide {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
 }
 
-*::-webkit-scrollbar {
+.scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
 
 /* Optimize scrolling performance on touch devices */
 main {
   -webkit-overflow-scrolling: touch;
-  overflow-scrolling: touch;
   will-change: scroll-position;
 }
 
@@ -234,7 +234,6 @@ html {
   -ms-overflow-style: none; /* IE and Edge */
   font-family: var(--font-ravi);
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS/iPad */
-  overflow-scrolling: touch; /* Smooth scrolling on iOS/iPad */
 }
 
 html::-webkit-scrollbar {
@@ -251,7 +250,6 @@ body {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS/iPad */
-  overflow-scrolling: touch; /* Smooth scrolling on iOS/iPad */
   overscroll-behavior-y: contain; /* Prevent overscroll bounce on iOS */
   touch-action: pan-y; /* Enable vertical panning for touch devices */
   overflow-x: hidden; /* Prevent horizontal scroll for BackgroundBlur component */
@@ -305,13 +303,11 @@ body::-webkit-scrollbar {
 @media (hover: none) and (pointer: coarse) {
   * {
     -webkit-overflow-scrolling: touch;
-    overflow-scrolling: touch;
   }
 
   html,
   body {
     -webkit-overflow-scrolling: touch;
-    overflow-scrolling: touch;
     overscroll-behavior-y: contain;
   }
 }
@@ -551,16 +547,6 @@ body::-webkit-scrollbar {
     min-height: 460px !important;
     margin-bottom: 40px !important;
   }
-}
-
-/* Hide scrollbar for category tabs */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
 }
 
 /* Prevent autofill from changing input background color */

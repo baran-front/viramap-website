@@ -27,13 +27,16 @@ export const metadata: Metadata = {
   },
 };
 
-type AboutUsPageProps = {
-  searchParams?: Promise<{ [key: string]: string | string[] | undefined }> | { [key: string]: string | string[] | undefined };
+type AboutUsPageSearchParams = {
+  [key: string]: string | string[] | undefined;
 };
 
-export default async function AboutUsPage({ searchParams }: AboutUsPageProps) {
-  // پشتیبانی از هر دو حالت sync و async برای searchParams
-  const params = searchParams instanceof Promise ? await searchParams : searchParams ?? {};
+type AboutUsPageProps = {
+  searchParams?: AboutUsPageSearchParams;
+};
+
+export default function AboutUsPage({ searchParams }: AboutUsPageProps) {
+  const params = searchParams ?? {};
   const showFreeConsultation = params.free === "1";
 
   return (
@@ -44,4 +47,3 @@ export default async function AboutUsPage({ searchParams }: AboutUsPageProps) {
     </main>
   );
 }
-
