@@ -1,6 +1,7 @@
 // components/technologies/TechnologiesHero.tsx
 "use client";
 import "./TechnologiesHero.css";
+import { GlassSection } from "@/components/ui/glass-section";
 
 interface TechnologiesHeroProps {
   title: string;
@@ -13,53 +14,13 @@ export default function TechnologiesHero({
 }: TechnologiesHeroProps) {
   return (
     <section className="relative w-full flex justify-center items-center min-h-[372px] px-5 py-20 overflow-x-hidden">
-      {/* Main Content Box */}
-      <div
-        className="tech-hero-container relative flex flex-col justify-center items-center z-10 transform-gpu"
-        style={{
-          width: "1480px",
-          maxWidth: "90vw",
-          height: "372px",
-          padding: "80px 0px",
-          gap: "24px",
-          border: "1px solid #3F3F46",
-          borderRadius: "24px",
-          boxSizing: "border-box",
-          background: "#FAFAFA1A",
-          backdropFilter: "blur(10px)",
-          WebkitBackdropFilter: "blur(10px)",
-        }}
-      >
-        {/* Title */}
-        <div
-          className="tech-hero-title morabba-text flex items-center justify-center text-right"
-          style={{
-            width: "90%",
-            height: "92px",
-            fontSize: "60px",
-            lineHeight: "92px",
-            color: "#FAFAFA",
-            fontWeight: "bold",
-          }}
-        >
-          {title}
-        </div>
-
-        {/* Description */}
-        <p
-          className="yekanbakh-text text-center tech-hero-description"
-          style={{
-            width: "720px",
-            maxWidth: "90%",
-            height: "96px",
-            fontSize: "16px",
-            lineHeight: "32px",
-            color: "#E4E4E7",
-          }}
-        >
-          {description}
-        </p>
-      </div>
+      <GlassSection
+        title={title}
+        description={description}
+        className="tech-hero-container transform-gpu h-[372px] py-20 gap-6"
+        titleClassName="tech-hero-title morabba-text flex items-center justify-center text-right w-[90%] h-[92px] text-[60px] leading-[92px] text-[#FAFAFA] font-bold pb-0"
+        descriptionClassName="yekanbakh-text text-center tech-hero-description w-[720px] max-w-[90%] h-[96px] text-base leading-8 text-[#E4E4E7]"
+      />
     </section>
   );
 }

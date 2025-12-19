@@ -6,9 +6,47 @@ import PlatformHero from "@/components/platform/PlatformHero";
 import PlatformSection2 from "@/components/platform/PlatformSection2";
 import PlatformSection3 from "@/components/platform/PlatformSection3";
 import PlatformSection4 from "@/components/platform/PlatformSection4";
+import { getHeroByGroupName } from "@/components/lib/fetches/hero";
 
 export default function PlatformPage() {
   const [loading, setLoading] = useState(true);
+  const [heroTitle, setHeroTitle] = useState<string>("پلتفرم ها");
+  const [heroDescription, setHeroDescription] = useState<string>(
+    "یک سیستم موقعیت یابی داخلی منحصر به فرد برای افزودن موقعیت جغرافیایی به برنامه ها و راه حل های اطلاعاتی شما در چند روز"
+  );
+
+  // تابع برای استخراج متن از HTML
+  const extractTextFromHTML = (html: string): string => {
+    let text = html
+      .replace(/<[^>]*>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&apos;/g, "'")
+      .replace(/\s+/g, " ")
+      .trim();
+    return text;
+  };
+
+  // دریافت داده‌های Hero از API
+  useEffect(() => {
+    async function fetchHero() {
+      try {
+        const result = await getHeroByGroupName({ groupName: "hero-platform" });
+        if (result.ok && result.data) {
+          setHeroTitle(result.data.name);
+          const descriptionText = extractTextFromHTML(result.data.content);
+          setHeroDescription(descriptionText);
+        }
+      } catch (error) {
+        console.error("خطا در دریافت Hero:", error);
+      }
+    }
+
+    fetchHero();
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -193,8 +231,8 @@ export default function PlatformPage() {
       {/* Hero Section */}
       <div>
         <PlatformHero
-          title="پلتفرم ها"
-          description="یک سیستم موقعیت یابی داخلی منحصر به فرد برای افزودن موقعیت جغرافیایی به برنامه ها و راه حل های اطلاعاتی شما در چند روز"
+          title={heroTitle}
+          description={heroDescription}
           boxes={heroBoxes}
         />
       </div>

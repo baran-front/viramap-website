@@ -52,24 +52,11 @@ function ArticleCard({ article }: ArticleCardProps) {
   return (
     <Link
       href={`/articles/${article.id}`}
-      className="group overflow-hidden transition-all duration-300 hover:opacity-90 h-full flex flex-col"
-      style={{
-        padding: "8px",
-        borderRadius: "12px",
-        border: "1px solid rgba(255, 255, 255, 0.1)",
-        background: "rgba(250, 250, 250, 0.1)",
-        backdropFilter: "blur(10px)",
-        WebkitBackdropFilter: "blur(10px)",
-        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-      }}
+      className="group overflow-hidden transition-all duration-300 hover:opacity-90 h-full flex flex-col p-2 rounded-xl border border-white/10 bg-white/10 backdrop-blur-[10px] shadow-[0_8px_32px_rgba(0,0,0,0.1)]"
     >
       {/* تصویر */}
       <div
-        className="relative w-full overflow-hidden shrink-0"
-        style={{
-          aspectRatio: "16/9",
-          borderRadius: "8px",
-        }}
+        className="relative w-full overflow-hidden shrink-0 aspect-video rounded-lg"
       >
         <Image
           src={imageSrc}
@@ -85,40 +72,25 @@ function ArticleCard({ article }: ArticleCardProps) {
       <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-0 flex-1 flex flex-col">
         {/* عنوان */}
         <h3
-          className="font-ravi font-medium text-white mb-2 sm:mb-3 leading-relaxed shrink-0"
-          style={{
-            fontSize: "clamp(16px, 4vw, 18px)",
-            fontWeight: 500,
-            lineHeight: "1.8",
-          }}
+          className="font-ravi font-medium text-white mb-2 sm:mb-3 leading-[1.8] shrink-0 text-[clamp(16px,4vw,18px)]"
         >
           {article.title}
         </h3>
 
         {/* خلاصه */}
         <p
-          className="font-ravi text-gray-300 leading-relaxed mb-4 sm:mb-5 flex-1"
-          style={{
-            fontSize: "clamp(13px, 3.5vw, 14px)",
-            lineHeight: "1.6",
-            color: "rgba(255, 255, 255, 0.5)",
-          }}
+          className="font-ravi leading-[1.6] mb-4 sm:mb-5 flex-1 text-[clamp(13px,3.5vw,14px)] text-white/50"
         >
           {shortSummary}
         </p>
 
         {/* اطلاعات نویسنده و تاریخ */}
         <div
-          className="flex items-center gap-3 shrink-0"
-          style={{ direction: "rtl" }}
+          className="flex items-center gap-3 shrink-0 rtl"
         >
           {/* آواتار نویسنده */}
           <div
-            className="relative rounded-full overflow-hidden shrink-0"
-            style={{
-              width: "clamp(35px, 8vw, 40px)",
-              height: "clamp(35px, 8vw, 40px)",
-            }}
+            className="relative rounded-full overflow-hidden shrink-0 w-[clamp(35px,8vw,40px)] h-[clamp(35px,8vw,40px)]"
           >
             <Image
               src={authorImageSrc}
@@ -132,21 +104,12 @@ function ArticleCard({ article }: ArticleCardProps) {
           {/* نام و تاریخ نویسنده */}
           <div className="flex-1 min-w-0">
             <p
-              className="font-ravi text-white truncate"
-              style={{
-                fontSize: "clamp(13px, 3.5vw, 14px)",
-                marginBottom: "2px",
-                fontWeight: 400,
-              }}
+              className="font-ravi text-white truncate text-[clamp(13px,3.5vw,14px)] mb-0.5 font-normal"
             >
               {article.authorName || "ویرامپ"}
             </p>
             <p
-              className="font-ravi truncate"
-              style={{
-                fontSize: "clamp(11px, 3vw, 12px)",
-                color: "rgba(255, 255, 255, 0.5)",
-              }}
+              className="font-ravi truncate text-[clamp(11px,3vw,12px)] text-white/50"
             >
               {persianDate}
             </p>

@@ -63,14 +63,10 @@ export default function SimpleImplementationProcess() {
             </div>
             {isHovering && (
               <div
-                className="absolute pointer-events-none z-10"
+                className="absolute pointer-events-none z-10 w-[200px] h-[200px] rounded-full transition-opacity duration-200 ease-in-out"
                 style={{
                   left: `${mousePosition.x - 100}px`,
                   top: `${mousePosition.y - 100}px`,
-                  width: "200px",
-                  height: "200px",
-                  transition: "opacity 0.2s ease",
-                  borderRadius: "50%",
                 }}
               />
             )}

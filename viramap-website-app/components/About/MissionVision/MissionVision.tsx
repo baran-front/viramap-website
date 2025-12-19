@@ -33,11 +33,7 @@ export default function MissionVision() {
         <div className="relative w-full h-full">
           {/* فقط تصویر با سایه - بدون بلور پشت */}
           <div
-            className="w-full h-full bg-cover bg-center"
-            style={{
-              backgroundImage: "url(/images/About/about1.png)",
-              filter: "drop-shadow(10px 15px 20px rgba(248, 248, 248, 0.24))",
-            }}
+            className="w-full h-full bg-[url('/images/About/about1.png')] bg-cover bg-center drop-shadow-[10px_15px_20px_rgba(248,248,248,0.24)]"
           />
         </div>
       </div>

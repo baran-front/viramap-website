@@ -26,40 +26,10 @@ export default function TechnologySectionWithImage() {
 
               {/* Read More Button */}
               {/* Button Container با justify-content: flex-end */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  width: "100%",
-                  flex: "none",
-                  order: 2,
-                  flexGrow: 0,
-                  marginTop: "8px",
-                }}
-              >
+              <div className="flex justify-end w-full flex-none order-2 flex-grow-0 mt-2">
                 {/* Button */}
-                <button
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "end",
-                    gap: "8px",
-                    width: "195px",
-                    height: "24px",
-                    fontFamily: "'Yekan Bakh', sans-serif",
-                    fontStyle: "normal",
-                    fontWeight: 600,
-                    fontSize: "14px",
-                    lineHeight: "26px",
-                    color: "#FB6514",
-                    border: "none",
-                    cursor: "pointer",
-                    padding: "0",
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  <span style={{ display: "flex", alignItems: "center" }}>
+                <button className="flex flex-row items-center justify-end gap-2 w-[195px] h-6 yekanbakh-text font-semibold text-sm leading-[26px] text-[#FB6514] border-none cursor-pointer p-0 transition-all duration-300">
+                  <span className="flex items-center">
                     درباره ویرامپ
                   </span>
                   <svg
@@ -86,29 +56,14 @@ export default function TechnologySectionWithImage() {
           {/* Image Content - Right Side */}
           <div className="hidden lg:block lg:w-1/2 lg:overflow-visible">
             {/* Container اصلی تصویر با padding برای نمایش کامل سایه */}
-            <div
-              className="relative w-full h-[400px]"
-              style={{
-                padding: "40px",
-                margin: "-40px -40px -40px -120px",
-                transform: "translateZ(0)",
-              }}
-            >
+            <div className="relative w-full h-[400px] p-10 -m-10 -ml-[120px] transform-gpu">
               {/* تصویر اصلی با سایه روی خود عکس */}
-              <div
-                className="relative w-full h-full"
-                style={{
-                  transform: "translateZ(0)",
-                }}
-              >
+              <div className="relative w-full h-full transform-gpu">
                 <Image
                   src="/images/About/Technology.png"
                   alt="تکنولوژی پیشرفته ویرامپ"
                   fill
-                  className="object-contain"
-                  style={{
-                    filter: "drop-shadow(0 25px 60px rgba(248, 248, 248, 0.4))",
-                  }}
+                  className="object-contain drop-shadow-[0_25px_60px_rgba(248,248,248,0.4)]"
                   sizes="(max-width: 1024px) 0vw, 50vw"
                   priority
                   quality={90}

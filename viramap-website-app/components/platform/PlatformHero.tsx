@@ -1,5 +1,6 @@
 // components/platform/PlatformHero.tsx
 "use client";
+import { GlassSection } from "@/components/ui/glass-section";
 
 interface BoxItem {
   id: number;
@@ -14,13 +15,7 @@ interface PlatformHeroProps {
   boxes: BoxItem[];
 }
 
-// استایل‌های مشترک برای افکت شیشه‌ای
-const glassEffectStyle = {
-  background: "#FAFAFA1A", // 10% opacity white background
-  backdropFilter: "blur(20px)",
-  WebkitBackdropFilter: "blur(20px)",
-  border: "1px solid rgba(255, 255, 255, 0.2)",
-} as const;
+// استایل‌های مشترک برای افکت شیشه‌ای - استفاده از Tailwind classes
 
 export default function PlatformHero({
   title,
@@ -89,62 +84,25 @@ export default function PlatformHero({
           <div className="absolute inset-0">
             {/* Ellipse نارنجی */}
             <div
-              className="platform-hero-ellipse absolute rounded-full transform-gpu"
-              style={{
-                width: "484px",
-                height: "484px",
-                left: "calc(50% - 242px - 495px)",
-                top: "64px",
-                filter: "blur(50px)",
-                opacity: "0.9",
-              }}
+              className="platform-hero-ellipse absolute rounded-full transform-gpu w-[484px] h-[484px] left-[calc(50%-242px-495px)] top-16 blur-[50px] opacity-90"
             />
 
             {/* Ellipse بنفش */}
             <div
-              className="platform-hero-ellipse absolute rounded-full transform-gpu"
-              style={{
-                width: "600px",
-                height: "600px",
-                right: "-20%",
-                bottom: "-10%",
-                filter: "blur(180px)",
-                opacity: "0.7",
-              }}
+              className="platform-hero-ellipse absolute rounded-full transform-gpu w-[600px] h-[600px] -right-[20%] -bottom-[10%] blur-[180px] opacity-70"
             />
           </div>
         </div>
 
         {/* Main Content Box */}
-        <div
-          className="main-content-box relative flex flex-col justify-center items-center z-10 mb-6 md:mb-10 py-8 md:py-16 px-4 md:px-10 mt-[90px] gap-6 rounded-3xl box-border w-full max-w-[1480px] transition-all duration-300 ease-in-out cursor-pointer"
-          style={glassEffectStyle}
-        >
-          {/* Title */}
-          <h1
-            className="w-full text-center mb-4 text-white leading-tight text-3xl md:text-[48px] px-4 md:px-0"
-            style={{
-              fontFamily: "'Morabba', sans-serif",
-              fontWeight: "700",
-            }}
-          >
-            {title}
-          </h1>
-
-          {/* Description */}
-          <p
-            className="w-full max-w-[740px] text-center m-0 text-[#AAAAAA] leading-[1.8] px-4 md:px-0"
-            style={{
-              fontFamily: "'Yekan Bakh', sans-serif",
-              fontWeight: "400",
-              fontSize: "14px",
-              textAlign: "justify",
-              textAlignLast: "right",
-            }}
-          >
-            {description}
-          </p>
-        </div>
+        <GlassSection
+          title={title}
+          description={description}
+          descriptionAlign="justify"
+          className="main-content-box mb-6 md:mb-10 py-8 md:py-16 px-4 md:px-10 mt-[90px] gap-6 transition-all duration-300 ease-in-out cursor-pointer w-full max-w-[1480px]"
+          titleClassName="w-full text-center mb-4 text-white leading-tight text-3xl md:text-[48px] px-4 md:px-0 morabba-text font-bold pb-0"
+          descriptionClassName="w-full max-w-[740px] text-center m-0 text-[#AAAAAA] leading-[1.8] px-4 md:px-0 yekanbakh-text font-normal text-sm"
+        />
 
         {/* 4 Boxes Section */}
         <div className="relative z-10 w-full max-w-[1480px]">
@@ -152,11 +110,7 @@ export default function PlatformHero({
             {boxes.map((box) => (
               <div
                 key={box.id}
-                className="platform-box group flex flex-col items-center relative w-full md:flex-1 md:max-w-[calc((100%-72px)/4)] p-4 md:p-6 gap-2 min-w-0 rounded-2xl transition-all duration-300 ease-in-out cursor-pointer hover:scale-105 overflow-hidden"
-                style={{
-                  height: "232px",
-                  ...glassEffectStyle,
-                }}
+                className="platform-box group flex flex-col items-center relative w-full md:flex-1 md:max-w-[calc((100%-72px)/4)] p-4 md:p-6 gap-2 min-w-0 rounded-2xl transition-all duration-300 ease-in-out cursor-pointer hover:scale-105 overflow-hidden h-[232px] bg-white/10 backdrop-blur-[20px] border border-white/20"
               >
                 {/* Icon */}
                 <div className="icon-wrapper flex items-center justify-center w-14 h-14 flex-none order-0 grow-0 transition-all duration-300 group-hover:scale-110">
@@ -165,28 +119,14 @@ export default function PlatformHero({
 
                 {/* Title */}
                 <h3
-                  className="text-center w-full h-8 flex-none order-1 self-stretch grow-0 leading-8 transition-all duration-300 group-hover:text-white"
-                  style={{
-                    fontFamily: "'Morabba', sans-serif",
-                    fontWeight: "600",
-                    fontSize: "16px",
-                    color: "#E4E4E7",
-                  }}
+                  className="text-center w-full h-8 flex-none order-1 self-stretch grow-0 leading-8 transition-all duration-300 group-hover:text-white morabba-text font-semibold text-base text-[#E4E4E7]"
                 >
                   {box.title}
                 </h3>
 
                 {/* Description */}
                 <p
-                  className="text-center w-full h-20 flex-none order-2 self-stretch grow-0 leading-[19px] transition-all duration-300 group-hover:text-[#E4E4E7]"
-                  style={{
-                    fontFamily: "'Yekan Bakh', sans-serif",
-                    fontWeight: "400",
-                    fontSize: "14px",
-                    color: "#D4D4D8",
-                    textAlign: "justify",
-                    textAlignLast: "right",
-                  }}
+                  className="text-center w-full h-20 flex-none order-2 self-stretch grow-0 leading-[19px] transition-all duration-300 group-hover:text-[#E4E4E7] yekanbakh-text font-normal text-sm text-[#D4D4D8] text-justify text-right"
                 >
                   {box.description}
                 </p>

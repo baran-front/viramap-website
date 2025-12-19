@@ -44,17 +44,10 @@ export default function WhyViramap() {
             <div className="space-y-4 sm:space-y-6 lg:space-y-8 text-right">
               {/* Title Frame */}
               <div
-                className="why-viramap-title-container space-y-2 mx-auto lg:mx-0"
-                style={{
-                  width: "100%",
-                  maxWidth: "616px",
-                }}
+                className="why-viramap-title-container space-y-2 mx-auto lg:mx-0 w-full max-w-[616px]"
               >
                 <h2
-                  className="font-ravi font-medium text-2xl sm:text-3xl md:text-4xl text-white"
-                  style={{
-                    lineHeight: "1.4",
-                  }}
+                  className="font-ravi font-medium text-2xl sm:text-3xl md:text-4xl text-white leading-[1.4]"
                 >
                   چرا استفاده از ویرامپ رضایت بازدیدکنندگان را افزایش می‌دهد؟
                 </h2>
@@ -62,10 +55,7 @@ export default function WhyViramap() {
 
               {/* Description */}
               <p
-                className="font-ravi font-normal text-base text-gray-300 text-justify"
-                style={{
-                  lineHeight: "32px",
-                }}
+                className="font-ravi font-normal text-base text-gray-300 text-justify leading-8"
               >
                 مراجعه‌کنندگان در فضاهای بزرگ و پیچیده مثل بیمارستان‌ها، مراکز
                 تجاری و نمایشگاه‌ها، اغلب به کمک نیاز دارند تا سریع‌تر به

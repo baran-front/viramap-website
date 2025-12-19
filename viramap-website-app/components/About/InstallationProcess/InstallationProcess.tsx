@@ -19,11 +19,7 @@ export default function InstallationProcess() {
 
         {/* Description Text */}
         <div
-          className="w-full font-ravi font-normal text-sm sm:text-base leading-7 sm:leading-8 text-justify text-gray-300"
-          style={{
-            textAlignLast: "right",
-            direction: "rtl",
-          }}
+          className="w-full font-ravi font-normal text-sm sm:text-base leading-7 sm:leading-8 text-justify text-gray-300 text-right rtl"
         >
           پیاده‌سازی ایندور مپ برای کسب‌وکارها بسیار ساده‌تر از آن است که ممکن
           است تصور شود.{" "}
@@ -78,14 +74,7 @@ export default function InstallationProcess() {
       <div className="hidden lg:block relative w-[480px] h-[480px] shrink-0">
         {/* Main Image */}
         <div
-          className="w-full h-full bg-cover bg-center rounded-xl"
-          style={{
-            backgroundImage: "url(/images/About/about3.png)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            filter: "drop-shadow(10px 15px 20px rgba(248, 248, 248, 0.24))",
-          }}
+          className="w-full h-full bg-[url('/images/About/about3.png')] bg-cover bg-center bg-no-repeat rounded-xl drop-shadow-[10px_15px_20px_rgba(248,248,248,0.24)]"
         />
       </div>
       <style jsx>{`

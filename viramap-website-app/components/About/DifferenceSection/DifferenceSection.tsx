@@ -8,13 +8,7 @@ export default function DifferenceSection() {
       <div className="block relative w-full max-w-[200px] sm:max-w-[250px] md:max-w-[350px] md:h-[220px] lg:w-1/2 lg:max-w-none lg:h-[476px] mx-auto md:mx-0">
         {/* Image */}
         <div
-          className="absolute w-full h-full"
-          style={{
-            backgroundImage: "url(/images/About/three-phones.png)",
-            backgroundSize: "contain",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
+          className="absolute w-full h-full bg-[url('/images/About/three-phones.png')] bg-contain bg-center bg-no-repeat"
         />
       </div>
 
@@ -25,10 +19,7 @@ export default function DifferenceSection() {
         </h2>
 
         <p
-          className="w-full font-ravi font-normal text-xs sm:text-sm md:text-base leading-6 sm:leading-7 md:leading-8 text-justify text-gray-300"
-          style={{
-            textAlignLast: "right",
-          }}
+          className="w-full font-ravi font-normal text-xs sm:text-sm md:text-base leading-6 sm:leading-7 md:leading-8 text-justify text-gray-300 text-right"
         >
           ویرا مپ، به‌عنوان اولین مسیریاب داخلی ایران، با ارائه نقشه‌های دقیق
           برای فضاهای بسته، مانند بیمارستان‌ها، فرودگاه‌ها، مراکز خرید و

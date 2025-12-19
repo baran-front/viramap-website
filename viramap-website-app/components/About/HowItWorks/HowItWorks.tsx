@@ -7,14 +7,7 @@ export default function HowItWorks() {
       <div className="hidden lg:block relative w-full sm:w-4/5 lg:w-[40%] max-w-[480px] lg:max-w-[480px] h-auto aspect-square z-[2]">
         {/* Main Image */}
         <div
-          className="w-full h-full bg-cover bg-center rounded-xl"
-          style={{
-            backgroundImage: "url(/images/About/about2.png)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            filter: "drop-shadow(0 10px 30px rgba(0,0,0,0.3))",
-          }}
+          className="w-full h-full bg-[url('/images/About/about2.png')] bg-cover bg-center bg-no-repeat rounded-xl drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
         />
       </div>
 
@@ -25,10 +18,7 @@ export default function HowItWorks() {
         </h2>
 
         <div
-          className="w-full font-ravi font-normal text-sm sm:text-base leading-7 sm:leading-8 text-justify text-gray-300"
-          style={{
-            textAlignLast: "right",
-          }}
+          className="w-full font-ravi font-normal text-sm sm:text-base leading-7 sm:leading-8 text-justify text-gray-300 text-right"
         >
           ایندور مپ (Indoor Map) با استفاده از فناوری‌های پیشرفته‌ای مانند
           سیستم‌های مکان‌یابی داخلی (IPS) کار می‌کند که به کاربران کمک می‌کند

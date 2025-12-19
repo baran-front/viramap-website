@@ -7,9 +7,10 @@ import { InfoIcon } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ArticlesCategoryTabs from "@/components/templates/articlesCategoryTabs";
 import Link from "next/link";
-import PageHero from "@/components/modules/pageHero";
 import ArticleCard from "@/components/modules/articleCard";
 import { getArticleCategories, type ArticleCategory } from "@/components/lib/apiFunctions";
+import { getHeroByGroupName } from "@/components/lib/fetches/hero";
+import { GlassSection } from "@/components/ui/glass-section";
 
 const mockArticles = [
   {
@@ -113,11 +114,107 @@ const mockArticles = [
   },
 ];
 
+interface ArticlesHeroProps {
+  title?: string;
+  description?: string;
+}
+
+function ArticlesHero({ title, description }: ArticlesHeroProps) {
+  const titleText = title ?? "اخبار و مقالات";
+  const descriptionText =
+    description ??
+    "در بخش اخبار و مقالات، جدید ترین اطلاعات و تحلیل ها درباره ERP و مدیریت سازمانی را مطالعه کنید. این محتوا شامل مقالات تخصصی و اخبار به روز است تا شما را در بهبود کسب و کارتان یاری دهد.";
+
+  return (
+    <div
+      className="relative w-full articles-hero-container min-h-[427px]"
+    >
+      {/* Union - Header Background */}
+      <div
+        className="absolute box-border articles-hero-bg h-[304px] top-[123px] rounded-[32px]"
+      />
+
+      {/* Ellipse - Hidden */}
+      <div
+        className="absolute w-[384px] h-[116px] left-[528px] top-[386px] invisible"
+      />
+
+      {/* Content - positioned inside the box */}
+      <div
+        className="absolute z-10 articles-hero-content h-[304px] top-[123px] flex items-center justify-center"
+      >
+        <GlassSection
+          title={titleText}
+          description={descriptionText}
+          className="w-full h-full px-8 md:px-12 md:py-12 border-0 bg-transparent backdrop-blur-none rounded-none min-h-0"
+          titleClassName="font-ravi text-4xl md:text-5xl font-medium text-white mb-4 pb-0 text-center"
+          descriptionClassName="font-ravi text-base md:text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto px-4 text-center"
+        />
+      </div>
+    </div>
+  );
+}
+
 function ArticlesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [categories, setCategories] = useState<ArticleCategory[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [heroTitle, setHeroTitle] = useState<string | undefined>(undefined);
+  const [heroDescription, setHeroDescription] = useState<string | undefined>(undefined);
+  const [heroLoading, setHeroLoading] = useState(true);
+
+  // تابع برای استخراج متن از HTML
+  const extractTextFromHTML = (html: string): string => {
+    // حذف تگ‌های HTML و تبدیل entity ها
+    let text = html
+      .replace(/<[^>]*>/g, "") // حذف تمام تگ‌های HTML
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&apos;/g, "'")
+      .replace(/\s+/g, " ") // تبدیل فضاهای متعدد به یک فضا
+      .trim();
+    return text;
+  };
+
+  // دریافت داده‌های Hero از API
+  useEffect(() => {
+    async function fetchHero() {
+      setHeroLoading(true);
+      try {
+        const result = await getHeroByGroupName({ groupName: "hero-articles" });
+        console.log("نتیجه دریافت Hero:", {
+          ok: result.ok,
+          hasData: !!result.data,
+          error: result.error,
+          status: result.status,
+        });
+
+        if (result.ok && result.data) {
+          // استفاده از name به عنوان title
+          setHeroTitle(result.data.name);
+          
+          // استخراج متن از content HTML
+          const descriptionText = extractTextFromHTML(result.data.content);
+          setHeroDescription(descriptionText);
+        } else {
+          console.error(
+            "خطا در دریافت Hero:",
+            result.error || result.status || "خطای نامشخص"
+          );
+        }
+      } catch (error) {
+        console.error("خطا در دریافت Hero:", error);
+      } finally {
+        setHeroLoading(false);
+      }
+    }
+
+    fetchHero();
+  }, []);
 
   // دریافت دسته‌بندی‌ها از API
   useEffect(() => {
@@ -125,12 +222,20 @@ function ArticlesPage() {
       setCategoriesLoading(true);
       try {
         const result = await getArticleCategories();
-        console.log("نتیجه دریافت دسته‌بندی‌ها:", { ok: result.ok, hasData: !!result.data, error: result.error, status: result.status });
-        
+        console.log("نتیجه دریافت دسته‌بندی‌ها:", {
+          ok: result.ok,
+          hasData: !!result.data,
+          error: result.error,
+          status: result.status,
+        });
+
         if (result.ok && result.data) {
           setCategories(result.data);
         } else {
-          console.error("خطا در دریافت دسته‌بندی‌ها:", result.error || result.status || "خطای نامشخص");
+          console.error(
+            "خطا در دریافت دسته‌بندی‌ها:",
+            result.error || result.status || "خطای نامشخص"
+          );
         }
       } catch (error) {
         console.error("خطا در دریافت دسته‌بندی‌ها:", error);
@@ -159,65 +264,7 @@ function ArticlesPage() {
   return (
     <>
       {/* Page Hero */}
-      <div
-        className="relative w-full articles-hero-container"
-        style={{ minHeight: "427px" }}
-      >
-        {/* Union - Header Background */}
-        <div
-          className="absolute box-border articles-hero-bg"
-          style={{
-            width: "1480px",
-            maxWidth: "calc(100% - 160px)",
-            height: "304px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            top: "123px",
-            borderRadius: "32px",
-          }}
-        />
-
-        {/* Ellipse - Hidden */}
-        <div
-          className="absolute"
-          style={{
-            width: "384px",
-            height: "116px",
-            left: "528px",
-            top: "386px",
-            visibility: "hidden",
-          }}
-        />
-
-        {/* Content - positioned inside the box */}
-        <div
-          className="absolute z-10 articles-hero-content"
-          style={{
-            width: "1280px",
-            maxWidth: "calc(100% - 160px)",
-            height: "304px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            top: "123px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <div className="w-full px-8 md:px-12 md:py-12 h-full flex items-center">
-            <div className="text-center w-full">
-              <h1 className="font-ravi text-4xl md:text-5xl font-medium text-white mb-4">
-                اخبار و مقالات
-              </h1>
-              <p className="font-ravi text-base md:text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto px-4">
-                در بخش اخبار و مقالات، جدید ترین اطلاعات و تحلیل ها درباره ERP و
-                مدیریت سازمانی را مطالعه کنید. این محتوا شامل مقالات تخصصی و
-                اخبار به روز است تا شما را در بهبود کسب و کارتان یاری دهد.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ArticlesHero title={heroTitle} description={heroDescription} />
 
       <div className="w-full">
         <div className="container mt-12 mx-auto">
@@ -239,8 +286,7 @@ function ArticlesPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="جستجوی مقاله"
-              className="flex-1 border border-gray-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:border-orange-500"
-              style={{ backgroundColor: "#52525B1A" }}
+              className="flex-1 border border-gray-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:border-orange-500 bg-[#52525B1A]"
             />
             <button className="bg-orange-500 hover:bg-orange-600 text-white rounded-lg px-6 flex items-center justify-center transition-colors">
               <svg

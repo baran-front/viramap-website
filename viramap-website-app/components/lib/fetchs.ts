@@ -1,12 +1,14 @@
-//componenets/lib/fetchs.ts
+// components/lib/fetches/common.ts
 /**
  * ماژول توابع سطح بالاتر برای دریافت داده از API
  * این ماژول شامل توابع آماده برای دریافت داده‌های مختلف از بک‌اند است
  * تمام توابع از async/await استفاده می‌کنند و خطاها را به خوبی مدیریت می‌کنند
  */
 
-import { safeFetch, SafeFetchResult } from "./api";
+import { safeFetch } from "./api";
 import { API_CONFIG } from "./constants";
+import type { ApiResult } from "./api/types";
+import { SLIDER_ENDPOINTS, SOLUTION_ENDPOINTS, FAQ_ENDPOINTS, MENU_ENDPOINTS, CMS_ENDPOINTS } from "./api/endpoints";
 
 // ==================== انواع داده ====================
 
@@ -47,13 +49,6 @@ export type SolutionData = {
 };
 
 /**
- * نتیجه درخواست با داده
- */
-export type FetchResult<T> = SafeFetchResult<T> & {
-  data: T | null;
-};
-
-/**
  * آیتم سوال متداول
  */
 export type FAQItem = {
@@ -87,9 +82,9 @@ export type FAQResponse = {
  * این تابع تمام اسلایدهای فعال را از سرور دریافت می‌کند
  * @returns لیست اسلایدها یا null در صورت بروز خطا
  */
-export async function fetchSliderItems(): Promise<FetchResult<SliderItem[]>> {
+export async function fetchSliderItems(): Promise<ApiResult<SliderItem[]>> {
   try {
-    const response = await safeFetch<SliderItem[]>("/slider", {
+    const response = await safeFetch<SliderItem[]>(SLIDER_ENDPOINTS.list, {
       method: "GET",
     });
 
@@ -122,7 +117,7 @@ export async function fetchSliderItems(): Promise<FetchResult<SliderItem[]>> {
  * @returns لیست تمام راهکارها یا null در صورت بروز خطاe
     xport async function fetchAllSolu(
    ): o  mise<
-  FetchResulto  lutionData[]>
+  ApiResult<SolutionData[]>
   {
   r y {
     const respons=   await safeFetch<SolutionData[]>(s  olutions-data", {
@@ -160,10 +155,10 @@ export async function fetchSliderItems(): Promise<FetchResult<SliderItem[]>> {
  * @returns لیست تمام راهکارها یا null در صورت بروز خطا
  */
 export async function fetchAllSolutions(): Promise<
-  FetchResult<SolutionData[]>
+  ApiResult<SolutionData[]>
 > {
   try {
-    const response = await safeFetch<SolutionData[]>("/api/solutions-data", {
+    const response = await safeFetch<SolutionData[]>(SOLUTION_ENDPOINTS.list, {
       method: "GET",
     });
 
@@ -200,7 +195,7 @@ export async function fetchAllSolutions(): Promise<
  */
 export async function fetchSolutionByCategory(
   category: SolutionCategoryId
-): Promise<FetchResult<SolutionData>> {
+): Promise<ApiResult<SolutionData>> {
   try {
     // اعتبارسنجی ورودی
     if (!category || typeof category !== "string") {
@@ -219,7 +214,7 @@ export async function fetchSolutionByCategory(
     // ساخت URL با query parameter
     const searchParams = new URLSearchParams({ category });
     const response = await safeFetch<SolutionData>(
-      `/solutions-data?${searchParams.toString()}`,
+      SOLUTION_ENDPOINTS.byCategory(category),
       {
         method: "GET",
       }
@@ -257,7 +252,7 @@ export async function fetchSolutionByCategory(
 export async function fetchFAQs(
   tenant: string = API_CONFIG.DEFAULT_TENANT,
   locale: string = API_CONFIG.DEFAULT_LOCALE
-): Promise<FetchResult<FAQResponse>> {
+): Promise<ApiResult<FAQResponse>> {
   try {
     // توجه: safeFetch همیشه endPoint را به BASE_URL اضافه می‌کند
     // با توجه به اینکه BASE_URL شامل `/api` است (مثل: https://api.arvinvira.com/api)
@@ -343,7 +338,7 @@ export async function fetchHeaderMenu(
   groupName: string = "header",
   tenant: string = DEFAULT_TENANT,
   locale: string = DEFAULT_LOCALE
-): Promise<FetchResult<HeaderMenuResponse>> {
+): Promise<ApiResult<HeaderMenuResponse>> {
   try {
     // اعتبارسنجی ورودی‌ها
     if (!groupName || typeof groupName !== "string") {
@@ -362,7 +357,7 @@ export async function fetchHeaderMenu(
     // ارسال درخواست به API
     // توجه: BASE_URL شامل `/api` است، بنابراین endPoint باید از `/v1/...` شروع شود
     const response = await safeFetch<HeaderMenuResponse>(
-      "/v1/menulinks/client/groupnames",
+      MENU_ENDPOINTS.byGroup,
       {
         method: "POST",
         body: JSON.stringify({
@@ -407,7 +402,7 @@ export async function fetchHeaderMenu(
 export async function fetchHeaderViramapItem(
   tenant?: string,
   locale?: string
-): Promise<FetchResult<HeaderMenuItem>> {
+): Promise<ApiResult<HeaderMenuItem>> {
   try {
     // دریافت تمام منوهای هدر
     const result = await fetchHeaderMenu("header", tenant, locale);
@@ -499,12 +494,12 @@ export type CmsContentResponse = {
 export async function fetchFooterAboutContent(
   tenant: string = API_CONFIG.DEFAULT_TENANT,
   locale: string = API_CONFIG.DEFAULT_LOCALE
-): Promise<FetchResult<CmsContentResponse>> {
+): Promise<ApiResult<CmsContentResponse>> {
   try {
     // توجه: footer-about نام گروه است، نه بخشی از خود آدرس API
     // endpoint صحیح فقط /v1/cms/client/by-group-name است
     const response = await safeFetch<CmsContentResponse>(
-      "/v1/cms/client/by-group-name",
+      CMS_ENDPOINTS.cmsByGroupName,
       {
         method: "POST",
         headers: {

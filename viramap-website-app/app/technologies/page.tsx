@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import TechnologiesHero from "@/components/technologies/TechnologiesHero";
 import TechnologiesSection2 from "@/components/technologies/TechnologiesSection2";
 import TechnologiesSection3 from "@/components/technologies/TechnologiesSection3";
+import { getHeroByGroupName } from "@/components/lib/fetches/hero";
 
 const technologiesData = {
   hero: {
@@ -126,6 +127,43 @@ const technologiesData = {
 
 export default function TechnologiesPage() {
   const [loading, setLoading] = useState(true);
+  const [heroTitle, setHeroTitle] = useState<string>("تکنولوژی‌های ویرامپ");
+  const [heroDescription, setHeroDescription] = useState<string>(
+    "ویرامپ با استفاده از پیشرفته‌ترین تکنولوژی‌های مسیریابی و موقعیت‌یابی داخلی، راهکارهایی دقیق و کارآمد برای محیط‌های مختلف ارائه می‌دهد."
+  );
+
+  // تابع برای استخراج متن از HTML
+  const extractTextFromHTML = (html: string): string => {
+    let text = html
+      .replace(/<[^>]*>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&apos;/g, "'")
+      .replace(/\s+/g, " ")
+      .trim();
+    return text;
+  };
+
+  // دریافت داده‌های Hero از API
+  useEffect(() => {
+    async function fetchHero() {
+      try {
+        const result = await getHeroByGroupName({ groupName: "hero-technologies" });
+        if (result.ok && result.data) {
+          setHeroTitle(result.data.name);
+          const descriptionText = extractTextFromHTML(result.data.content);
+          setHeroDescription(descriptionText);
+        }
+      } catch (error) {
+        console.error("خطا در دریافت Hero:", error);
+      }
+    }
+
+    fetchHero();
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -148,8 +186,8 @@ export default function TechnologiesPage() {
       {/* Hero Section */}
       <div className="pt-8">
         <TechnologiesHero
-          title={technologiesData.hero.title}
-          description={technologiesData.hero.description}
+          title={heroTitle}
+          description={heroDescription}
         />
       </div>
 

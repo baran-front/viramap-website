@@ -4,77 +4,15 @@
  * شامل توابع فرم تماس، منوها، مقالات و نظرات
  */
 
-import { safeFetch, SafeFetchResult, CommonHeaders } from "./api";
+import { safeFetch, CommonHeaders } from "./api";
 import { API_CONFIG } from "./constants";
 import type { MenuItem, MenuApiResponse } from "./footerData";
+import type { ApiResult, PagedResult, PaginationParams } from "./api/types";
+import { buildErrorResult, toApiResult } from "./api/utils";
+import { ARTICLE_ENDPOINTS, MENU_ENDPOINTS, CONTACT_ENDPOINTS } from "./api/endpoints";
 
-// ==================== ثابت‌های Endpoint ====================
-// توجه: این مسیرها بر اساس الگوی فعلی بک‌اند (v1/.../client/...) تنظیم شده‌اند.
-// در صورت تفاوت با مستندات نهایی بک‌اند، فقط این مقادیر را به‌روزرسانی کنید.
-
-const ENDPOINTS = {
-  contactUs: "/v1/contactus/client/create",
-  menuByGroup: "/v1/menulinks/client/groupnames",
-  articlesSearch: "/v1/blogs/client/search",
-  articleCategories: "/v1/blogcategories/client/categories/zerocounter/5",
-  articleDetail: (id: number) => `/v1/blogs/client/${id}`,
-  articleCommentsSearch: "/v1/blog-comments/client/search",
-  articleCommentCreate: "/v1/blog-comments/client/create",
-} as const;
-
-// ==================== انواع عمومی ====================
-
-/**
- * نتیجه نهایی که توابع این فایل برمی‌گردانند
- * شامل فیلد کمکی data برای دسترسی سریع به داده است
- */
-export type ApiResult<T> = SafeFetchResult<T> & {
-  data: T | null;
-};
-
-/**
- * ساختار رایج برای نتایج صفحه‌بندی‌شده
- */
-export interface PagedResult<T> {
-  items: T[];
-  totalCount: number;
-  pageIndex: number;
-  pageSize: number;
-}
-
-/**
- * پارامترهای عمومی صفحه‌بندی
- */
-export interface PaginationParams {
-  page: number;
-  pageSize: number;
-}
-
-/**
- * کمک‌کننده برای تبدیل SafeFetchResult به ApiResult
- */
-function toApiResult<T>(response: SafeFetchResult<T>): ApiResult<T> {
-  return {
-    ...response,
-    data: response.result?.data ?? null,
-  };
-}
-
-function buildErrorResult<T>(
-  message: string,
-  statusCode = 500
-): ApiResult<T> {
-  return {
-    status: statusCode,
-    result: null,
-    ok: false,
-    data: null,
-    error: {
-      message,
-      statusCode,
-    },
-  };
-}
+// Re-export types for backward compatibility
+export type { ApiResult, PagedResult, PaginationParams };
 
 // ==================== 1. فرم تماس (Contact Us) ====================
 
@@ -107,7 +45,7 @@ export async function postContactUs(
 
   try {
     const response = await safeFetch<ContactUsResponse>(
-      ENDPOINTS.contactUs,
+      CONTACT_ENDPOINTS.create,
       {
         method: "POST",
         headers: {
@@ -163,7 +101,7 @@ export async function getMenuLinksByGroup(
 
   try {
     const response = await safeFetch<MenuLinksByGroupData>(
-      ENDPOINTS.menuByGroup,
+      MENU_ENDPOINTS.byGroup,
       {
         method: "POST",
         headers: {
@@ -266,7 +204,7 @@ export async function getArticles(
 
   try {
     const response = await safeFetch<GetArticlesResponse>(
-      ENDPOINTS.articlesSearch,
+      ARTICLE_ENDPOINTS.search,
       {
         method: "POST",
         headers: {
@@ -321,7 +259,7 @@ export async function getArticleCategories(
 ): Promise<ApiResult<GetArticleCategoriesResponse>> {
   try {
     const response = await safeFetch<ArticleCategoriesApiResponse>(
-      ENDPOINTS.articleCategories,
+      ARTICLE_ENDPOINTS.categories,
       {
         method: "GET",
       },
@@ -395,7 +333,7 @@ export async function getArticleDetail(
 
   try {
     const response = await safeFetch<GetArticleDetailResponse>(
-      ENDPOINTS.articleDetail(articleId),
+      ARTICLE_ENDPOINTS.detail(articleId),
       {
         method: "GET",
       },
@@ -476,7 +414,7 @@ export async function getArticleComments(
 
   try {
     const response = await safeFetch<GetArticleCommentsResponse>(
-      ENDPOINTS.articleCommentsSearch,
+      ARTICLE_ENDPOINTS.commentsSearch,
       {
         method: "POST",
         headers: {
@@ -553,7 +491,7 @@ export async function postComment(
 
   try {
     const response = await safeFetch<PostCommentResponse>(
-      ENDPOINTS.articleCommentCreate,
+      ARTICLE_ENDPOINTS.commentCreate,
       {
         method: "POST",
         headers: {
