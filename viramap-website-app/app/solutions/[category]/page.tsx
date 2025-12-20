@@ -2,7 +2,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import SolutionHero from "@/components/solutions/SolutionHero";
 import SolutionChallenges from "@/components/solutions/SolutionChallenges";
 import MallTopSection from "@/components/solutions/MallTopSection";
@@ -18,11 +18,6 @@ interface SolutionData {
   images: string[];
   isMall?: boolean;
 }
-
-// داده فیک برای همه راهکارها
-const fakeData: Record<string, SolutionData> = {
-  // ... داده‌های قبلی (همان fakeData که داری)
-};
 
 const mallBenefitsData = [
   {
@@ -53,6 +48,35 @@ export default function SolutionPage() {
   const category = params.category as string;
   const [data, setData] = useState<SolutionData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = useCallback(async () => {
+    if (!category) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch(
+        `/api/solutions-data?category=${encodeURIComponent(category)}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`خطا در دریافت داده‌ها: ${response.status}`);
+      }
+
+      const result: SolutionData = await response.json();
+      setData(result);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "خطای ناشناخته در دریافت داده‌ها";
+      console.error("Error fetching solution data:", err);
+      setError(errorMessage);
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [category]);
 
   useEffect(() => {
     // اگر مال بود به صفحه مخصوص هدایت کن
@@ -61,47 +85,24 @@ export default function SolutionPage() {
       return;
     }
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `/api/solutions-data?category=${category}`
-        );
-
-        if (response.ok) {
-          const result = await response.json();
-          setData(result);
-        } else {
-          throw new Error("API failed");
-        }
-      } catch (error) {
-        console.log("Using fake data for:", category);
-        const fake = fakeData[category];
-        setData(fake || null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (category) {
-      setTimeout(() => {
-        fetchData();
-      }, 300);
-    }
-  }, [category, router]);
+    fetchData();
+  }, [category, router, fetchData]);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen ">
+      <div className="flex justify-center items-center min-h-screen">
         <div className="text-white text-lg">در حال بارگذاری راهکار...</div>
       </div>
     );
   }
 
-  if (!data) {
+  if (error || !data) {
     return (
-      <div className="flex flex-col justify-center items-center min-h-screen  text-white">
+      <div className="flex flex-col justify-center items-center min-h-screen text-white">
         <h1 className="text-2xl mb-4">راهکار مورد نظر یافت نشد</h1>
-        <p className="mb-6">متأسفیم، راهکار "{category}" وجود ندارد.</p>
+        <p className="mb-6">
+          {error || `متأسفیم، راهکار "${category}" وجود ندارد.`}
+        </p>
         <a
           href="/solutions"
           className="bg-[#FB6514] hover:bg-[#B2480E] text-white px-6 py-3 rounded-lg transition-colors"
@@ -124,7 +125,7 @@ export default function SolutionPage() {
           ]}
         />
         <div className="pt-32">
-          <SolutionHero title={data.title} description={data.description} />
+          <SolutionHero category={category} />
         </div>
 
         <div className="py-20 px-4 solutions-section-spacing">
@@ -140,6 +141,7 @@ export default function SolutionPage() {
           <SolutionChallenges
             title={`چالش های پیش روی مراجعه کنندگان در ${data.title}`}
             challenges={[]}
+            category={category}
           />
         </div>
 
@@ -166,13 +168,14 @@ export default function SolutionPage() {
         ]}
       />
       <div className="pt-32">
-        <SolutionHero title={data.title} description={data.description} />
+        <SolutionHero category={category} />
       </div>
 
       <div className="py-16 solutions-section-spacing">
         <SolutionChallenges
           title={`چالش های پیش روی مراجعه کنندگان در ${data.title}`}
           challenges={[]}
+          category={category}
         />
       </div>
     </div>

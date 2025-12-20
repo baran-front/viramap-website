@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import Link from "next/link";
+import { formMessage } from "@/components/lib/form-message-hook";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,6 +17,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { postContactUs } from "@/components/lib/apiFunctions";
 
 // تایپ‌های فرم
 interface ContactFormValues {
@@ -37,6 +38,15 @@ const getGoogleMapsUrl = () => {
   )}!5e0!3m2!1sen!2s!4v1695553456789!5m2!1sen!2s`;
 };
 
+// Static style object to ensure consistent server/client rendering
+const ellipseStyle: React.CSSProperties = {
+  left: "calc(50% - 311.5px - 725.5px)",
+  top: "328px",
+  filter: "blur(250px)",
+  pointerEvents: "none",
+  zIndex: 0,
+};
+
 export default function ContactUsForm() {
   const {
     register,
@@ -55,13 +65,69 @@ export default function ContactUsForm() {
 
   const onSubmit = async (data: ContactFormValues) => {
     try {
-      console.log("داده‌های فرم تماس:", data);
-      toast.success("پیام شما با موفقیت ارسال شد");
-      setIsOpen(true);
-      reset();
+      // تبدیل fullname به firstName و lastName
+      const nameParts = data.fullname.trim().split(/\s+/);
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
+      // ارسال فرم به API
+      const result = await postContactUs({
+        form: {
+          firstName,
+          lastName,
+          email: data.email.trim(),
+          message: data.message.trim(),
+          jsonExt: "",
+          type: 0,
+          responseStatus: 0,
+        },
+      });
+
+      // بررسی نتیجه
+      if (result.ok && result.data) {
+        formMessage.success("پیام شما با موفقیت ارسال شد", {
+          title: "ارسال موفق",
+        });
+        setIsOpen(true);
+        reset();
+      } else {
+        // استخراج پیام خطا
+        let errorMessage = "خطا در ارسال پیام. لطفا دوباره تلاش کنید.";
+
+        if (result.error) {
+          if (typeof result.error === "string") {
+            errorMessage = result.error;
+          } else if (result.error.message) {
+            errorMessage = result.error.message;
+          } else if (typeof result.error === "object") {
+            // اگر error یک object است، سعی می‌کنیم message را پیدا کنیم
+            const errorObj = result.error as Record<string, unknown>;
+            if (errorObj.message && typeof errorObj.message === "string") {
+              errorMessage = errorObj.message;
+            } else {
+              errorMessage = `خطای ${result.status || "نامشخص"}`;
+            }
+          }
+        } else if (result.status) {
+          errorMessage = `خطای ${result.status}: درخواست ناموفق بود`;
+        }
+
+        formMessage.error(errorMessage, {
+          title: "خطا در ارسال",
+        });
+
+        console.error("خطا در ارسال فرم تماس - Full result:", {
+          ok: result.ok,
+          status: result.status,
+          error: result.error,
+          data: result.data,
+        });
+      }
     } catch (err) {
-      toast.error("خطا در ارسال پیام");
-      console.error(err);
+      formMessage.error("خطا در ارسال پیام", {
+        title: "خطای غیرمنتظره",
+      });
+      console.error("خطای غیرمنتظره در ارسال فرم تماس:", err);
     }
   };
 
@@ -71,13 +137,7 @@ export default function ContactUsForm() {
         {/* افکت Ellipse 47 */}
         <div
           className="absolute w-[623px] h-[623px] left-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:block"
-          style={{
-            left: "calc(50% - 311.5px - 725.5px)", // محاسبه position مشابه CSS
-            top: "328px",
-            filter: "blur(250px)",
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
+          style={ellipseStyle}
         />
 
         <div className="relative z-10 w-full max-w-[1480px]">

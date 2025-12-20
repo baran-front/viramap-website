@@ -1,6 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { formMessage } from "@/components/lib/form-message-hook";
+import { submitDemoRequest, isSuccess } from "@/components/lib/apiFunctions";
+import type { DemoRequestFormData } from "@/components/lib/apiFunctions";
+import { logger } from "@/components/lib/logger";
 import "./HeroSectionOverrides.css";
 
 // نسخه تصویر - در صورت تغییر تصویر این عدد را افزایش دهید
@@ -10,13 +17,54 @@ const HeroSection = () => {
   const router = useRouter();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<DemoRequestFormData>({
+    defaultValues: {
+      fullname: "",
+      contact_channel: "",
+    },
+  });
+
   // پیش‌بارگذاری صفحه «تماس با ما» برای سریع‌تر شدن کلیک روی «مشاوره رایگان»
   useEffect(() => {
     router.prefetch("/about-us?free=1");
   }, [router]);
 
   const openDemoModal = () => setIsDemoModalOpen(true);
-  const closeDemoModal = () => setIsDemoModalOpen(false);
+  const closeDemoModal = () => {
+    setIsDemoModalOpen(false);
+    reset();
+  };
+
+  const onSubmitDemo = async (data: DemoRequestFormData) => {
+    try {
+      const result = await submitDemoRequest(data);
+
+      if (isSuccess(result) && result.data) {
+        formMessage.success("درخواست دمو شما با موفقیت ارسال شد", {
+          title: "ارسال موفق",
+        });
+        closeDemoModal();
+      } else {
+        const errorMessage =
+          result.error?.message ||
+          "خطا در ارسال درخواست. لطفا دوباره تلاش کنید.";
+        formMessage.error(errorMessage, {
+          title: "خطا در ارسال",
+        });
+        logger.error("خطا در ارسال درخواست دمو:", result);
+      }
+    } catch (err) {
+      formMessage.error("خطا در ارسال درخواست", {
+        title: "خطای غیرمنتظره",
+      });
+      logger.error("خطای غیرمنتظره در ارسال درخواست دمو:", err);
+    }
+  };
 
   const backgroundImageUrl = `/images/hero/background.svg?v=${BACKGROUND_IMAGE_VERSION}`;
 
@@ -127,7 +175,7 @@ const HeroSection = () => {
         {/* Subtitle, Arrow, and Badge Container - Horizontal Layout */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-2 md:gap-3 mb-8 sm:mb-10 md:mb-12 lg:mb-14 px-2 sm:px-4 w-full max-w-[965px]">
           {/* Gradient Subtitle (Right side in RTL - First) */}
-          <p className="font-ravi font-semibold text-[14px] sm:text-[15px] md:text-[16px] lg:text-[18px] xl:text-[20px] leading-[1.6] sm:leading-[1.7] md:leading-[1.8] lg:leading-loose bg-gradient-to-r from-[#FE8B20] via-[#AECE3B] to-[#119389] bg-clip-text text-transparent flex-1 text-center sm:text-right order-1">
+          <p className="font-ravi font-semibold text-[14px] sm:text-[15px] md:text-[16px] lg:text-[18px] xl:text-[20px] leading-[1.6] sm:leading-[1.7] md:leading-[1.8] lg:leading-loose bg-linear-to-r from-[#FE8B20] via-[#AECE3B] to-[#119389] bg-clip-text text-transparent flex-1 text-center sm:text-right order-1">
             از مسیریابی داخلی تا رزرو سریع خدمات و اطلاعات بروز، همه در یک
             اپلیکیشن
           </p>
@@ -193,12 +241,15 @@ const HeroSection = () => {
               const scrollToTarget = () => {
                 const element = document.getElementById("free-consultation");
                 if (element) {
-                  element.scrollIntoView({ behavior: "smooth", block: "start" });
+                  element.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
                   return true;
                 }
                 return false;
               };
-              
+
               // تلاش اولیه بعد از تاخیر کوتاه
               setTimeout(() => {
                 if (!scrollToTarget()) {
@@ -240,7 +291,7 @@ const HeroSection = () => {
       {/* Demo Request Modal */}
       {isDemoModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
           onClick={closeDemoModal}
         >
           <div
@@ -259,16 +310,31 @@ const HeroSection = () => {
             </div>
 
             {/* Form Fields */}
-            <div className="space-y-4 sm:space-y-5">
+            <form
+              onSubmit={handleSubmit(onSubmitDemo)}
+              className="space-y-4 sm:space-y-5"
+            >
               <div className="space-y-2">
                 <label className="block font-ravi text-[13px] sm:text-[14px] text-[#E4E4E7]">
                   نام و نام خانوادگی
                 </label>
                 <input
+                  {...register("fullname", {
+                    required: "نام و نام خانوادگی الزامی است",
+                    minLength: {
+                      value: 2,
+                      message: "نام باید حداقل ۲ کاراکتر باشد",
+                    },
+                  })}
                   type="text"
                   placeholder="نام و نام خانوادگی"
                   className="w-full h-12 sm:h-13 rounded-2xl bg-[#05040A] border border-[#27272A] px-4 sm:px-5 text-[13px] sm:text-[14px] text-[#E4E4E7] placeholder:text-[#71717A] focus:outline-none focus:border-[#2A99FF] focus:ring-2 focus:ring-[#2A99FF]/30 transition-all"
                 />
+                {errors.fullname && (
+                  <p className="text-red-500 text-xs mt-1 text-right">
+                    {errors.fullname.message}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -276,25 +342,51 @@ const HeroSection = () => {
                   شماره موبایل
                 </label>
                 <input
+                  {...register("contact_channel", {
+                    required: "شماره موبایل الزامی است",
+                    pattern: {
+                      value: /^09\d{9}$/,
+                      message:
+                        "لطفا یک شماره موبایل معتبر وارد کنید (شکل: 09123456789)",
+                    },
+                    minLength: {
+                      value: 11,
+                      message: "شماره موبایل باید ۱۱ رقم باشد",
+                    },
+                    maxLength: {
+                      value: 11,
+                      message: "شماره موبایل باید ۱۱ رقم باشد",
+                    },
+                  })}
                   type="tel"
                   placeholder="09*********"
                   className="w-full h-12 sm:h-13 rounded-2xl bg-[#05040A] border border-[#27272A] px-4 sm:px-5 text-[13px] sm:text-[14px] text-[#E4E4E7] placeholder:text-[#71717A] focus:outline-none focus:border-[#2A99FF] focus:ring-2 focus:ring-[#2A99FF]/30 transition-all"
                 />
+                {errors.contact_channel && (
+                  <p className="text-red-500 text-xs mt-1 text-right">
+                    {errors.contact_channel.message}
+                  </p>
+                )}
               </div>
-            </div>
 
-            {/* Actions */}
-            <div className="mt-6 sm:mt-7 flex flex-row-reverse items-center gap-3 sm:gap-4">
-              <button className="flex-1 h-11 sm:h-12 rounded-2xl bg-[#FB6514] text-white font-ravi text-[13px] sm:text-[14px] font-semibold shadow-[0_10px_30px_rgba(42,153,255,0.35)] hover:bg-[#1f7cd0] transition-all">
-                ارسال درخواست
-              </button>
-              <button
-                onClick={closeDemoModal}
-                className="flex-1 h-11 sm:h-12 rounded-2xl bg-[#FB6514] text-[#E4E4E7] font-ravi text-[13px] sm:text-[14px] font-medium border border-[#27272A] hover:bg-[#27272A] transition-all"
-              >
-                بستن
-              </button>
-            </div>
+              {/* Actions */}
+              <div className="mt-6 sm:mt-7 flex flex-row-reverse items-center gap-3 sm:gap-4">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 h-11 sm:h-12 rounded-2xl bg-[#FB6514] text-white font-ravi text-[13px] sm:text-[14px] font-semibold shadow-[0_10px_30px_rgba(42,153,255,0.35)] hover:bg-[#e55a12] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  {isSubmitting ? "در حال ارسال..." : "ارسال درخواست"}
+                </button>
+                <button
+                  type="button"
+                  onClick={closeDemoModal}
+                  className="flex-1 h-11 sm:h-12 rounded-2xl bg-[#FB6514] text-[#E4E4E7] font-ravi text-[13px] sm:text-[14px] font-medium border border-[#27272A] hover:bg-[#27272A] transition-all"
+                >
+                  بستن
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

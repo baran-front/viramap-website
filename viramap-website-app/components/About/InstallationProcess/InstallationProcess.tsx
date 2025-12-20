@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 /**
  * InstallationProcess Component - Explains how to install indoor mapping
  * Displays text on the LEFT and image on the RIGHT with a button
@@ -48,7 +50,10 @@ export default function InstallationProcess() {
         {/* Button Container با justify-content: flex-end */}
         <div className="flex justify-end w-full mt-4 sm:mt-6 lg:mt-8">
           {/* Button */}
-          <button className="flex flex-row items-center justify-end gap-2 w-[195px] h-6 font-ravi font-semibold text-sm leading-[26px] text-[#FB6514] bg-transparent border-none cursor-pointer p-0 transition-all duration-300">
+          <Link
+            href="/read-more/3"
+            className="flex flex-row items-center justify-end gap-2 w-[195px] h-6 font-ravi font-semibold text-sm leading-[26px] text-[#FB6514] bg-transparent border-none cursor-pointer p-0 transition-all duration-300"
+          >
             <span className="flex items-center">درباره ویرامپ</span>
             <svg
               width="24"
@@ -66,7 +71,7 @@ export default function InstallationProcess() {
                 strokeLinejoin="round"
               />
             </svg>
-          </button>
+          </Link>
         </div>
       </div>
 

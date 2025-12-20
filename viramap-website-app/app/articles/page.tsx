@@ -8,111 +8,12 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import ArticlesCategoryTabs from "@/components/templates/articlesCategoryTabs";
 import Link from "next/link";
 import ArticleCard from "@/components/modules/articleCard";
-import { getArticleCategories, type ArticleCategory } from "@/components/lib/apiFunctions";
+import { getArticleCategories } from "@/components/lib/articleApi";
+import type { ArticleT, ArticleCategoryT } from "@/components/lib/articleTypes";
+import { getArticles } from "@/components/lib/articleApi";
 import { getHeroByGroupName } from "@/components/lib/fetches/hero";
 import { GlassSection } from "@/components/ui/glass-section";
-
-const mockArticles = [
-  {
-    id: 1,
-    title: "۲۰ راه حل ساده برای کاهش هزینه های سازمان",
-    summery:
-      "در این بخش ۲۰ روش ساده و کار آمد برای کاهش هزینه های سازمان که توسط موفق ترین کمپانی های دنیا اجرا شده اند را بررسی می‌کنیم. این راهکارها شامل بهینه‌سازی فرآیندها، استفاده از فناوری‌های نوین و مدیریت منابع می‌باشد.",
-    imageUrl: "/images/article/header.png",
-    authorName: "سمانه جوادی",
-    authorImage: "/images/article/kitten.png",
-    published: "2022-12-05T10:30:00.000Z",
-    categories: "کسب‌وکار, مدیریت",
-  },
-  {
-    id: 2,
-    title: "نقش هوش مصنوعی در تحول کسب‌وکارهای نوین",
-    summery:
-      "هوش مصنوعی چگونه می‌تواند فرآیندهای کسب‌وکار را متحول کند و به رشد اقتصادی کمک نماید؟ در این مقاله به بررسی کاربردهای عملی AI در صنایع مختلف می‌پردازیم و راهکارهای پیاده‌سازی آن را بررسی می‌کنیم.",
-    imageUrl: "/images/article/header.png",
-    authorName: "دکتر علی محمدی",
-    authorImage: "/images/article/kitten.png",
-    published: "2024-12-15T10:30:00.000Z",
-    categories: "فناوری, کسب‌وکار",
-  },
-  {
-    id: 3,
-    title: "تحول دیجیتال در صنعت بانکداری",
-    summery:
-      "نقش فناوری در تغییر صنعت مالی و بانکداری. بررسی چالش‌ها و فرصت‌های پیش روی بانک‌ها در عصر دیجیتال و راهکارهای نوین برای ارائه خدمات بهتر به مشتریان.",
-    imageUrl: "/images/article/header.png",
-    authorName: "محمد رضایی",
-    authorImage: "/images/article/kitten.png",
-    published: "2024-12-10T08:15:00.000Z",
-    categories: "کسب‌وکار, فناوری",
-  },
-  {
-    id: 4,
-    title: "بلاکچین و آینده تراکنش‌ها",
-    summery:
-      "تأثیر فناوری بلاکچین بر سیستم‌های مالی و تراکنش‌های آینده. بررسی کاربردهای عملی این فناوری در صنایع مختلف و مزایای آن برای امنیت و شفافیت تراکنش‌ها.",
-    imageUrl: "/images/article/header.png",
-    authorName: "سارا کریمی",
-    authorImage: "/images/article/kitten.png",
-    published: "2024-12-05T14:20:00.000Z",
-    categories: "فناوری",
-  },
-  {
-    id: 5,
-    title: "اینترنت اشیاء در زندگی روزمره",
-    summery:
-      "کاربردهای عملی IoT در خانه‌های هوشمند و زندگی روزمره. بررسی دستگاه‌های هوشمند و تأثیر آن‌ها بر بهبود کیفیت زندگی و بهینه‌سازی مصرف انرژی.",
-    imageUrl: "/images/article/header.png",
-    authorName: "رضا احمدی",
-    authorImage: "/images/article/kitten.png",
-    published: "2024-12-01T11:45:00.000Z",
-    categories: "فناوری",
-  },
-  {
-    id: 6,
-    title: "راهکارهای افزایش بهره‌وری تیم‌های دورکار",
-    summery:
-      "ابزارها و روش‌های مدیریت تیم‌های دورکار برای افزایش بهره‌وری. بررسی بهترین شیوه‌های ارتباط، هماهنگی و مدیریت پروژه‌ها در محیط کار از راه دور.",
-    imageUrl: "/images/article/header.png",
-    authorName: "فاطمه غفاری",
-    authorImage: "/images/article/kitten.png",
-    published: "2024-11-28T09:30:00.000Z",
-    categories: "کسب‌وکار",
-  },
-  {
-    id: 7,
-    title: "نقش ERP در بهینه‌سازی فرآیندهای سازمانی",
-    summery:
-      "سیستم‌های ERP چگونه می‌توانند فرآیندهای کسب‌وکار را یکپارچه کرده و کارایی سازمان را افزایش دهند. بررسی مزایای پیاده‌سازی ERP و چالش‌های پیش رو در این مسیر.",
-    imageUrl: "/images/article/header.png",
-    authorName: "امیرحسین نوری",
-    authorImage: "/images/article/kitten.png",
-    published: "2024-11-25T10:15:00.000Z",
-    categories: "کسب‌وکار, فناوری",
-  },
-  {
-    id: 8,
-    title: "راهنمای جامع انتخاب سیستم مدیریت مشتریان (CRM)",
-    summery:
-      "انتخاب سیستم CRM مناسب برای کسب‌وکار شما. بررسی معیارهای مهم در انتخاب CRM، مقایسه پلتفرم‌های مختلف و راهکارهای پیاده‌سازی موفق این سیستم‌ها.",
-    imageUrl: "/images/article/header.png",
-    authorName: "زهرا موسوی",
-    authorImage: "/images/article/kitten.png",
-    published: "2024-11-22T14:00:00.000Z",
-    categories: "کسب‌وکار, دیجیتال مارکتینگ",
-  },
-  {
-    id: 9,
-    title: "تحلیل داده‌ها و هوش تجاری در تصمیم‌گیری‌های استراتژیک",
-    summery:
-      "چگونه تحلیل داده‌ها و ابزارهای هوش تجاری می‌توانند به تصمیم‌گیری‌های بهتر در سازمان کمک کنند. بررسی تکنیک‌های تحلیل داده و کاربرد آن‌ها در مدیریت استراتژیک.",
-    imageUrl: "/images/article/header.png",
-    authorName: "حسین رضوانی",
-    authorImage: "/images/article/kitten.png",
-    published: "2024-11-20T11:30:00.000Z",
-    categories: "کسب‌وکار, فناوری",
-  },
-];
+import { getArticleImageUrl } from "@/components/lib/articleHelpers";
 
 interface ArticlesHeroProps {
   title?: string;
@@ -156,10 +57,12 @@ function ArticlesHero({ title, description }: ArticlesHeroProps) {
 }
 
 function ArticlesPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [categories, setCategories] = useState<ArticleCategory[]>([]);
+  const [categories, setCategories] = useState<ArticleCategoryT[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [articles, setArticles] = useState<ArticleT[]>([]);
+  const [articlesLoading, setArticlesLoading] = useState(true);
   const [heroTitle, setHeroTitle] = useState<string | undefined>(undefined);
   const [heroDescription, setHeroDescription] = useState<string | undefined>(undefined);
   const [heroLoading, setHeroLoading] = useState(true);
@@ -222,21 +125,8 @@ function ArticlesPage() {
       setCategoriesLoading(true);
       try {
         const result = await getArticleCategories();
-        console.log("نتیجه دریافت دسته‌بندی‌ها:", {
-          ok: result.ok,
-          hasData: !!result.data,
-          error: result.error,
-          status: result.status,
-        });
-
-        if (result.ok && result.data) {
-          setCategories(result.data);
-        } else {
-          console.error(
-            "خطا در دریافت دسته‌بندی‌ها:",
-            result.error || result.status || "خطای نامشخص"
-          );
-        }
+        console.log("نتیجه دریافت دسته‌بندی‌ها:", result);
+        setCategories(result);
       } catch (error) {
         console.error("خطا در دریافت دسته‌بندی‌ها:", error);
       } finally {
@@ -247,19 +137,41 @@ function ArticlesPage() {
     fetchCategories();
   }, []);
 
-  // فیلتر مقالات بر اساس دسته‌بندی و جستجو
-  const filteredArticles = mockArticles.filter((article) => {
-    const matchesCategory =
-      !selectedCategory ||
-      (article.categories && article.categories.includes(selectedCategory));
+  // دریافت مقالات از API
+  useEffect(() => {
+    async function fetchArticles() {
+      setArticlesLoading(true);
+      try {
+        const result = await getArticles({
+          blogPostCategoryId: selectedCategory,
+          keyword: searchQuery || null,
+          pageNumber: 1,
+          pageSize: 50,
+          orderBy: ["published"],
+        });
+        console.log("نتیجه دریافت مقالات:", result);
+        setArticles(result);
+      } catch (error) {
+        console.error("خطا در دریافت مقالات:", error);
+      } finally {
+        setArticlesLoading(false);
+      }
+    }
 
-    const matchesSearch =
-      !searchQuery ||
-      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.summery.toLowerCase().includes(searchQuery.toLowerCase());
+    fetchArticles();
+  }, [selectedCategory, searchQuery]);
 
-    return matchesCategory && matchesSearch;
-  });
+  // تبدیل ArticleT به فرمت مورد نیاز ArticleCard
+  const articlesForCard = articles.map((article) => ({
+    id: article.id,
+    title: article.title,
+    summery: article.summery,
+    imageUrl: getArticleImageUrl(article.imageUrl),
+    authorName: article.authorName,
+    authorImage: article.authorImage || "/images/article/kitten.png",
+    published: article.published,
+    categories: article.categories || "",
+  }));
 
   return (
     <>
@@ -272,9 +184,19 @@ function ArticlesPage() {
           <div className="mb-6 w-full">
             {!categoriesLoading && (
               <ArticlesCategoryTabs
-                categories={categories}
-                selectedCategory={selectedCategory}
-                onCategoryChange={setSelectedCategory}
+                categories={categories.map((cat) => ({
+                  id: cat.id,
+                  title: cat.title,
+                }))}
+                selectedCategory={selectedCategory ? categories.find(c => c.id === selectedCategory)?.title || null : null}
+                onCategoryChange={(title) => {
+                  if (!title) {
+                    setSelectedCategory(null);
+                  } else {
+                    const cat = categories.find(c => c.title === title);
+                    setSelectedCategory(cat ? cat.id : null);
+                  }
+                }}
               />
             )}
           </div>
@@ -318,12 +240,34 @@ function ArticlesPage() {
           </div>
 
           {/* لیست مقالات محبوب (فقط 3 مقاله اول) */}
-          {filteredArticles.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 mb-12">
-              {filteredArticles.slice(0, 3).map((article) => (
-                <ArticleCard key={article.id} article={article} />
-              ))}
-            </div>
+          {articlesLoading ? (
+            <div className="mt-6 text-center text-gray-300">در حال بارگذاری...</div>
+          ) : articlesForCard.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 mb-12">
+                {articlesForCard.slice(0, 3).map((article) => (
+                  <ArticleCard key={article.id} article={article} />
+                ))}
+              </div>
+
+              {/* بخش جدیدترین مقالات */}
+              {articlesForCard.length > 3 && (
+                <>
+                  <div className="mb-8">
+                    <h2 className="font-ravi text-2xl md:text-3xl font-medium text-white text-right mb-4">
+                      جدیدترین مقالات
+                    </h2>
+                  </div>
+
+                  {/* لیست مقالات جدید (6 مقاله - دو سطر) */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                    {articlesForCard.slice(3, 9).map((article) => (
+                      <ArticleCard key={article.id} article={article} />
+                    ))}
+                  </div>
+                </>
+              )}
+            </>
           ) : (
             <Alert className="mt-6 bg-gray-900/50 border-gray-700">
               <InfoIcon className="text-orange-500" />
@@ -331,24 +275,6 @@ function ArticlesPage() {
                 مقاله‌ای برای نمایش پیدا نشد
               </AlertDescription>
             </Alert>
-          )}
-
-          {/* بخش جدیدترین مقالات */}
-          {filteredArticles.length > 3 && (
-            <>
-              <div className="mb-8">
-                <h2 className="font-ravi text-2xl md:text-3xl font-medium text-white text-right mb-4">
-                  جدیدترین مقالات
-                </h2>
-              </div>
-
-              {/* لیست مقالات جدید (6 مقاله - دو سطر) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                {filteredArticles.slice(3, 9).map((article) => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
-              </div>
-            </>
           )}
         </div>
       </div>

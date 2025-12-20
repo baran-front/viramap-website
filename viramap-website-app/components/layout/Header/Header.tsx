@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useSWR from "swr";
 import { safeFetch } from "@/components/lib/api";
 import { API_CONFIG } from "@/components/lib/constants";
+import { logger } from "@/components/lib/logger";
 
 type MenuItem = {
   id: number;
@@ -130,7 +131,7 @@ async function fetchMenuByGroup(groupName: string): Promise<MenuItem[]> {
 
     return apiData.data;
   } catch (error) {
-    console.error("خطا در دریافت منو:", error);
+    logger.error("خطا در دریافت منو:", error);
     return [];
   }
 }
@@ -175,73 +176,112 @@ const Header = () => {
     }
   );
 
+  const { data: headerNumberData } = useSWR<MenuItem[]>(
+    "header-number",
+    () => fetchMenuByGroup("header-number"),
+    {
+      revalidateOnFocus: false,
+    }
+  );
+
   const solutionsSource: MenuItem[] = headerSolutionsData ?? [];
   const technologiesSource: MenuItem[] = headerTechnologiesData ?? [];
   const headerMainSource: MenuItem[] = headerMainData ?? [];
 
-  const solutions: SolutionItem[] =
-    solutionsSource.length > 0
-      ? solutionsSource.map((item: MenuItem) => ({
-          id: item.name,
-          label: item.description || NAME_FA_LABEL_MAP[item.name] || item.name,
-          path: item.linkUrl || "#",
-        }))
-      : DEFAULT_SOLUTIONS;
+  // استخراج شماره تماس از API - Memoized
+  const phoneNumber = useMemo((): string => {
+    if (headerNumberData && headerNumberData.length > 0) {
+      const item = headerNumberData[0];
+      // اول linkUrl را بررسی می‌کنیم (اگر tel: دارد)
+      if (item.linkUrl && item.linkUrl.startsWith("tel:")) {
+        return item.linkUrl.replace("tel:", "");
+      }
+      // اگر linkUrl نبود، از description استفاده می‌کنیم
+      if (item.description) {
+        return item.description;
+      }
+    }
+    // مقدار پیش‌فرض
+    return "۰۹۱۲۹۰۹۰۹۹۰";
+  }, [headerNumberData]);
 
-  const technologies: TechnologyItem[] =
-    technologiesSource.length > 0
-      ? technologiesSource.map((item: MenuItem) => ({
-          id: item.name,
-          label: item.description || NAME_FA_LABEL_MAP[item.name] || item.name,
-          path: item.linkUrl || "#",
-        }))
-      : DEFAULT_TECHNOLOGIES;
-
-  const navItems: NavItem[] =
-    headerMainSource.length > 0
-      ? headerMainSource
-          .filter((item: MenuItem) =>
-            ["articles", "about-viramap", "about-us"].includes(item.name)
-          )
-          .map((item: MenuItem) => ({
-            href: item.linkUrl || "#",
-            label:
-              item.description || NAME_FA_LABEL_MAP[item.name] || item.name,
+  // Memoize solutions array
+  const solutions: SolutionItem[] = useMemo(
+    () =>
+      solutionsSource.length > 0
+        ? solutionsSource.map((item: MenuItem) => ({
+            id: item.name,
+            label: item.description || NAME_FA_LABEL_MAP[item.name] || item.name,
+            path: item.linkUrl || "#",
           }))
-      : DEFAULT_NAV_ITEMS;
+        : DEFAULT_SOLUTIONS,
+    [solutionsSource]
+  );
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        solutionsDropdownRef.current &&
-        !solutionsDropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsSolutionsOpen(false);
-      }
-      if (
-        techDropdownRef.current &&
-        !techDropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsTechOpen(false);
-      }
-      if (
-        phoneDropdownRef.current &&
-        !phoneDropdownRef.current.contains(event.target as Node)
-      ) {
-        setShowPhoneNumber(false);
-      }
-      if (
-        desktopPhoneDropdownRef.current &&
-        !desktopPhoneDropdownRef.current.contains(event.target as Node)
-      ) {
-        setShowDesktopPhoneNumber(false);
-      }
-    };
+  // Memoize technologies array
+  const technologies: TechnologyItem[] = useMemo(
+    () =>
+      technologiesSource.length > 0
+        ? technologiesSource.map((item: MenuItem) => ({
+            id: item.name,
+            label: item.description || NAME_FA_LABEL_MAP[item.name] || item.name,
+            path: item.linkUrl || "#",
+          }))
+        : DEFAULT_TECHNOLOGIES,
+    [technologiesSource]
+  );
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+  // Memoize navItems array
+  const navItems: NavItem[] = useMemo(
+    () =>
+      headerMainSource.length > 0
+        ? headerMainSource
+            .filter((item: MenuItem) =>
+              ["articles", "about-viramap", "about-us"].includes(item.name)
+            )
+            .map((item: MenuItem) => ({
+              href: item.linkUrl || "#",
+              label:
+                item.description || NAME_FA_LABEL_MAP[item.name] || item.name,
+            }))
+        : DEFAULT_NAV_ITEMS,
+    [headerMainSource]
+  );
+
+  // Memoize click outside handler
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (
+      solutionsDropdownRef.current &&
+      !solutionsDropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsSolutionsOpen(false);
+    }
+    if (
+      techDropdownRef.current &&
+      !techDropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsTechOpen(false);
+    }
+    if (
+      phoneDropdownRef.current &&
+      !phoneDropdownRef.current.contains(event.target as Node)
+    ) {
+      setShowPhoneNumber(false);
+    }
+    if (
+      desktopPhoneDropdownRef.current &&
+      !desktopPhoneDropdownRef.current.contains(event.target as Node)
+    ) {
+      setShowDesktopPhoneNumber(false);
+    }
   }, []);
 
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [handleClickOutside]);
+
+  // Reset all dropdowns when pathname changes
   useEffect(() => {
     setIsSolutionsOpen(false);
     setIsTechOpen(false);
@@ -250,7 +290,57 @@ const Header = () => {
     setShowDesktopPhoneNumber(false);
   }, [pathname]);
 
-  const dropdownStyle = (isOpen: boolean): React.CSSProperties => ({
+  // Memoize toggle handlers
+  const toggleTech = useCallback(() => {
+    setIsTechOpen((prev) => !prev);
+  }, []);
+
+  const toggleSolutions = useCallback(() => {
+    setIsSolutionsOpen((prev) => !prev);
+  }, []);
+
+  const toggleDesktopPhone = useCallback(() => {
+    setShowDesktopPhoneNumber((prev) => !prev);
+  }, []);
+
+  const togglePhone = useCallback(() => {
+    setShowPhoneNumber((prev) => !prev);
+  }, []);
+
+  const openMenu = useCallback(() => {
+    setIsMenuOpen(true);
+  }, []);
+
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen(false);
+  }, []);
+
+  const handleActiveLinkEnter = useCallback((link: string) => {
+    setActiveLink(link);
+  }, []);
+
+  const handleActiveLinkLeave = useCallback(() => {
+    setActiveLink("");
+  }, []);
+
+  const handleHoverEnter = useCallback(() => {
+    setIsHovered(true);
+  }, []);
+
+  const handleHoverLeave = useCallback(() => {
+    setIsHovered(false);
+  }, []);
+
+  const handlePhoneHoverEnter = useCallback(() => {
+    setIsPhoneHovered(true);
+  }, []);
+
+  const handlePhoneHoverLeave = useCallback(() => {
+    setIsPhoneHovered(false);
+  }, []);
+
+  // Memoize dropdown style function
+  const dropdownStyle = useCallback((isOpen: boolean): React.CSSProperties => ({
     position: "absolute",
     top: "calc(100% + 8px)",
     right: "0",
@@ -266,7 +356,7 @@ const Header = () => {
     transform: isOpen ? "translateY(0)" : "translateY(-10px)",
     transition: "all 0.3s ease",
     zIndex: 1001,
-  });
+  }), []);
 
   return (
     <>
@@ -371,8 +461,8 @@ const Header = () => {
                 textDecoration: "none",
                 transition: "0.3s",
               }}
-              onMouseEnter={() => setActiveLink("/")}
-              onMouseLeave={() => setActiveLink("")}
+              onMouseEnter={() => handleActiveLinkEnter("/")}
+              onMouseLeave={handleActiveLinkLeave}
             >
               خانه
             </Link>
@@ -380,7 +470,7 @@ const Header = () => {
             {/* TECHNOLOGY DROPDOWN */}
             <div ref={techDropdownRef} style={{ position: "relative" }}>
               <button
-                onClick={() => setIsTechOpen(!isTechOpen)}
+                onClick={toggleTech}
                 style={{
                   fontWeight: 600,
                   fontSize: "14px",
@@ -456,8 +546,8 @@ const Header = () => {
                   textDecoration: "none",
                   transition: "0.3s",
                 }}
-                onMouseEnter={() => setActiveLink(item.href)}
-                onMouseLeave={() => setActiveLink("")}
+                onMouseEnter={() => handleActiveLinkEnter(item.href)}
+                onMouseLeave={handleActiveLinkLeave}
               >
                 {item.label}
               </Link>
@@ -466,7 +556,7 @@ const Header = () => {
             {/* SOLUTION DROPDOWN */}
             <div ref={solutionsDropdownRef} style={{ position: "relative" }}>
               <button
-                onClick={() => setIsSolutionsOpen(!isSolutionsOpen)}
+                onClick={toggleSolutions}
                 style={{
                   fontWeight: 600,
                   fontSize: "14px",
@@ -546,11 +636,9 @@ const Header = () => {
                   cursor: "pointer",
                   transition: "0.3s",
                 }}
-                onClick={() =>
-                  setShowDesktopPhoneNumber(!showDesktopPhoneNumber)
-                }
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+                onClick={toggleDesktopPhone}
+                onMouseEnter={handleHoverEnter}
+                onMouseLeave={handleHoverLeave}
               >
                 تماس با ما
               </button>
@@ -571,7 +659,12 @@ const Header = () => {
                   }}
                 >
                   <a
-                    href="tel:09129090990"
+                    href={`tel:${phoneNumber.replace(/[۰-۹]/g, (char) => {
+                      const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
+                      const englishDigits = "0123456789";
+                      const index = persianDigits.indexOf(char);
+                      return index !== -1 ? englishDigits[index] : char;
+                    })}`}
                     style={{
                       color: isPhoneHovered ? "#FB6514" : "#E4E4E7",
                       fontSize: "14px",
@@ -579,10 +672,10 @@ const Header = () => {
                       transition: "color 0.3s",
                       display: "block",
                     }}
-                    onMouseEnter={() => setIsPhoneHovered(true)}
-                    onMouseLeave={() => setIsPhoneHovered(false)}
+                    onMouseEnter={handlePhoneHoverEnter}
+                    onMouseLeave={handlePhoneHoverLeave}
                   >
-                    ۰۹۱۲۹۰۹۰۹۹۰
+                    {phoneNumber}
                   </a>
                 </div>
               )}
@@ -602,7 +695,7 @@ const Header = () => {
                   cursor: "pointer",
                   padding: "4px",
                 }}
-                onClick={() => setShowPhoneNumber(!showPhoneNumber)}
+                onClick={togglePhone}
               >
                 <svg
                   width="20"
@@ -636,7 +729,7 @@ const Header = () => {
                   }}
                 >
                   <span style={{ color: "#E4E4E7", fontSize: "14px" }}>
-                    ۰۹۱۲۹۰۹۰۹۹۰
+                    {phoneNumber}
                   </span>
                 </div>
               )}
@@ -651,7 +744,7 @@ const Header = () => {
                 border: "none",
                 cursor: "pointer",
               }}
-              onClick={() => setIsMenuOpen(true)}
+              onClick={openMenu}
             >
               <svg width="28" height="28" stroke="#fff">
                 <path d="M4 7H24" strokeWidth="2" />
@@ -679,7 +772,7 @@ const Header = () => {
         }}
       >
         <button
-          onClick={() => setIsMenuOpen(false)}
+          onClick={closeMenu}
           style={{
             background: "transparent",
             border: "none",

@@ -8,7 +8,15 @@
 import { safeFetch } from "./api";
 import { API_CONFIG } from "./constants";
 import type { ApiResult } from "./api/types";
-import { SLIDER_ENDPOINTS, SOLUTION_ENDPOINTS, FAQ_ENDPOINTS, MENU_ENDPOINTS, CMS_ENDPOINTS } from "./api/endpoints";
+import { logger } from "./logger";
+import {
+  SLIDER_ENDPOINTS,
+  SOLUTION_ENDPOINTS,
+  FAQ_ENDPOINTS,
+  MENU_ENDPOINTS,
+  CMS_ENDPOINTS,
+} from "./api/endpoints";
+import { normalizeFAQResponse } from "./faqHelpers";
 
 // ==================== انواع داده ====================
 
@@ -93,7 +101,7 @@ export async function fetchSliderItems(): Promise<ApiResult<SliderItem[]>> {
       data: response.result?.data ?? null,
     };
   } catch (error) {
-    console.error("خطا در دریافت اسلایدها:", error);
+    logger.error("Error fetching slider items:", error);
     return {
       status: 500,
       result: null,
@@ -103,60 +111,19 @@ export async function fetchSliderItems(): Promise<ApiResult<SliderItem[]>> {
         message:
           error instanceof Error
             ? error.message
-            : "خطای ناشناخته در دریافت اسلایدها",
+            : "Unknown error fetching slider items",
         statusCode: 500,
       },
     };
   }
 }
 
-/*
 /**
  * دریافت تمام راهکارها از API
- * این تابع لیست کامل تمام راهکارهای موجود را برمی‌گرداند
- * @returns لیست تمام راهکارها یا null در صورت بروز خطاe
-    xport async function fetchAllSolu(
-   ): o  mise<
-  ApiResult<SolutionData[]>
-  {
-  r y {
-    const respons=   await safeFetch<SolutionData[]>(s  olutions-data", {
-      method: "GET",
-    });
-
-    t  urn {
-      ...response,
-      data: s  ponse.result?.data ?? null,      }; t  c
-  h (error) {
-    console.error("خطا در دریافت راهکارها:", error);
-    return {
-      st
-  atus: 500,
-    
-   result: null,
-
-      ok: false,
-      data: null,
-      error: {
-        message:
-          error instanceof Error
-            ? error.message
-            : "خطای ناشناخته در دریافت راهکارها",
-        statusCode: 500,
-      },
-    };
-  }
-}
-*/
-
-/**
- * دریافت تمام راهکارها از API (نسخه سالم)
  * این تابع لیست کامل تمام راهکارهای موجود را از API داخلی Next می‌گیرد
  * @returns لیست تمام راهکارها یا null در صورت بروز خطا
  */
-export async function fetchAllSolutions(): Promise<
-  ApiResult<SolutionData[]>
-> {
+export async function fetchAllSolutions(): Promise<ApiResult<SolutionData[]>> {
   try {
     const response = await safeFetch<SolutionData[]>(SOLUTION_ENDPOINTS.list, {
       method: "GET",
@@ -167,7 +134,7 @@ export async function fetchAllSolutions(): Promise<
       data: response.result?.data ?? null,
     };
   } catch (error) {
-    console.error("خطا در دریافت راهکارها:", error);
+    logger.error("Error fetching solutions:", error);
     return {
       status: 500,
       result: null,
@@ -177,7 +144,7 @@ export async function fetchAllSolutions(): Promise<
         message:
           error instanceof Error
             ? error.message
-            : "خطای ناشناخته در دریافت راهکارها",
+            : "Unknown error fetching solutions",
         statusCode: 500,
       },
     };
@@ -225,7 +192,7 @@ export async function fetchSolutionByCategory(
       data: response.result?.data ?? null,
     };
   } catch (error) {
-    console.error(`خطا در دریافت راهکار برای دسته ${category}:`, error);
+    logger.error(`Error fetching solution for category ${category}:`, error);
     return {
       status: 500,
       result: null,
@@ -235,7 +202,7 @@ export async function fetchSolutionByCategory(
         message:
           error instanceof Error
             ? error.message
-            : "خطای ناشناخته در دریافت راهکار",
+            : "Unknown error fetching solution",
         statusCode: 500,
       },
     };
@@ -271,12 +238,47 @@ export async function fetchFAQs(
       }
     );
 
+    // استفاده از تابع نرمال‌سازی برای استخراج FAQResponse
+    // این تابع تمام ساختارهای ممکن API را به یک ساختار واحد تبدیل می‌کند
+    const faqData = normalizeFAQResponse(response.result);
+
+    // لاگ برای دیباگ (فقط در محیط توسعه)
+    if (process.env.NODE_ENV === "development") {
+      const resultType = response.result ? typeof response.result : "null";
+      const resultKeys =
+        response.result && typeof response.result === "object"
+          ? Object.keys(response.result)
+          : [];
+      const hasDataField =
+        response.result &&
+        typeof response.result === "object" &&
+        "data" in response.result;
+      const dataType =
+        response.result &&
+        typeof response.result === "object" &&
+        "data" in response.result
+          ? typeof (response.result as { data: unknown }).data
+          : null;
+
+      logger.log("FAQ API Response Debug:", {
+        ok: response.ok,
+        hasResult: !!response.result,
+        resultType,
+        resultKeys,
+        hasDataField,
+        dataType,
+        hasNormalizedData: !!faqData,
+        categoriesCount: faqData?.data?.length ?? 0,
+        error: response.error,
+      });
+    }
+
     return {
       ...response,
-      data: response.result?.data ?? null,
+      data: faqData,
     };
   } catch (error) {
-    console.error("خطا در دریافت سوالات متداول:", error);
+    logger.error("خطا در دریافت سوالات متداول:", error);
     return {
       status: 500,
       result: null,
@@ -375,7 +377,7 @@ export async function fetchHeaderMenu(
       data: response.result?.data ?? null,
     };
   } catch (error) {
-    console.error(`خطا در دریافت منوهای هدر برای گروه ${groupName}:`, error);
+    logger.error(`Error fetching header menu for group ${groupName}:`, error);
     return {
       status: 500,
       result: null,
@@ -385,7 +387,7 @@ export async function fetchHeaderMenu(
         message:
           error instanceof Error
             ? error.message
-            : "خطای ناشناخته در دریافت منوهای هدر",
+            : "Unknown error fetching header menu",
         statusCode: 500,
       },
     };
@@ -449,7 +451,7 @@ export async function fetchHeaderViramapItem(
       error: result.error,
     };
   } catch (error) {
-    console.error("خطا در دریافت آیتم Viramap از منو:", error);
+    logger.error("Error fetching Viramap item from menu:", error);
     return {
       status: 500,
       result: null,
@@ -459,7 +461,7 @@ export async function fetchHeaderViramapItem(
         message:
           error instanceof Error
             ? error.message
-            : "خطای ناشناخته در دریافت آیتم Viramap",
+            : "Unknown error fetching Viramap item",
         statusCode: 500,
       },
     };
@@ -523,7 +525,7 @@ export async function fetchFooterAboutContent(
       data: response.result?.data ?? null,
     };
   } catch (error) {
-    console.error("خطا در دریافت متن فوتر (footer-about):", error);
+    logger.error("Error fetching footer content (footer-about):", error);
     return {
       status: 500,
       result: null,
@@ -533,7 +535,7 @@ export async function fetchFooterAboutContent(
         message:
           error instanceof Error
             ? error.message
-            : "خطای ناشناخته در دریافت متن فوتر",
+            : "Unknown error fetching footer content",
         statusCode: 500,
       },
     };
@@ -541,12 +543,17 @@ export async function fetchFooterAboutContent(
 }
 
 export async function fetchFooterMenus() {
-  const groups = ["footer-quick", "footer-products", "footer-solutions", "footer-contact"];
-  
+  const groups = [
+    "footer-quick",
+    "footer-products",
+    "footer-solutions",
+    "footer-contact",
+  ];
+
   const results = await Promise.all(
-    groups.map(group => fetchHeaderMenu(group))
+    groups.map((group) => fetchHeaderMenu(group))
   );
-  
+
   return groups.reduce((acc, group, index) => {
     acc[group] = results[index];
     return acc;

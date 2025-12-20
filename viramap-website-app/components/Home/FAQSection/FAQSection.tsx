@@ -3,15 +3,21 @@
 
 import { useState, useEffect } from "react";
 import FAQItem from "./FAQItem";
-import { fetchFAQs } from "@/services/api";
-import { getFAQIconType, type FAQIconType } from "@/components/lib/faqHelpers";
+import { fetchFAQs } from "@/components/lib/fetchs";
+import { DEFAULT_FAQ_ITEMS } from "@/components/lib/constants/fallbackData";
+import {
+  extractFAQCategories,
+  flattenFAQItems,
+  getFAQIconType,
+} from "@/components/lib/faqHelpers";
+import { logger } from "@/components/lib/logger";
 import "./FAQSection.css";
 
 interface FAQItemData {
   id: number;
   question: string;
   answer: string;
-  iconType: FAQIconType;
+  iconType: "message" | "bezier" | "brush" | "lock" | "cloud" | "headphone";
   isOpen: boolean;
 }
 
@@ -28,85 +34,69 @@ const FAQSection = () => {
 
         const result = await fetchFAQs();
 
-        if (result.ok && Array.isArray(result.data)) {
-          // تبدیل داده‌های API به فرمت مورد نیاز کامپوننت
-          const allFAQs: FAQItemData[] = [];
-
-          result.data.forEach((category) => {
-            category.faqs.forEach((faq: any, index: number) => {
-              allFAQs.push({
-                id: faq.id,
-                question: faq.title,
-                answer: faq.description,
-                iconType: getFAQIconType(allFAQs.length + index),
-                isOpen: false,
-              });
-            });
+        // لاگ برای دیباگ (فقط در محیط توسعه)
+        if (process.env.NODE_ENV === "development") {
+          logger.log("FAQ Section - Result:", {
+            ok: result.ok,
+            hasData: !!result.data,
+            categoriesCount: result.data?.data?.length ?? 0,
+            error: result.error,
           });
+        }
 
-          setFaqItems(allFAQs);
-        } else {
-          // پیام خطای کاربرپسند در UI نمایش داده می‌شود
-          // جزئیات خطا (مثل 404) فقط در کنسول دیده می‌شود
-          if (result.error) {
-            console.error("FAQ API error:", result.error);
+        // بررسی موفقیت درخواست و وجود داده معتبر
+        if (result.ok) {
+          if (result.data) {
+            // استخراج دسته‌بندی‌ها از پاسخ نرمال‌سازی شده
+            const categories = extractFAQCategories(result.data);
+
+            if (categories.length > 0) {
+              // تبدیل دسته‌بندی‌ها به لیست تخت FAQItem
+              const faqItemsFromAPI = flattenFAQItems(categories);
+
+              // تبدیل FAQItem به FAQItemData (فرمت مورد نیاز کامپوننت)
+              const allFAQs: FAQItemData[] = faqItemsFromAPI.map(
+                (faq, index) => ({
+                  id: faq.id,
+                  question: faq.title,
+                  answer: faq.description,
+                  iconType: getFAQIconType(index),
+                  isOpen: false,
+                })
+              );
+
+              setFaqItems(allFAQs);
+            } else {
+              // اگر داده معتبری وجود نداشت، از داده‌های پیش‌فرض استفاده می‌کنیم
+              logger.log(
+                "No valid FAQ categories found in API response, using default items"
+              );
+              setFaqItems(DEFAULT_FAQ_ITEMS);
+            }
+          } else {
+            // API succeeded but normalization failed - use fallback silently
+            logger.log(
+              "FAQ API response could not be normalized, using default items"
+            );
+            setFaqItems(DEFAULT_FAQ_ITEMS);
           }
-          setError("در حال حاضر امکان دریافت سوالات متداول وجود ندارد.");
-          // در صورت خطا، از داده‌های پیش‌فرض استفاده می‌کنیم
-          setFaqItems([
-            {
-              id: 1,
-              question: "ویرامپ چگونه به مسیریابی در فضای داخلی کمک می‌کند؟",
-              answer:
-                "ویرامپ با استفاده از تکنولوژی مسیریابی هوشمند و نقشه‌های دقیق سه‌بعدی، کاربران را در فضاهای پیچیده راهنمایی می‌کند. سیستم از ترکیب BLE، Wi-Fi RTT و سنسورهای حرکتی برای دقت بالا استفاده می‌نماید.",
-              iconType: "message",
-              isOpen: false,
-            },
-            {
-              id: 2,
-              question: "آیا ویرامپ در ساختمان‌های چندطبقه کار می‌کند؟",
-              answer:
-                "بله، ویرامپ به طور خاص برای ساختمان‌های چندطبقه طراحی شده است. این سیستم قادر است تمام طبقات را نقشه‌برداری کرده و مسیرهای بین طبقات را با دقت بالا نمایش دهد.",
-              iconType: "bezier",
-              isOpen: false,
-            },
-            {
-              id: 3,
-              question: "نصب و راه‌اندازی ویرامپ چقدر زمان می‌برد؟",
-              answer:
-                "زمان نصب بسته به متراژ و پیچیدگی فضا متفاوت است. برای یک مرکز خرید متوسط حدود 2-3 هفته و برای یک بیمارستان بزرگ 4-6 هفته زمان نیاز است. تیم ما در تمام مراحل همراه شماست.",
-              iconType: "brush",
-              isOpen: false,
-            },
-            {
-              id: 4,
-              question: "سیستم امنیتی ویرامپ چگونه است؟",
-              answer:
-                "ویرامپ از الگوریتم‌های رمزنگاری پیشرفته استفاده می‌کند. تمام داده‌ها به صورت رمزگذاری شده ذخیره می‌شوند و دسترسی‌ها به صورت سطح‌بندی شده مدیریت می‌شوند. ما گواهینامه‌های امنیتی بین‌المللی داریم.",
-              iconType: "lock",
-              isOpen: false,
-            },
-            {
-              id: 5,
-              question: "آیا ویرامپ در محیط‌های بدون اینترنت کار می‌کند؟",
-              answer:
-                "بله، ویرامپ به صورت آفلاین نیز کار می‌کند. پس از راه‌اندازی اولیه و دانلود نقشه‌ها، کاربران می‌توانند بدون نیاز به اینترنت از سیستم استفاده کنند.",
-              iconType: "cloud",
-              isOpen: false,
-            },
-            {
-              id: 6,
-              question: "پشتیبانی فنی ویرامپ چگونه است؟",
-              answer:
-                "ما پشتیبانی 24/7 از طریق تلفن، چت آنلاین و تیکت ارائه می‌دهیم. همچنین برای مشتریان ویژه، پشتیبانی اختصاصی و بازدیدهای دوره‌ای داریم. تیم فنی ما همیشه آماده پاسخگویی است.",
-              iconType: "headphone",
-              isOpen: false,
-            },
-          ]);
+        } else {
+          // در صورت خطا در درخواست، از داده‌های پیش‌فرض استفاده می‌کنیم
+          const errorMessage =
+            result.error?.message || "خطا در دریافت سوالات متداول";
+          logger.log("FAQ API request failed, using default items:", {
+            ok: result.ok,
+            hasData: !!result.data,
+            error: result.error,
+            errorMessage,
+          });
+          // Don't set error state - just use fallback data
+          setFaqItems(DEFAULT_FAQ_ITEMS);
         }
       } catch (err) {
-        console.error("خطا در دریافت سوالات متداول:", err);
+        logger.error("Error fetching FAQs:", err);
         setError("خطای غیرمنتظره در دریافت داده‌ها");
+        setFaqItems(DEFAULT_FAQ_ITEMS);
       } finally {
         setIsLoading(false);
       }
@@ -126,12 +116,12 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="bg-[#141414]/70 backdrop-blur-md py-12 md:py-16 lg:py-20 px-5 sm:px-6 lg:px-8 w-full flex justify-center font-ravi">
+    <section className="bg-[#141414]/70 backdrop-blur-md py-12 md:py-16 lg:py-20 px-5 sm:px-6 lg:px-8 w-full flex justify-center font-[family-name:Ravi,system-ui]">
       <div className="w-full max-w-[1280px] flex flex-col items-center gap-4 md:gap-6">
         {/* Title Container */}
         <div className="w-full flex flex-col items-center gap-1">
           {/* Badge */}
-          <div className="flex flex-row justify-end items-start px-4 py-1.5 gap-6 w-auto min-w-[110px] h-[35px] bg-linear-to-l from-[rgba(255,255,255,0.05)] to-transparent rounded-lg border border-[#344054]">
+          <div className="flex flex-row justify-end items-start px-4 py-1.5 gap-6 w-auto min-w-[110px] h-[35px] bg-gradient-to-l from-[rgba(255,255,255,0.05)] to-transparent rounded-lg border border-[#344054]">
             <span className="font-ravi font-normal text-[12px] leading-[22px] text-white text-right">
               سوالات متداول
             </span>

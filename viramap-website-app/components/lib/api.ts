@@ -6,6 +6,7 @@
  */
 
 import { API_CONFIG } from "./constants";
+import { logger } from "./logger";
 import {
   getToken,
   getRefreshToken,
@@ -76,8 +77,29 @@ export async function authenticate(
     }
 
     // ساخت URL درخواست
-    const url = new URL(`${API_CONFIG.BASE_URL}/v1/api/tokens`);
+    // Endpoint: {{baseUrl}}/tokens?tenant=map
+    // BASE_URL = "https://api.arvinvira.com/api"
+    // بر اساس مستندات: {{baseUrl}}/tokens
+    // اگر baseUrl = "https://api.arvinvira.com/api" باشد
+    // و endpoint باید "/tokens" باشد
+    // پس URL نهایی: "https://api.arvinvira.com/api/tokens" ✓
+
+    // اما شاید baseUrl فقط domain باشد: "https://api.arvinvira.com"
+    // در این صورت: "https://api.arvinvira.com/tokens" ✓
+
+    // پس باید بررسی کنیم:
+    // - اگر BASE_URL با /api تمام می‌شود، /tokens را اضافه می‌کنیم
+    // - اگر نه، /tokens را اضافه می‌کنیم
+
+    const baseUrl = API_CONFIG.BASE_URL;
+    // همیشه /tokens را به BASE_URL اضافه می‌کنیم
+    const tokensUrl = `${baseUrl}/tokens`;
+
+    const url = new URL(tokensUrl);
     url.searchParams.set("tenant", tenant);
+
+    logger.log("🔗 URL دریافت توکن:", url.toString());
+    logger.log("🔗 BASE_URL:", baseUrl);
 
     // ارسال درخواست به API
     const response = await fetch(url.toString(), {
@@ -156,13 +178,14 @@ export async function authenticate(
       token,
     };
   } catch (error) {
-    console.error("خطا در احراز هویت:", error);
+    logger.error("Error authenticating:", error);
 
     // مدیریت خطاهای مختلف
     if (error instanceof TypeError && error.message.includes("fetch")) {
       return {
         success: false,
-        error: "خطا در اتصال به سرور. لطفا اتصال اینترنت خود را بررسی کنید",
+        error:
+          "Error connecting to server. Please check your internet connection",
         errorCode: "NETWORK_ERROR",
       };
     }
@@ -170,7 +193,9 @@ export async function authenticate(
     return {
       success: false,
       error:
-        error instanceof Error ? error.message : "خطای ناشناخته در احراز هویت",
+        error instanceof Error
+          ? error.message
+          : "Unknown error during authentication",
       errorCode: "UNKNOWN_ERROR",
     };
   }
@@ -271,12 +296,12 @@ export async function refreshAccessToken(
       token,
     };
   } catch (error) {
-    console.error("خطا در تازه‌سازی توکن:", error);
+    logger.error("Error refreshing token:", error);
 
     if (error instanceof TypeError && error.message.includes("fetch")) {
       return {
         success: false,
-        error: "خطا در اتصال به سرور",
+        error: "Error connecting to server",
         errorCode: "NETWORK_ERROR",
       };
     }
@@ -286,7 +311,7 @@ export async function refreshAccessToken(
       error:
         error instanceof Error
           ? error.message
-          : "خطای ناشناخته در تازه‌سازی توکن",
+          : "Unknown error refreshing token",
       errorCode: "UNKNOWN_ERROR",
     };
   }
@@ -311,6 +336,7 @@ export type SafeFetchOptions = {
   skipAuth?: boolean; // برای درخواست‌هایی که نیاز به توکن ندارند
   retryOn401?: boolean; // تلاش مجدد با توکن تازه‌سازی شده در صورت 401
   maxRetries?: number; // حداکثر تعداد تلاش مجدد
+  timeout?: number; // Timeout سفارشی (به میلی‌ثانیه)
 };
 
 /**
@@ -362,11 +388,37 @@ export async function safeFetch<T>(
       const baseUrl = API_CONFIG.BASE_URL;
       const url = endPoint.startsWith("http") ? endPoint : baseUrl + endPoint;
 
-      // ارسال درخواست
-      const response = await fetch(url, {
-        ...init,
-        headers,
-      });
+      // ایجاد AbortController برای timeout
+      // Timeout متفاوت بر اساس نوع درخواست: POST بیشتر از GET
+      const timeout =
+        options?.timeout || (init.method === "POST" ? 15000 : 8000);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+      // ارسال درخواست با timeout
+      let response: Response;
+      try {
+        response = await fetch(url, {
+          ...init,
+          headers,
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+      } catch (fetchError) {
+        clearTimeout(timeoutId);
+        // اگر خطا به دلیل abort بود، خطای اصلی را throw می‌کنیم
+        // تا در catch block به عنوان خطای شبکه تشخیص داده شود
+        if (fetchError instanceof Error && fetchError.name === "AbortError") {
+          // ایجاد خطای timeout با پیام واضح
+          const timeoutError = new Error(
+            "Request timeout: The server did not respond in time"
+          );
+          timeoutError.name = "AbortError"; // حفظ نام خطا برای تشخیص بهتر
+          throw timeoutError;
+        }
+        // در غیر این صورت خطای اصلی را پرتاب کن
+        throw fetchError;
+      }
 
       // بررسی وضعیت پاسخ
       if (!response.ok) {
@@ -408,20 +460,65 @@ export async function safeFetch<T>(
         try {
           const contentType = response.headers.get("content-type");
           if (contentType && contentType.includes("application/json")) {
-            errorData = await response.json();
+            const jsonData = await response.json();
+            // بررسی اینکه آیا jsonData یک object معتبر با message است
+            if (jsonData && typeof jsonData === "object") {
+              // اگر message وجود دارد، از آن استفاده می‌کنیم
+              if (jsonData.message && typeof jsonData.message === "string") {
+                errorData = {
+                  message: jsonData.message,
+                  statusCode: response.status,
+                  ...(jsonData.errors && { errors: jsonData.errors }),
+                };
+              } else if (Object.keys(jsonData).length > 0) {
+                // اگر object خالی نیست اما message ندارد، سعی می‌کنیم message را از فیلدهای دیگر پیدا کنیم
+                const possibleMessageFields = [
+                  "error",
+                  "Error",
+                  "Message",
+                  "message",
+                  "detail",
+                  "Detail",
+                ];
+                let foundMessage = "";
+                for (const field of possibleMessageFields) {
+                  if (jsonData[field] && typeof jsonData[field] === "string") {
+                    foundMessage = jsonData[field];
+                    break;
+                  }
+                }
+                errorData = {
+                  message:
+                    foundMessage ||
+                    `خطای ${response.status}: ${response.statusText}`,
+                  statusCode: response.status,
+                };
+              }
+            }
           }
-        } catch {
+        } catch (parseError) {
           // اگر نتوانست JSON بخواند، خطای پیش‌فرض استفاده می‌شود
+          logger.log(`Failed to parse error response: ${parseError}`);
+        }
+
+        // اگر errorData هنوز null است یا object خالی است، از خطای پیش‌فرض استفاده می‌کنیم
+        if (
+          !errorData ||
+          (typeof errorData === "object" && !errorData.message)
+        ) {
+          errorData = {
+            message: `خطای ${response.status}: ${
+              response.statusText || "درخواست ناموفق بود"
+            }`,
+            statusCode: response.status,
+          };
         }
 
         return {
           status: response.status,
           result: null,
           ok: false,
-          error: errorData || {
-            message: `خطای ${response.status}: ${response.statusText}`,
-            statusCode: response.status,
-          },
+          error: errorData,
         };
       }
 
@@ -443,17 +540,44 @@ export async function safeFetch<T>(
         ok: true,
       };
     } catch (error) {
-      console.error(`خطا در ارسال درخواست به ${endPoint}:`, error);
+      // مدیریت خطاهای مختلف شبکه
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      const errorName = error instanceof Error ? error.name : "";
 
-      // مدیریت خطاهای مختلف
-      if (error instanceof TypeError && error.message.includes("fetch")) {
+      // تشخیص خطاهای شبکه (شامل timeout، fetch failed، و خطاهای اتصال)
+      const isNetworkError =
+        error instanceof TypeError ||
+        errorName === "AbortError" ||
+        errorMessage.toLowerCase().includes("fetch") ||
+        errorMessage.toLowerCase().includes("network") ||
+        errorMessage.toLowerCase().includes("networkerror") ||
+        errorMessage.toLowerCase().includes("failed to fetch") ||
+        errorMessage.toLowerCase().includes("network request failed") ||
+        errorMessage.toLowerCase().includes("err_network") ||
+        errorMessage.toLowerCase().includes("err_internet_disconnected") ||
+        errorMessage.toLowerCase().includes("timeout") ||
+        errorMessage.toLowerCase().includes("request timeout") ||
+        errorMessage.toLowerCase().includes("econnrefused") ||
+        errorMessage.toLowerCase().includes("enotfound") ||
+        errorMessage.toLowerCase().includes("etimedout");
+
+      // فقط خطاهای غیر از شبکه را به صورت error لاگ می‌کنیم
+      // خطاهای شبکه (شامل timeout) به صورت log لاگ می‌شوند
+      if (isNetworkError) {
+        logger.log(`⚠️ Network error for ${endPoint}: ${errorMessage}`);
+      } else {
+        logger.error(`Error sending request to ${endPoint}:`, error);
+      }
+
+      if (isNetworkError) {
         return {
           status: 0,
           result: null,
           ok: false,
           error: {
             message:
-              "خطا در اتصال به سرور. لطفا اتصال اینترنت خود را بررسی کنید",
+              "Error connecting to server. Please check your internet connection",
             statusCode: 0,
           },
         };
@@ -467,7 +591,7 @@ export async function safeFetch<T>(
           message:
             error instanceof Error
               ? error.message
-              : "خطای ناشناخته در ارسال درخواست",
+              : "Unknown error sending request",
           statusCode: 520,
         },
       };
@@ -486,10 +610,62 @@ export async function safeFetch<T>(
       token = process.env.NEXT_PUBLIC_API_TOKEN || null;
     }
 
+    // لاگ برای دیباگ (فقط در development)
+    if (!options?.skipAuth && process.env.NODE_ENV === "development") {
+      if (token) {
+        logger.log(
+          `✅ Token found for ${endPoint} (${token.substring(0, 20)}...)`
+        );
+      } else {
+        logger.log(
+          `⚠️ No token available for ${endPoint} - request will be sent without Authorization header`
+        );
+      }
+    }
+
     // ارسال درخواست
     return await makeRequest(token);
   } catch (error) {
-    console.error(`خطای غیرمنتظره در safeFetch برای ${endPoint}:`, error);
+    // مدیریت خطاهای شبکه در سطح بالاتر
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorName = error instanceof Error ? error.name : "";
+
+    const isNetworkError =
+      error instanceof TypeError ||
+      errorName === "AbortError" ||
+      errorMessage.toLowerCase().includes("fetch") ||
+      errorMessage.toLowerCase().includes("network") ||
+      errorMessage.toLowerCase().includes("networkerror") ||
+      errorMessage.toLowerCase().includes("failed to fetch") ||
+      errorMessage.toLowerCase().includes("network request failed") ||
+      errorMessage.toLowerCase().includes("timeout") ||
+      errorMessage.toLowerCase().includes("request timeout") ||
+      errorMessage.toLowerCase().includes("econnrefused") ||
+      errorMessage.toLowerCase().includes("enotfound") ||
+      errorMessage.toLowerCase().includes("etimedout");
+
+    // فقط خطاهای غیر از شبکه را به صورت error لاگ می‌کنیم
+    if (isNetworkError) {
+      logger.log(
+        `⚠️ Network error in safeFetch for ${endPoint}: ${errorMessage}`
+      );
+    } else {
+      logger.error(`Unexpected error in safeFetch for ${endPoint}:`, error);
+    }
+
+    if (isNetworkError) {
+      return {
+        status: 0,
+        result: null,
+        ok: false,
+        error: {
+          message:
+            "Error connecting to server. Please check your internet connection",
+          statusCode: 0,
+        },
+      };
+    }
+
     return {
       status: 520,
       result: null,
@@ -498,7 +674,7 @@ export async function safeFetch<T>(
         message:
           error instanceof Error
             ? error.message
-            : "خطای غیرمنتظره در ارسال درخواست",
+            : "Unexpected error sending request",
         statusCode: 520,
       },
     };

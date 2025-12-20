@@ -1,148 +1,31 @@
 // components/home/CEOQuote/CEOQuote.tsx
-"use client";
 import "./CEOQuote.css";
+import styles from "./CEOQuote.module.css";
 
 const CEOQuote = () => {
   return (
-    <section
-      className="ceo-quote-section"
-      style={{
-        position: "relative",
-        minHeight: "65vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "120px 40px",
-        fontFamily: "Ravi, system-ui",
-        backgroundColor: "rgba(20, 20, 20, 0.7)",
-        backdropFilter: "blur(12px)",
-      }}
-    >
+    <section className={`ceo-quote-section ${styles.ceoQuoteSection}`}>
       {/* Background SVG Pattern - Clear Center */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: "url('/images/CEOQuote/vector.svg')",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "80%",
-          opacity: 0.9,
-          zIndex: 0,
-          maskImage:
-            "radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 60%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 60%)",
-        }}
-      ></div>
+      <div className={styles.backgroundSvgClear}></div>
 
       {/* Background SVG Pattern - Blurred Edges */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: "url('/images/CEOQuote/vector.svg')",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "60%",
-          filter: "blur(25px)",
-          opacity: 0.4,
-          zIndex: 0,
-          maskImage:
-            "radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,1) 60%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,1) 60%)",
-        }}
-      ></div>
+      <div className={styles.backgroundSvgBlurred}></div>
 
       {/* Main Quote Box */}
-      <div
-        className="ceo-quote-box"
-        style={{
-          boxSizing: "border-box",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          padding: "64px 24px 24px",
-          gap: "24px",
-          position: "relative",
-          width: "846px",
-          minHeight: "184px",
-          border: "1px solid #3F3F46",
-          backdropFilter: "blur(4px)",
-          borderRadius: "24px",
-          isolation: "isolate",
-          zIndex: 10,
-        }}
-      >
+      <div className={`ceo-quote-box ${styles.ceoQuoteBox}`}>
         {/* CEO Info Section (Overlapping at top right) */}
-        <div
-          className="ceo-info-container"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "flex-end",
-            gap: "16px",
-            position: "absolute",
-            left: "539px",
-            top: "-32px",
-            zIndex: 3,
-          }}
-        >
+        <div className={`ceo-info-container ${styles.ceoInfoContainer}`}>
           {/* CEO Image Placeholder */}
-          <div
-            className="ceo-image"
-            style={{
-              width: "80px",
-              height: "80px",
-              border: "2px solid #3F3F46",
-              borderRadius: "100px",
-              boxShadow: "0px 4px 14px rgba(0, 0, 0, 0.25)",
-              backgroundImage: "url('/images/CEOQuote/mr-aslami.jpg')", // ❌ اصلاح شد
-              backgroundSize: "cover", // عکس کل div رو بگیره
-              backgroundPosition: "center", // وسط عکس
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "24px",
-              color: "#E4E4E7",
-            }}
-          ></div>
+          <div className={`ceo-image ${styles.ceoImage}`}></div>
 
           {/* CEO Title */}
-          <div
-            className="ceo-title"
-            style={{
-              fontFamily: "'Morabba', 'Ravi', system-ui",
-              fontWeight: 600,
-              fontSize: "16px",
-              lineHeight: "32px",
-              color: "#FAFAFA",
-              textAlign: "right",
-            }}
-          >
+          <div className={`ceo-title ${styles.ceoTitle}`}>
             مدیرعامل آروین ویرا
           </div>
         </div>
 
         {/* Quote Up Icon (Top Left) */}
-        <div
-          className="quote-icon"
-          style={{
-            position: "absolute",
-            left: "24px",
-            width: "48px",
-            height: "48px",
-            zIndex: 0,
-          }}
-        >
+        <div className={`quote-icon ${styles.quoteIcon} ${styles.quoteIconTop}`}>
           <svg
             width="48"
             height="48"
@@ -167,20 +50,8 @@ const CEOQuote = () => {
         </div>
 
         {/* Main Quote Text */}
-        <div
-          className="ceo-quote-text"
-          style={{
-            width: "654px",
-            fontFamily: "'Yekan Bakh', 'Ravi', system-ui",
-            fontWeight: 400,
-            fontSize: "16px",
-            lineHeight: "32px",
-            color: "#E4E4E7",
-            textAlign: "center",
-            zIndex: 1,
-          }}
-        >
-          <p style={{ textAlign: "justify", textJustify: "inter-word" }}>
+        <div className={`ceo-quote-text ${styles.ceoQuoteText}`}>
+          <p className={styles.quoteTextParagraph}>
             در دنیای امروز، مدیریت کارآمد و هوشمندانه نیاز به ابزارهایی دارد که
             بتوانند تمام جوانب کسب‌وکار را پوشش دهند. با اکسیژن، ما اطمینان
             می‌دهیم که سازمان‌ها با تکیه بر داده‌های دقیق و فرآیندهای یکپارچه،
@@ -190,16 +61,7 @@ const CEOQuote = () => {
         </div>
 
         {/* Quote Down Icon (Bottom Right) */}
-        <div
-          className="quote-icon"
-          style={{
-            position: "absolute",
-            right: "24px",
-            width: "48px",
-            height: "48px",
-            zIndex: 2,
-          }}
-        >
+        <div className={`quote-icon ${styles.quoteIcon} ${styles.quoteIconBottom}`}>
           <svg
             width="48"
             height="48"

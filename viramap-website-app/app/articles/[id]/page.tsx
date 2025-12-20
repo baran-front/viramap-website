@@ -1,7 +1,8 @@
 //app/articles/[id]/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -15,277 +16,187 @@ import {
 import ArticleCard from "@/components/modules/articleCard";
 import { ArticleStructuredData } from "@/components/lib/ArticleStructuredData";
 import { BreadcrumbStructuredData } from "@/components/lib/BreadcrumbStructuredData";
+import { getArticleDetail, getArticleComments, postArticleComment } from "@/components/lib/articleApi";
+import type { ArticleT, ArticleCommentT } from "@/components/lib/articleTypes";
+import { getArticleImageUrl, formatArticleDate } from "@/components/lib/articleHelpers";
+import ArticleCommentForm from "@/components/templates/articleCommentForm";
 import "./ArticleDetail.css";
 
-// کامپوننت فرم نظرات
-function ArticleCommentForm({ blogId }: { blogId: number }) {
-  const [name, setName] = useState("");
-  const [rating, setRating] = useState(5);
-  const [comment, setComment] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleStarClick = (starValue: number) => {
-    setRating(starValue);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // شبیه‌سازی ارسال نظر
-    setTimeout(() => {
-      console.log("نظر ارسال شد:", { blogId, name, rating, comment });
-      setName("");
-      setRating(5);
-      setComment("");
-      setIsSubmitting(false);
-      alert("نظر شما با موفقیت ثبت شد!");
-    }, 1000);
-  };
+// کامپوننت نمایش نظرات
+function ArticleCommentsList({ comments }: { comments: ArticleCommentT[] }) {
+  const renderComment = (comment: ArticleCommentT) => (
+    <div key={comment.id} className="user-comment-card">
+      <div className="user-comment-header">
+        <div className="user-comment-stars">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <StarIcon
+              key={star}
+              className={`user-comment-star ${
+                comment.rate && star <= comment.rate ? "filled" : "empty"
+              }`}
+            />
+          ))}
+        </div>
+        <div className="user-comment-info">
+          <div className="user-comment-avatar">
+            <Image
+              src={comment.userThumbnail || "/images/article/kitten.png"}
+              alt={comment.userFullName || "کاربر"}
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="user-comment-details">
+            <p className="user-comment-name">{comment.userFullName || "کاربر"}</p>
+            <p className="user-comment-date">
+              {formatArticleDate(comment.createdOn)}
+            </p>
+          </div>
+        </div>
+      </div>
+      {comment.title && (
+        <p className="user-comment-text">{comment.title}</p>
+      )}
+      {comment.text && (
+        <p className="user-comment-text">{comment.text}</p>
+      )}
+      {comment.children && comment.children.length > 0 && (
+        <div className="user-comment-reply">
+          <div className="user-comment-reply-line"></div>
+          {comment.children.map((child) => (
+            <div key={child.id} className="user-comment-card user-comment-reply-card">
+              <div className="user-comment-header">
+                <div className="user-comment-info">
+                  <div className="user-comment-avatar">
+                    <Image
+                      src={child.userThumbnail || "/images/article/kitten.png"}
+                      alt={child.userFullName || "کاربر"}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="user-comment-details">
+                    <p className="user-comment-name">{child.userFullName || "کاربر"}</p>
+                    <p className="user-comment-date">
+                      {formatArticleDate(child.createdOn)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              {child.text && (
+                <p className="user-comment-text">{child.text}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   return (
-    <div className="article-comment-form-container">
-      <h2 className="article-comment-form-title">ثبت نظر</h2>
-      <form onSubmit={handleSubmit} className="article-comment-form">
-        <div className="article-comment-form-row">
-          <div className="article-comment-form-input-wrapper">
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="نام و نام خانوادگی"
-              className="article-comment-form-input"
-              required
-            />
-            <User className="article-comment-form-icon" />
-          </div>
-          <div className="article-comment-form-rating-wrapper">
-            <label className="article-comment-form-rating-label">
-              به مقاله چه امتیازی می‌دهید؟
-            </label>
-            <div className="article-comment-form-rating">
-              <div className="article-comment-form-stars">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    type="button"
-                    onClick={() => handleStarClick(star)}
-                    className="article-comment-form-star-btn"
-                  >
-                    <StarIcon
-                      className={`article-comment-form-star ${
-                        star <= rating ? "filled" : "empty"
-                      }`}
-                    />
-                  </button>
-                ))}
-              </div>
-              <span className="article-comment-form-rating-value">
-                {rating}/5
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="article-comment-form-textarea-wrapper">
-          <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="ثبت نظر"
-            className="article-comment-form-textarea"
-            required
-          />
-          <Pencil className="article-comment-form-icon" />
-        </div>
-        <button
-          type="submit"
-          disabled={
-            isSubmitting || !comment.trim() || !name.trim() || rating === 0
-          }
-          className="article-comment-form-submit"
-        >
-          {isSubmitting ? "در حال ثبت..." : "ارسال"}
-        </button>
-      </form>
+    <div className="user-comments-section">
+      <h2 className="user-comments-title">نظرات کاربران</h2>
+      <div className="user-comments-list">
+        {comments.length > 0 ? (
+          comments.map(renderComment)
+        ) : (
+          <p className="text-gray-400 text-center py-4">هنوز نظری ثبت نشده است</p>
+        )}
+      </div>
     </div>
   );
 }
 
-// داده‌های نمونه برای مقاله
-const mockArticle = {
-  id: 1,
-  title: "نقش هوش مصنوعی در تحول کسب‌وکارهای نوین",
-  summery:
-    "هوش مصنوعی چگونه می‌تواند فرآیندهای کسب‌وکار را متحول کند و به رشد اقتصادی کمک نماید؟ در این مقاله به بررسی کاربردهای عملی AI در صنایع مختلف می‌پردازیم.",
-  content: `
-    <h2>مقدمه</h2>
-    <p>هوش مصنوعی (AI) یکی از انقلابی‌ترین فناوری‌های قرن بیست و یکم است که در حال تغییر شکل صنایع و کسب‌وکارها در سراسر جهان می‌باشد. از اتوماسیون فرآیندهای ساده تا تحلیل‌های پیچیده داده‌ها، AI ظرفیت بی‌نظیری برای بهبود کارایی و ایجاد ارزش افزوده دارد.</p>
-    
-    <h2>کاربردهای هوش مصنوعی در صنایع</h2>
-    <p>در بخش خدمات مالی، الگوریتم‌های هوش مصنوعی می‌توانند الگوهای تراکنش‌ها را تحلیل کرده و تقلب را شناسایی کنند. در صنعت سلامت، سیستم‌های تشخیص تصویر مبتنی بر AI می‌توانند بیماری‌ها را با دقتی بالاتر از متخصصان انسانی تشخیص دهند.</p>
-    
-    <h2>چالش‌ها و فرصت‌ها</h2>
-    <p>اگرچه هوش مصنوعی فرصت‌های بی‌شماری ایجاد کرده است، اما چالش‌هایی مانند نگرانی‌های اخلاقی، حریم خصوصی و تأثیر بر اشتغال نیز به همراه دارد. شرکتها باید راهبردهای مسئولانه‌ای برای بکارگیری این فناوری تدوین کنند.</p>
-    
-    <h2>نتیجه‌گیری</h2>
-    <p>هوش مصنوعی نه یک انتخاب، بلکه یک ضرورت برای کسب‌وکارهای آینده است. سازمان‌هایی که زودتر این فناوری را بپذیرند و یکپارچه کنند، مزیت رقابتی قابل توجهی به دست خواهند آورد.</p>
-  `,
-  published: "2024-12-15T10:30:00.000Z",
-  authorName: "دکتر علی محمدی",
-  authorImage: "/images/article/kitten.png",
-  imageUrl: "/images/article/header.png",
-  categories: "فناوری, کسب‌وکار",
-};
-
-// داده‌های نمونه برای مقالات مرتبط
-const mockArticles = [
-  {
-    id: 1,
-    title: "تحول دیجیتال در صنعت بانکداری",
-    summery:
-      "نقش فناوری در تغییر صنعت مالی و بانکداری. بررسی چالش‌ها و فرصت‌های پیش روی بانک‌ها در عصر دیجیتال و راهکارهای نوین برای ارائه خدمات بهتر به مشتریان.",
-    imageUrl: "/images/article/header.png",
-    published: "2024-12-10T08:15:00.000Z",
-    authorName: "محمد رضایی",
-    authorImage: "/images/article/kitten.png",
-    categories: "کسب‌وکار, فناوری",
-  },
-  {
-    id: 2,
-    title: "بلاکچین و آینده تراکنش‌ها",
-    summery:
-      "تأثیر فناوری بلاکچین بر سیستم‌های مالی و تراکنش‌های آینده. بررسی کاربردهای عملی این فناوری در صنایع مختلف و مزایای آن برای امنیت و شفافیت تراکنش‌ها.",
-    imageUrl: "/images/article/header.png",
-    published: "2024-12-05T14:20:00.000Z",
-    authorName: "سارا کریمی",
-    authorImage: "/images/article/kitten.png",
-    categories: "فناوری",
-  },
-  {
-    id: 3,
-    title: "اینترنت اشیاء در زندگی روزمره",
-    summery:
-      "کاربردهای عملی IoT در خانه‌های هوشمند و زندگی روزمره. بررسی دستگاه‌های هوشمند و تأثیر آن‌ها بر بهبود کیفیت زندگی و بهینه‌سازی مصرف انرژی.",
-    imageUrl: "/images/article/header.png",
-    published: "2024-12-01T11:45:00.000Z",
-    authorName: "رضا احمدی",
-    authorImage: "/images/article/kitten.png",
-    categories: "فناوری",
-  },
-  {
-    id: 4,
-    title: "راهکارهای افزایش بهره‌وری تیم‌های دورکار",
-    summery:
-      "ابزارها و روش‌های مدیریت تیم‌های دورکار برای افزایش بهره‌وری. بررسی بهترین شیوه‌های ارتباط، هماهنگی و مدیریت پروژه‌ها در محیط کار از راه دور.",
-    imageUrl: "/images/article/header.png",
-    published: "2024-11-28T09:30:00.000Z",
-    authorName: "فاطمه غفاری",
-    authorImage: "/images/article/kitten.png",
-    categories: "کسب‌وکار",
-  },
-  {
-    id: 5,
-    title: "نقش ERP در بهینه‌سازی فرآیندهای سازمانی",
-    summery:
-      "سیستم‌های ERP چگونه می‌توانند فرآیندهای کسب‌وکار را یکپارچه کرده و کارایی سازمان را افزایش دهند. بررسی مزایای پیاده‌سازی ERP و چالش‌های پیش رو در این مسیر.",
-    imageUrl: "/images/article/header.png",
-    published: "2024-11-25T10:15:00.000Z",
-    authorName: "امیرحسین نوری",
-    authorImage: "/images/article/kitten.png",
-    categories: "کسب‌وکار, فناوری",
-  },
-  {
-    id: 6,
-    title: "راهنمای جامع انتخاب سیستم مدیریت مشتریان (CRM)",
-    summery:
-      "انتخاب سیستم CRM مناسب برای کسب‌وکار شما. بررسی معیارهای مهم در انتخاب CRM، مقایسه پلتفرم‌های مختلف و راهکارهای پیاده‌سازی موفق این سیستم‌ها.",
-    imageUrl: "/images/article/header.png",
-    published: "2024-11-22T14:00:00.000Z",
-    authorName: "زهرا موسوی",
-    authorImage: "/images/article/kitten.png",
-    categories: "کسب‌وکار, دیجیتال مارکتینگ",
-  },
-];
-
-// داده‌های نمونه برای دسته‌بندی‌ها
-const mockCategories = [
-  { id: 1, title: "فناوری" },
-  { id: 2, title: "برنامه‌نویسی" },
-  { id: 3, title: "دیجیتال مارکتینگ" },
-  { id: 4, title: "طراحی UI/UX" },
-  { id: 5, title: "کسب‌وکار" },
-  { id: 6, title: "استارتاپ" },
-];
-
-// داده‌های نمونه برای نظرات
-const mockComments = [
-  {
-    id: 1,
-    userFullName: "احمد محمودی",
-    userThumbnail: "/images/article/kitten.png",
-    createdOn: "2024-12-14T16:30:00.000Z",
-    rate: 5,
-    title: "مقاله بسیار عالی",
-    text: "تحلیل بسیار جامع و کاربردی بود. مخصوصاً بخش مربوط به کاربردهای عملی خیلی مفید بود.",
-    children: [],
-  },
-  {
-    id: 2,
-    userFullName: "فاطمه کریمی",
-    userThumbnail: "/images/article/kitten.png",
-    createdOn: "2024-12-13T09:15:00.000Z",
-    rate: 4,
-    title: "مفید اما نیاز به جزئیات بیشتر",
-    text: "مقاله خوبی بود اما در بخش چالش‌ها می‌توانست عمیق‌تر باشد.",
-    children: [
-      {
-        id: 21,
-        userFullName: "مدیر ویرامپ",
-        userThumbnail: "/images/article/kitten.png",
-        createdOn: "2024-12-13T11:20:00.000Z",
-        rate: 0,
-        title: "پاسخ",
-        text: "سپاس از نظر شما. در مقالات آتی به تفصیل بیشتری به این موضوع خواهیم پرداخت.",
-        children: [],
-      },
-    ],
-  },
-  {
-    id: 3,
-    userFullName: "مهران نظری",
-    userThumbnail: "/images/article/kitten.png",
-    createdOn: "2024-12-12T14:45:00.000Z",
-    rate: 5,
-    title: "کاربردی و به روز",
-    text: "دقیقاً با چالش‌هایی که در شرکت ما وجود داشت تطابق داشت. منتظر مقالات بعدی هستیم.",
-    children: [],
-  },
-];
-
 export default function ArticleDetailPage() {
+  const params = useParams();
+  const articleId = parseInt(params.id as string, 10);
+  
+  const [article, setArticle] = useState<ArticleT | null>(null);
+  const [articleLoading, setArticleLoading] = useState(true);
+  const [comments, setComments] = useState<ArticleCommentT[]>([]);
+  const [commentsLoading, setCommentsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // فیلتر مقالات بر اساس جستجو
-  const filteredArticles = mockArticles.filter(
-    (article) =>
-      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.summery.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // دریافت جزئیات مقاله
+  useEffect(() => {
+    async function fetchArticle() {
+      if (!articleId || isNaN(articleId)) {
+        setArticleLoading(false);
+        return;
+      }
+
+      setArticleLoading(true);
+      try {
+        const result = await getArticleDetail(articleId);
+        setArticle(result);
+      } catch (error) {
+        console.error("خطا در دریافت مقاله:", error);
+      } finally {
+        setArticleLoading(false);
+      }
+    }
+
+    fetchArticle();
+  }, [articleId]);
+
+  // دریافت نظرات مقاله
+  useEffect(() => {
+    async function fetchComments() {
+      if (!articleId || isNaN(articleId)) {
+        setCommentsLoading(false);
+        return;
+      }
+
+      setCommentsLoading(true);
+      try {
+        const result = await getArticleComments({
+          blogId: articleId,
+          pageNumber: 1,
+          pageSize: 50,
+          orderBy: ["createdOn"],
+        });
+        setComments(result);
+      } catch (error) {
+        console.error("خطا در دریافت نظرات:", error);
+      } finally {
+        setCommentsLoading(false);
+      }
+    }
+
+    fetchComments();
+  }, [articleId]);
+
+  if (articleLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        در حال بارگذاری...
+      </div>
+    );
+  }
+
+  if (!article) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        مقاله یافت نشد
+      </div>
+    );
+  }
 
   return (
     <>
       {/* Structured Data */}
       <ArticleStructuredData
-        title={mockArticle.title}
-        description={mockArticle.summery}
-        image={mockArticle.imageUrl}
-        datePublished={mockArticle.published}
-        authorName={mockArticle.authorName}
+        title={article.title}
+        description={article.summery}
+        image={getArticleImageUrl(article.imageUrl)}
+        datePublished={article.published}
+        authorName={article.authorName}
       />
       <BreadcrumbStructuredData
         items={[
           { name: "خانه", url: "/" },
           { name: "مقالات", url: "/articles" },
-          { name: mockArticle.title },
+          { name: article.title },
         ]}
       />
 
@@ -294,8 +205,8 @@ export default function ArticleDetailPage() {
         {/* Hero Section - تصویر مقاله در بالای صفحه */}
         <div className="article-hero-section">
           <Image
-            src={mockArticle.imageUrl}
-            alt={mockArticle.title}
+            src={getArticleImageUrl(article.imageUrl)}
+            alt={article.title}
             width={1480}
             height={616}
             className="article-hero-background"
@@ -303,24 +214,24 @@ export default function ArticleDetailPage() {
           />
           <div className="article-hero-overlay" />
           <div className="article-hero-content">
-            <h1 className="article-hero-title">{mockArticle.title}</h1>
+            <h1 className="article-hero-title">{article.title}</h1>
             <div className="article-hero-divider"></div>
             <div className="article-hero-meta">
-              {mockArticle.categories
-                .split(", ")
-                .map((category, index, array) => (
-                  <span key={index}>
-                    {category}
-                    {index < array.length - 1 && (
-                      <span className="article-hero-meta-separator" />
-                    )}
-                  </span>
-                ))}
+              {article.categories
+                ? article.categories.split(", ").map((category, index, array) => (
+                    <span key={index}>
+                      {category}
+                      {index < array.length - 1 && (
+                        <span className="article-hero-meta-separator" />
+                      )}
+                    </span>
+                  ))
+                : null}
               <span className="article-hero-meta-separator" />
-              <span>{mockArticle.authorName}</span>
+              <span>{article.authorName}</span>
               <span className="article-hero-meta-separator" />
               <span>
-                {new Date(mockArticle.published).toLocaleDateString("fa-IR")}
+                {formatArticleDate(article.published)}
               </span>
             </div>
           </div>
@@ -331,253 +242,32 @@ export default function ArticleDetailPage() {
           <div className="article-main-content">
             {/* محتوای اصلی مقاله */}
             <div className="article-content-wrapper">
-              <h2 className="article-content-title">تایتل بلاگ</h2>
+              <h2 className="article-content-title">{article.title}</h2>
               <div
                 className="article-content-body"
-                dangerouslySetInnerHTML={{ __html: mockArticle.content }}
+                dangerouslySetInnerHTML={{ __html: article.content }}
               />
-              <Image
-                src={mockArticle.imageUrl}
-                alt={mockArticle.title}
-                width={1200}
-                height={600}
-                className="article-content-image"
-              />
+              {article.imageUrl && (
+                <Image
+                  src={getArticleImageUrl(article.imageUrl)}
+                  alt={article.title}
+                  width={1200}
+                  height={600}
+                  className="article-content-image"
+                />
+              )}
 
-              {/* بخش مقالات مرتبط */}
-              <div className="related-articles-in-content">
-                <div className="related-articles-in-content-header">
-                  <h2 className="related-articles-in-content-title">
-                    مقالات مرتبط
-                  </h2>
-                  <Link
-                    href="/articles"
-                    className="related-articles-in-content-view-all"
-                  >
-                    <svg
-                      className="related-articles-in-content-view-all-icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M15 19.9201L8.48003 13.4001C7.71003 12.6301 7.71003 11.3701 8.48003 10.6001L15 4.08008"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    مشاهده همه
-                  </Link>
-                </div>
-                <div className="related-articles-in-content-container">
-                  {mockArticles.slice(0, 2).map((article) => (
-                    <Link
-                      key={article.id}
-                      href={`/articles/${article.id}`}
-                      className="related-article-in-content-card"
-                    >
-                      {/* تصویر */}
-                      <div className="related-article-in-content-image">
-                        <Image
-                          src={article.imageUrl}
-                          alt={article.title}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                        />
-                      </div>
-
-                      {/* محتوا */}
-                      <div className="related-article-in-content-content">
-                        {/* عنوان */}
-                        <h3 className="related-article-in-content-title">
-                          {article.title}
-                        </h3>
-
-                        {/* خلاصه */}
-                        <p className="related-article-in-content-description">
-                          {article.summery}
-                        </p>
-
-                        {/* اطلاعات نویسنده و تاریخ */}
-                        <div className="related-article-in-content-author">
-                          <div className="related-article-in-content-avatar">
-                            <Image
-                              src={
-                                article.authorImage ||
-                                "/images/article/kitten.png"
-                              }
-                              alt={article.authorName}
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                          <div className="related-article-in-content-author-info">
-                            <p className="related-article-in-content-author-name">
-                              {article.authorName}
-                            </p>
-                            <p className="related-article-in-content-date">
-                              {new Date(article.published).toLocaleDateString(
-                                "fa-IR",
-                                {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                }
-                              )}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+              {/* بخش مقالات مرتبط - حذف شده تا از API دریافت شود */}
 
               {/* بخش نظرات کاربران */}
-              <div className="user-comments-section">
-                <h2 className="user-comments-title">نظرات کاربران</h2>
-                <div className="user-comments-list">
-                  {/* نظر اول با پاسخ */}
-                  <div className="user-comment-card">
-                    <div className="user-comment-header">
-                      <div className="user-comment-stars">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <StarIcon
-                            key={star}
-                            className={`user-comment-star ${
-                              star <= 5 ? "filled" : "empty"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <div className="user-comment-info">
-                        <div className="user-comment-avatar">
-                          <Image
-                            src="/images/article/kitten.png"
-                            alt="شهرام طالبی"
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="user-comment-details">
-                          <p className="user-comment-name">شهرام طالبی</p>
-                          <p className="user-comment-date">۱۴۰۳/۰۹/۰۱</p>
-                        </div>
-                      </div>
-                    </div>
-                    <p className="user-comment-text">بسیار عالی و مفید</p>
-                    <div className="user-comment-actions">
-                      <button className="user-comment-action-btn">
-                        <ThumbsDown className="user-comment-action-icon" />
-                      </button>
-                      <button className="user-comment-action-btn">
-                        <ThumbsUp className="user-comment-action-icon" />
-                      </button>
-                    </div>
-
-                    {/* پاسخ به نظر */}
-                    <div className="user-comment-reply">
-                      <div className="user-comment-reply-line"></div>
-                      <div className="user-comment-card user-comment-reply-card">
-                        <div className="user-comment-header">
-                          <div className="user-comment-info">
-                            <div className="user-comment-avatar">
-                              <Image
-                                src="/images/article/kitten.png"
-                                alt="سمانه جوادی"
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                            <div className="user-comment-details">
-                              <p className="user-comment-name">سمانه جوادی</p>
-                              <p className="user-comment-date">۱۴۰۳/۰۹/۰۱</p>
-                            </div>
-                          </div>
-                        </div>
-                        <p className="user-comment-text">
-                          ممنون از بازخورد شما دوست عزیز
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* نظر دوم */}
-                  <div className="user-comment-card">
-                    <div className="user-comment-header">
-                      <div className="user-comment-stars">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <StarIcon
-                            key={star}
-                            className={`user-comment-star ${
-                              star <= 5 ? "filled" : "empty"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <div className="user-comment-info">
-                        <div className="user-comment-avatar">
-                          <Image
-                            src="/images/article/kitten.png"
-                            alt="شهرام طالبی"
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="user-comment-details">
-                          <p className="user-comment-name">شهرام طالبی</p>
-                          <p className="user-comment-date">۱۴۰۳/۰۹/۰۱</p>
-                        </div>
-                      </div>
-                    </div>
-                    <p className="user-comment-text">
-                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
-                    </p>
-                  </div>
-
-                  {/* نظر سوم */}
-                  <div className="user-comment-card">
-                    <div className="user-comment-header">
-                      <div className="user-comment-stars">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <StarIcon
-                            key={star}
-                            className={`user-comment-star ${
-                              star <= 5 ? "filled" : "empty"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <div className="user-comment-info">
-                        <div className="user-comment-avatar">
-                          <Image
-                            src="/images/article/kitten.png"
-                            alt="شهرام طالبی"
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="user-comment-details">
-                          <p className="user-comment-name">شهرام طالبی</p>
-                          <p className="user-comment-date">۱۴۰۳/۰۹/۰۱</p>
-                        </div>
-                      </div>
-                    </div>
-                    <p className="user-comment-text">
-                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
-                    </p>
-                  </div>
-                </div>
-              </div>
+              {commentsLoading ? (
+                <div className="text-center text-gray-300 py-4">در حال بارگذاری نظرات...</div>
+              ) : (
+                <ArticleCommentsList comments={comments} />
+              )}
 
               {/* فرم ثبت نظر */}
-              <ArticleCommentForm blogId={mockArticle.id} />
+              <ArticleCommentForm blogId={article.id} />
             </div>
 
             {/* سایدبار */}
@@ -618,63 +308,12 @@ export default function ArticleDetailPage() {
                 </button>
               </div>
 
-              {/* دسته‌بندی‌ها */}
-              <div className="article-sidebar-section">
-                <h3 className="article-sidebar-title">دسته بندی ها</h3>
-                <div className="article-sidebar-divider"></div>
-                <div className="article-sidebar-list">
-                  {mockCategories.slice(0, 3).map((category) => (
-                    <Link
-                      key={category.id}
-                      href={`/articles?category=${category.id}`}
-                      className="article-sidebar-item"
-                    >
-                      <span className="article-sidebar-bullet" />
-                      <span className="article-sidebar-item-text">
-                        {category.title}
-                      </span>
-                      <span className="article-sidebar-item-count">
-                        ۲۳ بلاگ
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* مقالات جدید */}
-              <div className="article-sidebar-section">
-                <h3 className="article-sidebar-title">مقالات جديد</h3>
-                <div className="article-sidebar-divider"></div>
-                <div className="article-sidebar-list">
-                  {filteredArticles.slice(0, 6).map((article) => (
-                    <Link
-                      key={article.id}
-                      href={`/articles/${article.id}`}
-                      className="article-sidebar-item"
-                    >
-                      <span className="article-sidebar-bullet" />
-                      <span className="article-sidebar-item-text">
-                        {article.title}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+              {/* مقالات جدید - حذف شده تا از API دریافت شود */}
             </div>
           </div>
         </div>
 
-        {/* مقالات محبوب */}
-        <div className="container mt-12">
-          <h2 className="font-ravi text-2xl font-medium text-white mb-6 text-center">
-            مقالات محبوب
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockArticles.slice(0, 6).map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-          </div>
-        </div>
+        {/* مقالات محبوب - حذف شده تا از API دریافت شود */}
       </div>
     </>
   );

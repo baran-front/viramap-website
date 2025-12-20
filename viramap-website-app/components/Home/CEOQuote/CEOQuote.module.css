@@ -1,0 +1,149 @@
+/* CEOQuote CSS Module - تبدیل inline styles به CSS modules */
+
+.ceoQuoteSection {
+  position: relative;
+  min-height: 65vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 40px;
+  font-family: "Ravi", system-ui;
+  background-color: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(12px);
+}
+
+.backgroundSvgClear {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("/images/CEOQuote/vector.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 80%;
+  opacity: 0.9;
+  z-index: 0;
+  mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0) 60%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0) 60%
+  );
+}
+
+.backgroundSvgBlurred {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("/images/CEOQuote/vector.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 60%;
+  filter: blur(25px);
+  opacity: 0.4;
+  z-index: 0;
+  mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 1) 60%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 1) 60%
+  );
+}
+
+.ceoQuoteBox {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 64px 24px 24px;
+  gap: 24px;
+  position: relative;
+  width: 846px;
+  min-height: 184px;
+  border: 1px solid #3f3f46;
+  backdrop-filter: blur(4px);
+  border-radius: 24px;
+  isolation: isolate;
+  z-index: 10;
+}
+
+.ceoInfoContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 16px;
+  position: absolute;
+  left: 539px;
+  top: -32px;
+  z-index: 3;
+}
+
+.ceoImage {
+  width: 80px;
+  height: 80px;
+  border: 2px solid #3f3f46;
+  border-radius: 100px;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25);
+  background-image: url("/images/CEOQuote/mr-aslami.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #e4e4e7;
+}
+
+.ceoTitle {
+  font-family: "Morabba", "Ravi", system-ui;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 32px;
+  color: #fafafa;
+  text-align: right;
+}
+
+.quoteIcon {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  z-index: 0;
+}
+
+.quoteIconTop {
+  left: 24px;
+}
+
+.quoteIconBottom {
+  right: 24px;
+  z-index: 2;
+}
+
+.ceoQuoteText {
+  width: 654px;
+  font-family: "Yekan Bakh", "Ravi", system-ui;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 32px;
+  color: #e4e4e7;
+  text-align: center;
+  z-index: 1;
+}
+
+.quoteTextParagraph {
+  text-align: justify;
+  text-justify: inter-word;
+}
+

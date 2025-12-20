@@ -1,0 +1,398 @@
+/* components/home/HeroSection/HeroSection.css */
+.hero-section {
+  position: relative;
+  height: 100vh;
+  background-color: #141414;
+  color: white;
+  display: flex;
+  font-family: "Ravi", system-ui;
+  overflow: hidden;
+}
+
+.ellipse-52 {
+  position: absolute;
+  width: 663px;
+  height: 663px;
+  left: calc(50% - 331.5px - 501.5px);
+  top: -180px;
+  background: #0678700f;
+  filter: blur(250px);
+  z-index: 0;
+}
+
+.ellipse-large-left {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  left: -200px;
+  top: -200px;
+  background: #0678700f;
+  filter: blur(200px);
+  z-index: 0;
+}
+
+.ellipse-right-top {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  right: -150px;
+  top: -100px;
+  background: rgba(251, 101, 20, 0.1);
+  filter: blur(150px);
+  z-index: 0;
+}
+
+.ellipse-right-bottom {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  right: -200px;
+  bottom: -200px;
+  background: rgba(254, 139, 32, 0.08);
+  filter: blur(180px);
+  z-index: 0;
+}
+
+.hero-background-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.hero-content {
+  width: 100%;
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-subtitle {
+  font-family: "Ravi", sans-serif !important;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 40px;
+  color: #e4e4e7;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.hero-title {
+  font-family: "Ravi", sans-serif !important;
+  font-weight: bold;
+  font-size: 60px;
+  line-height: 92px;
+  color: #e4e4e7;
+  margin-bottom: 0;
+  text-align: center;
+  max-width: 965px;
+}
+
+.hero-gradient-text {
+  font-family: "Ravi", sans-serif !important;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 40px;
+  background: linear-gradient(
+    269.96deg,
+    #fe8b20 29.13%,
+    #aece3b 47.88%,
+    #119389 65.19%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  max-width: 965px;
+}
+
+.hero-buttons-container {
+  display: flex;
+  gap: 16px;
+  margin-top: 48px;
+  justify-content: center;
+}
+
+.primary-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 8px;
+  width: 135px;
+  height: 48px;
+  background-color: #fb6514;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Ravi", sans-serif !important;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 26px;
+  color: white;
+}
+
+.primary-button:hover {
+  background-color: #e55a12;
+  transform: translateY(-2px);
+}
+
+.secondary-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 8px;
+  width: 167px;
+  height: 48px;
+  border-radius: 8px;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid rgba(251, 101, 20, 0.3);
+  transition: all 0.3s ease;
+  font-family: "Ravi", sans-serif !important;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 26px;
+  color: #fb6514;
+}
+
+.secondary-button:hover {
+  background-color: rgba(251, 101, 20, 0.1);
+  transform: translateY(-2px);
+}
+
+.hero-right-image {
+  position: absolute;
+  top: 12px;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-image: url("/images/hero/background.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* به DynamicSlider.css اضافه کنید */
+
+/* استایل‌های کنترل اسلایدر */
+.slider-controls-wrapper {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.slider-arrow-btn {
+  transition: all 0.3s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+}
+
+.slider-arrow-btn:hover {
+  background: rgba(251, 101, 20, 0.1);
+  transform: scale(1.1);
+}
+
+.slider-arrow-btn:hover .arrow-main-right,
+.slider-arrow-btn:hover .arrow-decorative-right {
+  stroke: #fb6514 !important;
+}
+
+.slide-indicator {
+  transition: all 0.3s ease;
+}
+
+.slide-indicator:hover {
+  background: #fb6514 !important;
+  opacity: 0.8;
+}
+
+/* استایل برای hover روی فلش‌ها */
+.slider-arrow-btn:hover svg path {
+  transition: stroke 0.3s ease;
+}
+
+/* انیمیشن برای تغییر اسلایدها */
+.slide-item {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* برای تغییر رنگ فلش راست هنگام hover */
+@keyframes arrowHover {
+  0% {
+    stroke: rgba(250, 250, 250, 0.1);
+  }
+  100% {
+    stroke: #fb6514;
+  }
+}
+
+.slider-arrow-btn:hover .arrow-main-right {
+  animation: arrowHover 0.3s ease forwards;
+}
+
+.slider-arrow-btn:hover .arrow-decorative-right {
+  animation: arrowHover 0.3s ease 0.1s forwards;
+}
+
+/* HeroSection Responsive CSS */
+
+/* Hide all ellipses in responsive views */
+@media (max-width: 1024px) {
+  /* Hide ellipses using class selectors */
+  section[class*="relative"] > div[class*="absolute"] > div[class*="hidden"] {
+    display: none !important;
+  }
+
+  /* Hide ellipses using attribute selectors for inline styles */
+  div[style*="blur"][class*="rounded-full"] {
+    display: none !important;
+  }
+
+  .hero-content {
+    padding: 60px 24px;
+  }
+
+  .hero-title {
+    font-size: 48px;
+    line-height: 72px;
+  }
+
+  .hero-subtitle {
+    font-size: 20px;
+    line-height: 36px;
+  }
+
+  .hero-gradient-text {
+    font-size: 18px;
+    line-height: 32px;
+    max-width: 90%;
+    margin: 0 auto 32px auto;
+  }
+
+  .hero-buttons-container {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+
+  /* Responsive: Background image scales to show full content on tablet */
+  .hero-right-image {
+    width: 100%;
+    height: 400px;
+    margin-top: 32px;
+    background-size: contain; /* Changed to contain to show full image without cropping */
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+/* موبایل */
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: auto;
+    padding: 40px 20px;
+  }
+
+  .hero-content {
+    padding: 0 8px;
+  }
+
+  .hero-title {
+    font-size: 32px;
+    line-height: 48px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+    line-height: 28px;
+  }
+
+  .hero-gradient-text {
+    font-size: 14px;
+    line-height: 24px;
+    max-width: 95%;
+    margin-bottom: 24px;
+  }
+
+  .hero-buttons-container {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 100% !important;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Responsive: Background image scales to show full content on mobile */
+  .hero-right-image {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-top: 24px;
+    background-size: contain; /* Changed to contain to show full image without cropping on mobile */
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* مخفی کردن همه ellipses برای موبایل */
+  .ellipse-52,
+  .ellipse-large-left,
+  .ellipse-right-top,
+  .ellipse-right-bottom {
+    display: none !important;
+  }
+}
+
+/* کوچک‌تر از 480px */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 28px;
+    line-height: 42px;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  .hero-gradient-text {
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+  /* Responsive: Further height reduction for very small screens while maintaining image visibility */
+  .hero-right-image {
+    height: 250px;
+    background-size: contain; /* Full image visible on very small screens */
+    background-repeat: no-repeat;
+  }
+}

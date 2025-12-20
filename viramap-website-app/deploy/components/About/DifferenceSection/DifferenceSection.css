@@ -1,0 +1,125 @@
+.difference-section-container {
+  width: calc(100% - 160px);
+  max-width: 1480px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Desktop: reduce gap to prevent overflow */
+@media (min-width: 1024px) and (min-height: 801px) {
+  .difference-section-container {
+    gap: 16px !important;
+  }
+}
+
+/* iPad and 1280x800 adjustments */
+@media (max-width: 1280px) and (max-height: 800px) {
+  .difference-section-container {
+    width: calc(100% - 80px) !important;
+    max-width: calc(100% - 80px) !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    margin-top: 24px !important;
+    margin-bottom: 24px !important;
+    gap: 24px !important;
+  }
+
+  /* تنظیم اندازه تصویر برای 1280x800 */
+  .difference-section-container > div:first-child {
+    max-width: 300px !important;
+    width: 300px !important;
+    height: 240px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* تنظیم فاصله‌های متن */
+  .difference-section-container > div:last-child {
+    gap: 12px !important;
+  }
+
+  /* تنظیم اندازه فونت برای 1280x800 */
+  .difference-section-container h2 {
+    font-size: 24px !important;
+    line-height: 1.35 !important;
+  }
+
+  .difference-section-container p {
+    font-size: 13px !important;
+    line-height: 1.8 !important;
+  }
+}
+
+/* iPad specific styles (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .difference-section {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .difference-section-container {
+    width: calc(100% - 64px);
+    max-width: calc(100% - 64px);
+    padding-left: 32px;
+    padding-right: 32px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    gap: 40px;
+  }
+
+  /* Ensure image doesn't overflow on iPad */
+  .difference-section-container > div:first-child {
+    max-width: 320px;
+    height: 200px;
+  }
+}
+
+/* Mobile adjustments - keep original width behavior */
+@media (max-width: 900px) {
+  .difference-section-container {
+    width: 100%;
+    max-width: 1480px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* Mobile adjustments (up to 767px) */
+@media (max-width: 767px) {
+  .difference-section-container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    gap: 24px;
+  }
+
+  /* Mobile image sizing */
+  .difference-section-container > div:first-child {
+    max-width: 180px;
+    height: 180px;
+  }
+
+  /* Mobile text adjustments */
+  .difference-section-container > div:last-child {
+    gap: 16px;
+  }
+}
+
+/* Small mobile (up to 480px) */
+@media (max-width: 480px) {
+  .difference-section-container {
+    padding-left: 12px;
+    padding-right: 12px;
+    gap: 20px;
+  }
+
+  .difference-section-container > div:first-child {
+    max-width: 160px;
+    height: 160px;
+  }
+}

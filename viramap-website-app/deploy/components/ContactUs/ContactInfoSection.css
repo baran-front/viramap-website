@@ -1,0 +1,8 @@
+.contact-info-card {
+  transition: all 0.3s ease;
+}
+
+.contact-info-card:hover {
+  border: 1px solid #fb6514 !important;
+  filter: drop-shadow(14px 14px 100px rgba(251, 101, 20, 0.4)) !important;
+}

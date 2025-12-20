@@ -16,11 +16,13 @@ export const CMS_ENDPOINTS = {
  * Endpoints مربوط به مقالات
  */
 export const ARTICLE_ENDPOINTS = {
-  search: "/v1/blogs/client/search",
+  // Endpoint دسته‌بندی‌ها (endpoint قدیمی که کار می‌کرد)
   categories: "/v1/blogcategories/client/categories/zerocounter/5",
-  detail: (id: number) => `/v1/blogs/client/${id}`,
-  commentsSearch: "/v1/blog-comments/client/search",
-  commentCreate: "/v1/blog-comments/client/create",
+  // Endpoints مطابق contract
+  search: "/blogposts/client/searchsp",
+  detail: (id: number) => `/blogposts/${id}`,
+  commentsSearch: "/comments/client/search",
+  commentCreate: "/comments",
 } as const;
 
 /**

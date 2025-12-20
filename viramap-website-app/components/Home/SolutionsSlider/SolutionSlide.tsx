@@ -1,6 +1,7 @@
 "use client";
 
 import { memo } from "react";
+import Link from "next/link";
 import { SolutionItem } from "./types";
 
 interface SolutionSlideProps {
@@ -40,7 +41,7 @@ const SolutionSlide = memo(
 
             <p className="solution-description">{solution.description}</p>
 
-            <button className="read-more-btn" type="button">
+            <Link href={`/read-more/2`} className="read-more-btn" type="button">
               <span>{solution.buttonText}</span>
               <svg
                 width="16"
@@ -59,7 +60,7 @@ const SolutionSlide = memo(
                   strokeLinejoin="round"
                 />
               </svg>
-            </button>
+            </Link>
           </div>
 
           <div className="features-grid-container">

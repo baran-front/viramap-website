@@ -2,6 +2,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function TechnologySectionWithImage() {
   return (
@@ -28,7 +29,10 @@ export default function TechnologySectionWithImage() {
               {/* Button Container با justify-content: flex-end */}
               <div className="flex justify-end w-full flex-none order-2 flex-grow-0 mt-2">
                 {/* Button */}
-                <button className="flex flex-row items-center justify-end gap-2 w-[195px] h-6 yekanbakh-text font-semibold text-sm leading-[26px] text-[#FB6514] border-none cursor-pointer p-0 transition-all duration-300">
+                <Link
+                  href="/read-more/3"
+                  className="flex flex-row items-center justify-end gap-2 w-[195px] h-6 yekanbakh-text font-semibold text-sm leading-[26px] text-[#FB6514] border-none cursor-pointer p-0 transition-all duration-300"
+                >
                   <span className="flex items-center">
                     درباره ویرامپ
                   </span>
@@ -48,7 +52,7 @@ export default function TechnologySectionWithImage() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </button>
+                </Link>
               </div>
             </div>
           </div>

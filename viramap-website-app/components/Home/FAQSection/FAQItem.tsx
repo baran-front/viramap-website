@@ -279,9 +279,13 @@ const FAQItem = ({ item, isOpen, onToggle }: FAQItemProps) => {
           relative
           box-border
           flex flex-row justify-center items-start
-          p-4 gap-2
+          p-4 sm:p-5 md:p-6 gap-2
           w-full
-          ${isExpanded ? "min-h-[136px]" : "min-h-[68px]"}
+          ${
+            isExpanded
+              ? "min-h-[180px] sm:min-h-[160px] md:min-h-[140px]"
+              : "min-h-[80px] sm:min-h-[72px] md:min-h-[68px]"
+          }
           ${isExpanded ? "bg-white/10" : "bg-[#52525B]/10"}
           ${isExpanded ? "faq-gradient-border" : "border border-[#3F3F46]"}
           shadow-[0px_1px_2px_rgba(16,24,40,0.05)]
@@ -296,17 +300,17 @@ const FAQItem = ({ item, isOpen, onToggle }: FAQItemProps) => {
         <div
           className={`
           flex flex-col justify-center items-start
-          p-0 gap-1
+          p-0 gap-2 sm:gap-1
           w-full h-auto
-          ${isExpanded ? "relative z-10" : ""}
+          ${isExpanded ? "relative z-10 pb-2" : ""}
         `}
         >
           {/* Question Row - کاملاً مطابق استایل شما */}
           <div
             className="
             flex flex-row justify-between items-center
-            p-0 gap-3
-            w-full h-9
+            p-0 gap-2 sm:gap-3
+            w-full min-h-[36px] sm:min-h-[40px] md:h-9
           "
           >
             {/* Icon - سمت چپ */}
@@ -316,17 +320,19 @@ const FAQItem = ({ item, isOpen, onToggle }: FAQItemProps) => {
             <div
               className="
               flex flex-row justify-end items-center
-              p-0 gap-3
-              flex-1 h-9
+              p-0 gap-2 sm:gap-3
+              flex-1 min-h-[36px] sm:min-h-[40px] md:h-9
             "
             >
               <span
                 className="
                 font-['Yekan_Bakh']
-                font-normal text-[18px] leading-[36px]
+                font-normal text-[16px] sm:text-[17px] md:text-[18px] 
+                leading-[28px] sm:leading-[32px] md:leading-[36px]
                 text-right text-[#FAFAFA]
                 flex-1
-                pr-2
+                pr-1 sm:pr-2
+                break-words
               "
               >
                 {item.question}
@@ -381,18 +387,21 @@ const FAQItem = ({ item, isOpen, onToggle }: FAQItemProps) => {
           {isExpanded && (
             <div
               className="
-              w-full pt-4
+              w-full pt-3 sm:pt-4
               animate-fadeIn
+              pb-1
             "
             >
               <p
                 className="
                 w-full
                 font-['Yekan_Bakh']
-                font-normal text-[16px] leading-[32px]
+                font-normal text-[14px] sm:text-[15px] md:text-[16px] 
+                leading-[24px] sm:leading-[28px] md:leading-[32px]
                 flex items-center text-justify
                 text-[#E4E4E7]
-                pr-2
+                pr-1 sm:pr-2
+                break-words
               "
               >
                 {item.answer}

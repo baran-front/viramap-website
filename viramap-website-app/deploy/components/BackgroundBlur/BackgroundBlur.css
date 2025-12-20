@@ -1,0 +1,153 @@
+/* BackgroundBlur Component Styles */
+
+.background-blur-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.background-blur-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.04;
+  will-change: transform;
+}
+
+/* Circle 1 - Neon Green */
+.circle-1 {
+  width: 750px;
+  height: 750px;
+  background: #00ff99;
+  top: 10%;
+  left: -10%;
+  animation: float-1 25s ease-in-out infinite;
+}
+
+/* Circle 2 - Neon Orange */
+.circle-2 {
+  width: 850px;
+  height: 850px;
+  background: #ff7b00;
+  top: 60%;
+  right: -5%;
+  animation: float-2 30s ease-in-out infinite;
+}
+
+/* Circle 3 - Neon Green (smaller) */
+.circle-3 {
+  width: 650px;
+  height: 650px;
+  background: #00ff99;
+  bottom: 5%;
+  left: 20%;
+  animation: float-3 35s ease-in-out infinite;
+}
+
+/* Circle 4 - Neon Purple */
+.circle-4 {
+  width: 800px;
+  height: 800px;
+  background: #9d4edd;
+  top: 30%;
+  right: 25%;
+  animation: float-4 28s ease-in-out infinite;
+}
+
+/* Enhanced floating animations - more noticeable movement */
+@keyframes float-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(80px, -60px) scale(1.08);
+  }
+  50% {
+    transform: translate(-50px, 50px) scale(0.95);
+  }
+  75% {
+    transform: translate(60px, 40px) scale(1.05);
+  }
+}
+
+@keyframes float-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(-70px, 60px) scale(1.06);
+  }
+  50% {
+    transform: translate(40px, -50px) scale(0.97);
+  }
+  75% {
+    transform: translate(-60px, -40px) scale(1.04);
+  }
+}
+
+@keyframes float-3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(70px, -50px) scale(1.07);
+  }
+  50% {
+    transform: translate(-60px, 55px) scale(0.94);
+  }
+  75% {
+    transform: translate(50px, 30px) scale(1.03);
+  }
+}
+
+@keyframes float-4 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-80px, 70px) scale(1.09);
+  }
+  66% {
+    transform: translate(70px, -60px) scale(0.96);
+  }
+}
+
+/* Ensure no horizontal scroll */
+@media (max-width: 768px) {
+  .circle-1 {
+    width: 600px;
+    height: 600px;
+    top: 5%;
+    left: -15%;
+  }
+
+  .circle-2 {
+    width: 700px;
+    height: 700px;
+    top: 55%;
+    right: -10%;
+  }
+
+  .circle-3 {
+    width: 550px;
+    height: 550px;
+    bottom: 10%;
+    left: 15%;
+  }
+
+  .circle-4 {
+    width: 650px;
+    height: 650px;
+    top: 25%;
+    right: 20%;
+  }
+}

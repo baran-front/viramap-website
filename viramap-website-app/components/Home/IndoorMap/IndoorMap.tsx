@@ -1,6 +1,7 @@
 // components/home/IndoorMap/IndoorMap.tsx
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import "./IndoorMap.css";
 
 const IndoorMap = () => {
@@ -27,7 +28,10 @@ const IndoorMap = () => {
               </p>
 
               {/* Button */}
-              <button className="flex flex-row items-center gap-2 px-0 py-0 bg-transparent border-none cursor-pointer transition-all hover:opacity-80 self-end">
+              <Link
+                href="/read-more/1"
+                className="flex flex-row items-center gap-2 px-0 py-0 bg-transparent border-none cursor-pointer transition-all hover:opacity-80 self-end"
+              >
                 <span className="font-ravi font-semibold text-[15px] sm:text-[16px] leading-[26px] text-[#FB6514]">
                   مطالعه بیشتر
                 </span>
@@ -49,7 +53,7 @@ const IndoorMap = () => {
                     strokeLinejoin="round"
                   />
                 </svg>
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -141,7 +145,10 @@ const IndoorMap = () => {
               </p>
 
               {/* Button */}
-              <button className="flex flex-row items-center gap-2 px-0 py-0 bg-transparent border-none cursor-pointer transition-all hover:opacity-80 self-end">
+              <Link
+                href="/read-more/1"
+                className="flex flex-row items-center gap-2 px-0 py-0 bg-transparent border-none cursor-pointer transition-all hover:opacity-80 self-end"
+              >
                 <span className="font-ravi font-semibold text-[15px] sm:text-[16px] leading-[26px] text-[#FB6514]">
                   مطالعه بیشتر
                 </span>
@@ -163,7 +170,7 @@ const IndoorMap = () => {
                     strokeLinejoin="round"
                   />
                 </svg>
-              </button>
+              </Link>
             </div>
           </div>
         </div>

@@ -80,10 +80,7 @@ export default function MallsSolutionPage() {
       />
       {/* Hero Section */}
       <div className="pt-32">
-        <SolutionHero
-          title={mallData.title}
-          description={mallData.description}
-        />
+        <SolutionHero category="malls" />
       </div>
 
       {/* Top Section (ویژگی‌های مخصوص مال‌ها) */}

@@ -7,6 +7,8 @@ import { StarIcon, UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { postArticleComment } from "@/components/lib/articleApi";
+import { logger } from "@/components/lib/logger";
 
 type Props = { blogId: number };
 
@@ -48,14 +50,30 @@ function ArticleCommentForm({ blogId }: Props) {
 
     setIsSubmitting(true);
 
-    // شبیه‌سازی ارسال
-    setTimeout(() => {
-      console.log("نظر ارسال شد:", { blogId, ...formData });
+    try {
+      const result = await postArticleComment({
+        blogId,
+        title: formData.title,
+        rate: formData.rating,
+      });
+
+      if (result > 0) {
+        toast.success("نظر شما با موفقیت ثبت شد");
+        setFormData({ fullName: "", title: "", rating: 5 });
+        setErrors({});
+        // می‌توانید یک callback برای refresh نظرات اضافه کنید
+        if (typeof window !== "undefined") {
+          window.location.reload();
+        }
+      } else {
+        toast.error("خطا در ثبت نظر. لطفا دوباره تلاش کنید");
+      }
+    } catch (error) {
+      logger.error("خطا در ارسال نظر:", error);
+      toast.error("خطا در ثبت نظر. لطفا دوباره تلاش کنید");
+    } finally {
       setIsSubmitting(false);
-      setFormData({ fullName: "", title: "", rating: 5 });
-      setErrors({});
-      toast.success("نظر شما با موفقیت ثبت شد");
-    }, 1000);
+    }
   };
 
   const handleStarClick = (starValue: number) => {

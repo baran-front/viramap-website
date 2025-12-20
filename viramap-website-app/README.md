@@ -1,406 +1,249 @@
 # 🗺️ Viramap Website
 
-وب‌سایت رسمی Viramap - پلتفرم پیشرفته نقشه‌برداری داخلی و راه‌یابی در محیط‌های بسته
+Official website for Viramap - Advanced indoor mapping and navigation platform for enclosed environments.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.0.5-black)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19.2.0-blue)](https://react.dev/)
+[![React](https://img.shields.io/badge/React-18.3-blue)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38bdf8)](https://tailwindcss.com/)
 
-## 📋 فهرست مطالب
+## Overview
 
-- [معرفی](#معرفی)
-- [ویژگی‌ها](#ویژگی‌ها)
-- [تکنولوژی‌های استفاده شده](#تکنولوژیهای-استفاده-شده)
-- [پیش‌نیازها](#پیشنیازها)
-- [نصب و راه‌اندازی](#نصب-و-راهاندازی)
-- [ساختار پروژه](#ساختار-پروژه)
-- [اسکریپت‌ها](#اسکریپتها)
-- [توسعه](#توسعه)
-- [Deployment](#deployment)
-- [مشارکت](#مشارکت)
-- [لایسنس](#لایسنس)
+Viramap is a comprehensive platform for indoor mapping and navigation in enclosed environments such as shopping malls, hospitals, airports, and large buildings. This website serves as the primary interface for showcasing Viramap's products, solutions, and services.
 
----
+## Features
 
-## 🎯 معرفی
+### 🎨 User Interface
 
-Viramap یک پلتفرم جامع برای نقشه‌برداری داخلی و راه‌یابی در محیط‌های بسته مانند مراکز خرید، بیمارستان‌ها، فرودگاه‌ها و ساختمان‌های بزرگ است. این وب‌سایت به عنوان رابط کاربری اصلی برای معرفی محصولات، راه‌حل‌ها و خدمات Viramap طراحی شده است.
+- Modern, responsive design
+- Dark mode support
+- Smooth animations with Framer Motion
+- Optimized images with Next.js Image
+- Accessible UI components with Radix UI
 
-### صفحات اصلی:
+### ⚡ Performance
 
-- 🏠 **صفحه اصلی**: معرفی محصول و ویژگی‌های کلیدی
-- 📖 **درباره ما**: اطلاعات شرکت و تیم
-- 💼 **راه‌حل‌ها**: راه‌حل‌های مختلف برای صنایع مختلف
-- 🛠️ **پلتفرم**: معرفی پلتفرم و قابلیت‌های فنی
-- 🔬 **تکنولوژی‌ها**: تکنولوژی‌های استفاده شده
-- 📰 **مقالات**: مقالات و اخبار
-- 📞 **تماس با ما**: فرم تماس و اطلاعات ارتباطی
-
----
-
-## ✨ ویژگی‌ها
-
-### 🎨 رابط کاربری
-- ✅ طراحی مدرن و واکنش‌گرا (Responsive)
-- ✅ پشتیبانی از Dark Mode
-- ✅ انیمیشن‌های روان با Framer Motion
-- ✅ بهینه‌سازی تصاویر با Next.js Image
-- ✅ UI Components با Radix UI
-
-### ⚡ عملکرد
-- ✅ Server-Side Rendering (SSR)
-- ✅ Static Site Generation (SSG)
-- ✅ Incremental Static Regeneration (ISR)
-- ✅ بهینه‌سازی خودکار Bundle
-- ✅ Code Splitting خودکار
-- ✅ فشرده‌سازی و بهینه‌سازی CSS
+- Server-Side Rendering (SSR)
+- Static Site Generation (SSG)
+- Incremental Static Regeneration (ISR)
+- Automatic code splitting and bundle optimization
+- CSS optimization and compression
 
 ### 🔍 SEO
-- ✅ Meta Tags بهینه
-- ✅ Structured Data (JSON-LD)
-- ✅ Sitemap.xml خودکار
-- ✅ Robots.txt
-- ✅ بهینه‌سازی برای موتورهای جستجو
 
-### 🛡️ امنیت
-- ✅ TypeScript برای Type Safety
-- ✅ Validation با Zod
-- ✅ محافظت از فایل‌های حساس
-- ✅ Headers امنیتی
+- Optimized meta tags
+- Structured Data (JSON-LD)
+- Automatic sitemap generation
+- Robots.txt configuration
+- Search engine optimization
 
----
+### 🛡️ Security
 
-## 🛠️ تکنولوژی‌های استفاده شده
+- TypeScript for type safety
+- Zod schema validation
+- Secure headers configuration
+- Protected sensitive files
+
+## Tech Stack
 
 ### Core
-- **[Next.js 16.0.5](https://nextjs.org/)** - فریمورک React برای Production
-- **[React 19.2.0](https://react.dev/)** - کتابخانه UI
-- **[TypeScript 5](https://www.typescriptlang.org/)** - Type Safety
+
+- **Next.js 16.0.5** - React framework for production
+- **React 18.3** - UI library
+- **TypeScript 5** - Type safety
 
 ### Styling
-- **[Tailwind CSS 4](https://tailwindcss.com/)** - Utility-first CSS Framework
-- **[PostCSS](https://postcss.org/)** - پردازش CSS
-- **[Autoprefixer](https://github.com/postcss/autoprefixer)** - افزودن Vendor Prefixes
+
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **PostCSS** - CSS processing
+- **Autoprefixer** - Vendor prefixes
 
 ### UI Components
-- **[Radix UI](https://www.radix-ui.com/)** - کامپوننت‌های دسترسی‌پذیر
-- **[Lucide React](https://lucide.dev/)** - آیکون‌ها
-- **[Swiper](https://swiperjs.com/)** - Slider/Carousel
+
+- **Radix UI** - Accessible component primitives
+- **Lucide React** - Icon library
+- **Swiper** - Slider/carousel component
 
 ### Forms & Validation
-- **[React Hook Form](https://react-hook-form.com/)** - مدیریت فرم‌ها
-- **[Zod](https://zod.dev/)** - Schema Validation
-- **[@hookform/resolvers](https://github.com/react-hook-form/resolvers)** - Resolvers
+
+- **React Hook Form** - Form management
+- **Zod** - Schema validation
 
 ### Animation
-- **[Framer Motion](https://www.framer.com/motion/)** - انیمیشن‌های پیشرفته
+
+- **Framer Motion** - Advanced animations
 
 ### Data Fetching
-- **[SWR](https://swr.vercel.app/)** - Data Fetching و Caching
 
-### Other
-- **[next-themes](https://github.com/pacocoursey/next-themes)** - مدیریت Theme
-- **[Sonner](https://sonner.emilkowal.ski/)** - Toast Notifications
-- **[Class Variance Authority](https://cva.style/)** - مدیریت Variants
+- **SWR** - Data fetching and caching
 
----
+## Prerequisites
 
-## 📦 پیش‌نیازها
+- **Node.js** 18.x or higher
+- **Package Manager**: pnpm (recommended), npm, or yarn
 
-قبل از شروع، مطمئن شوید که نرم‌افزارهای زیر نصب شده‌اند:
+## Quick Start
 
-- **Node.js**: نسخه 18 یا بالاتر
-- **Package Manager**: یکی از موارد زیر
-  - [pnpm](https://pnpm.io/) (پیشنهادی)
-  - [npm](https://www.npmjs.com/)
-  - [yarn](https://yarnpkg.com/)
-
-### بررسی نسخه‌ها:
-
-```bash
-node --version  # باید 18.x.x یا بالاتر باشد
-pnpm --version  # یا npm --version
-```
-
----
-
-## 🚀 نصب و راه‌اندازی
-
-### 1. کلون کردن پروژه
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/your-username/viramap-website-app.git
 cd viramap-website-app
 ```
 
-### 2. نصب Dependencies
+### 2. Install dependencies
 
 ```bash
-# با pnpm (پیشنهادی)
 pnpm install
-
-# یا با npm
+# or
 npm install
-
-# یا با yarn
+# or
 yarn install
 ```
 
-### 3. تنظیم متغیرهای محیطی
+### 3. Set up environment variables
 
-فایل `.env.local` را در ریشه پروژه ایجاد کنید:
+Create a `.env.local` file in the root directory:
 
 ```bash
 cp .env.example .env.local
 ```
 
-سپس مقادیر مورد نیاز را در `.env.local` تنظیم کنید.
+Configure the required values in `.env.local`.
 
-> **نکته**: فایل `.env.local` در `.gitignore` قرار دارد و commit نمی‌شود.
-
-### 4. اجرای پروژه در حالت Development
+### 4. Run the development server
 
 ```bash
-# با pnpm
 pnpm dev
-
-# یا با npm
+# or
 npm run dev
-
-# یا با yarn
+# or
 yarn dev
 ```
 
-پروژه در آدرس [http://localhost:3000](http://localhost:3000) در دسترس خواهد بود.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
----
-
-## 📁 ساختار پروژه
+## Project Structure
 
 ```
 viramap-website-app/
-├── app/                    # صفحات و Route های Next.js (App Router)
-│   ├── about/             # صفحه درباره ما
-│   ├── about-us/          # صفحه تماس با ما
-│   ├── articles/          # مقالات
-│   ├── platform/          # صفحه پلتفرم
-│   ├── solutions/         # راه‌حل‌ها
-│   ├── technologies/      # تکنولوژی‌ها
-│   ├── api/               # API Routes
-│   └── page.tsx           # صفحه اصلی
+├── app/                    # Next.js App Router pages
+│   ├── about/             # About page
+│   ├── articles/          # Articles/blog
+│   ├── platform/          # Platform page
+│   ├── solutions/         # Solutions pages
+│   ├── technologies/      # Technologies page
+│   └── api/               # API routes
 │
-├── components/            # کامپوننت‌های React
-│   ├── About/            # کامپوننت‌های صفحه درباره ما
-│   ├── ContactUs/        # کامپوننت‌های تماس با ما
-│   ├── Home/             # کامپوننت‌های صفحه اصلی
-│   ├── layout/           # Header و Footer
-│   ├── lib/              # توابع و utilities
-│   ├── platform/         # کامپوننت‌های پلتفرم
-│   ├── solutions/        # کامپوننت‌های راه‌حل‌ها
-│   ├── technologies/     # کامپوننت‌های تکنولوژی‌ها
-│   └── ui/               # کامپوننت‌های UI پایه
+├── components/            # React components
+│   ├── About/            # About page components
+│   ├── ContactUs/        # Contact components
+│   ├── Home/             # Home page components
+│   ├── layout/           # Header and Footer
+│   ├── lib/              # Utilities and helpers
+│   └── ui/               # Base UI components
 │
-├── public/                # فایل‌های استاتیک
-│   ├── images/          # تصاویر
-│   ├── fonts/           # فونت‌ها
-│   └── robots.txt        # فایل robots.txt
+├── public/                # Static files
+│   ├── images/          # Images
+│   └── fonts/           # Fonts
 │
-├── scripts/              # اسکریپت‌های کاربردی
-│   ├── deploy.js        # اسکریپت deployment
-│   ├── create-zip.js    # اسکریپت ایجاد ZIP
-│   └── clean-cache.js   # اسکریپت پاکسازی کش
-│
-├── services/             # سرویس‌های API
-│
-├── next.config.ts        # تنظیمات Next.js
-├── tsconfig.json         # تنظیمات TypeScript
-├── tailwind.config.ts    # تنظیمات Tailwind CSS
-├── postcss.config.mjs    # تنظیمات PostCSS
-└── package.json         # وابستگی‌های پروژه
+├── scripts/              # Utility scripts
+└── services/             # API services
 ```
 
----
-
-## 📜 اسکریپت‌ها
+## Available Scripts
 
 ### Development
 
 ```bash
-# اجرای پروژه در حالت Development
-pnpm dev
-
-# بیلد پروژه برای Production
-pnpm build
-
-# اجرای پروژه بیلد شده
-pnpm start
-
-# بررسی کد با ESLint
-pnpm lint
+pnpm dev              # Start development server
+pnpm build            # Build for production
+pnpm start            # Start production server
+pnpm lint             # Run ESLint
 ```
 
 ### Maintenance
 
 ```bash
-# پاکسازی کش‌های بیلد
-pnpm clean-cache
+pnpm clean-cache      # Clean build caches
 ```
 
 ### Deployment
 
 ```bash
-# آماده‌سازی برای Deployment
-pnpm deploy
-
-# آماده‌سازی و ایجاد فایل ZIP
-pnpm deploy:zip
+pnpm deploy           # Prepare for deployment
+pnpm deploy:zip       # Prepare and create ZIP file
 ```
 
-برای اطلاعات بیشتر درباره deployment، فایل [DEPLOYMENT.md](./DEPLOYMENT.md) را مطالعه کنید.
+## Deployment
 
----
-
-## 💻 توسعه
-
-### قوانین کدنویسی
-
-- از **TypeScript** برای تمام فایل‌های جدید استفاده کنید
-- از **ESLint** برای بررسی کد استفاده کنید
-- کامپوننت‌ها را در پوشه `components` قرار دهید
-- صفحات را در پوشه `app` قرار دهید (App Router)
-- از **Tailwind CSS** برای استایل‌دهی استفاده کنید
-
-### ساخت کامپوننت جدید
-
-```typescript
-// components/MyComponent/MyComponent.tsx
-import React from 'react';
-
-interface MyComponentProps {
-  title: string;
-}
-
-export default function MyComponent({ title }: MyComponentProps) {
-  return (
-    <div className="p-4">
-      <h1>{title}</h1>
-    </div>
-  );
-}
-```
-
-### ساخت صفحه جدید
-
-```typescript
-// app/my-page/page.tsx
-import MyComponent from '@/components/MyComponent/MyComponent';
-
-export default function MyPage() {
-  return (
-    <div>
-      <MyComponent title="صفحه جدید" />
-    </div>
-  );
-}
-```
-
-### استفاده از API Routes
-
-```typescript
-// app/api/my-api/route.ts
-import { NextResponse } from 'next/server';
-
-export async function GET() {
-  return NextResponse.json({ message: 'Hello World' });
-}
-```
-
----
-
-## 🚀 Deployment
-
-### روش سریع
+### Quick Deployment
 
 ```bash
-# آماده‌سازی برای deployment
 pnpm deploy
 ```
 
-این دستور:
-- ✅ پروژه را بیلد می‌کند
-- ✅ فایل‌های ضروری را جمع‌آوری می‌کند
-- ✅ پوشه `deploy` را ایجاد می‌کند
-- ✅ مستندات deployment را ایجاد می‌کند
+This command:
 
-### مستندات کامل
+- Builds the project
+- Collects essential files
+- Creates a `deploy` folder
+- Generates deployment documentation
 
-برای راهنمای کامل deployment، فایل‌های زیر را مطالعه کنید:
+### Recommended Platforms
 
-- 📖 [DEPLOYMENT.md](./DEPLOYMENT.md) - راهنمای جامع
-- ⚡ [DEPLOYMENT_QUICK_START.md](./DEPLOYMENT_QUICK_START.md) - راهنمای سریع
-- 📋 [DEPLOYMENT_SUMMARY.md](./DEPLOYMENT_SUMMARY.md) - خلاصه
+- **[Vercel](https://vercel.com/)** - Recommended for Next.js
+- **[Netlify](https://www.netlify.com/)** - Great alternative
+- **Custom server** - Using deployment scripts
 
-### پلتفرم‌های پیشنهادی
+For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
-- **[Vercel](https://vercel.com/)** - پیشنهادی برای Next.js
-- **[Netlify](https://www.netlify.com/)** - جایگزین خوب
-- **سرور شخصی** - با استفاده از اسکریپت‌های deployment
+## Development Guidelines
 
----
+- Use **TypeScript** for all new files
+- Run **ESLint** before committing
+- Place components in the `components` directory
+- Place pages in the `app` directory (App Router)
+- Use **Tailwind CSS** for styling
 
-## 🤝 مشارکت
+## Contributing
 
-مشارکت شما در بهبود این پروژه بسیار ارزشمند است! برای مشارکت:
+Contributions are welcome! Please follow these steps:
 
-1. پروژه را Fork کنید
-2. یک Branch جدید ایجاد کنید (`git checkout -b feature/AmazingFeature`)
-3. تغییرات خود را Commit کنید (`git commit -m 'Add some AmazingFeature'`)
-4. Branch را Push کنید (`git push origin feature/AmazingFeature`)
-5. یک Pull Request باز کنید
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-### دستورالعمل‌های مشارکت
+### Contribution Guidelines
 
-- کد را با ESLint بررسی کنید
-- از TypeScript استفاده کنید
-- کامنت‌های واضح بنویسید
-- تست کنید که همه چیز کار می‌کند
+- Check code with ESLint
+- Use TypeScript
+- Write clear comments
+- Test your changes
 
----
+## License
 
-## 📄 لایسنس
+This project is licensed under the MIT License.
 
-این پروژه تحت لایسنس [MIT](LICENSE) منتشر شده است.
+## Contact
 
----
+- **Website**: [https://viramap.com](https://viramap.com)
+- **Email**: info@viramap.com
+- **GitHub**: [@viramap](https://github.com/viramap)
 
-## 📞 تماس با ما
+## Resources
 
-- **وب‌سایت**: [https://viramap.com](https://viramap.com)
-- **ایمیل**: info@viramap.com
-- **گیت‌هاب**: [@viramap](https://github.com/viramap)
-
----
-
-## 🙏 تشکر
-
-از تمام کسانی که در ساخت این پروژه مشارکت کرده‌اند، صمیمانه تشکر می‌کنیم.
-
----
-
-## 📚 منابع مفید
-
-- [مستندات Next.js](https://nextjs.org/docs)
-- [مستندات React](https://react.dev/)
-- [مستندات TypeScript](https://www.typescriptlang.org/docs/)
-- [مستندات Tailwind CSS](https://tailwindcss.com/docs)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [React Documentation](https://react.dev/)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 
 ---
 
 <div align="center">
 
-**ساخته شده با ❤️ توسط تیم Viramap**
-
-[⬆ بازگشت به بالا](#-viramap-website)
+**Made with ❤️ by the Viramap Team**
 
 </div>

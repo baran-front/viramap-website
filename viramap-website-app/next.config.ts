@@ -18,14 +18,14 @@ const nextConfig: NextConfig = {
   // تنظیمات Source Maps
   // غیرفعال کردن source maps در production برای امنیت و کاهش حجم
   productionBrowserSourceMaps: false,
-  
+
   // تنظیمات webpack برای رفع خطاهای Source Map (فقط برای Webpack)
   webpack: (config, { dev, isServer }) => {
     // رفع خطاهای Source Map در development
     if (dev && !isServer) {
       // استفاده از eval-source-map که سازگارتر است
       config.devtool = "eval-source-map";
-      
+
       // نادیده گرفتن source maps در node_modules برای رفع خطاهای parsing
       config.ignoreWarnings = [
         ...(config.ignoreWarnings || []),
@@ -34,27 +34,21 @@ const nextConfig: NextConfig = {
         },
         /Failed to parse source map/,
         /sourceMapURL could not be parsed/,
+        /Invalid source map/,
       ];
     }
-    
+
     // در production، source maps را کاملاً غیرفعال می‌کنیم
     if (!dev) {
       config.devtool = false;
     }
-    
+
     return config;
   },
 
   // بهینه‌سازی bundle
   experimental: {
     optimizeCss: true,
-    // پشتیبانی از Turbopack (پیش‌فرض در Next.js 16)
-    turbo: {
-      // تنظیمات Turbopack برای رفع مشکلات Source Map
-      resolveAlias: {
-        // در صورت نیاز می‌توانید alias اضافه کنید
-      },
-    },
   },
 
   // بهینه‌سازی headers برای cache

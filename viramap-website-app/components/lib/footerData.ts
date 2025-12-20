@@ -5,6 +5,7 @@
 
 import { safeFetch } from "./api";
 import { API_CONFIG } from "./constants";
+import { logger } from "./logger";
 
 // ==================== انواع داده ====================
 
@@ -106,7 +107,7 @@ const GROUP_TO_TITLE: Record<string, string> = {
  */
 export async function fetchMenuByGroup(groupName: string): Promise<MenuItem[]> {
   try {
-    console.log(`📡 در حال دریافت منوی ${groupName} از API...`);
+    logger.log(`📡 Fetching menu ${groupName} from API...`);
 
     const response = await safeFetch<MenuItem[]>(
       "/v1/menulinks/client/groupnames",
@@ -127,11 +128,25 @@ export async function fetchMenuByGroup(groupName: string): Promise<MenuItem[]> {
     );
 
     if (!response.ok) {
-      console.warn(`❌ خطا در دریافت منوی ${groupName}:`, response.error);
+      // فقط در صورت خطای غیر از شبکه، warning لاگ می‌کنیم
+      // خطاهای شبکه (status 0) معمولاً به دلیل عدم دسترسی به API است
+      if (response.status !== 0) {
+        logger.warn(
+          `❌ Error fetching menu ${groupName}:`,
+          response.error?.message || "Unknown error"
+        );
+      } else {
+        logger.log(
+          `⚠️ Network error fetching menu ${groupName}, using default data`
+        );
+      }
       return [];
     }
 
-    const raw = response.result as unknown as MenuApiResponse | MenuItem[] | null;
+    const raw = response.result as unknown as
+      | MenuApiResponse
+      | MenuItem[]
+      | null;
 
     let items: MenuItem[] = [];
 
@@ -140,7 +155,7 @@ export async function fetchMenuByGroup(groupName: string): Promise<MenuItem[]> {
       const typed = raw as MenuApiResponse;
 
       if (typed.succeeded === false) {
-        console.warn(`⚠️ API برای ${groupName} succeeded=false برگرداند`);
+        logger.warn(`⚠️ API returned succeeded=false for ${groupName}`);
         return [];
       }
 
@@ -155,14 +170,30 @@ export async function fetchMenuByGroup(groupName: string): Promise<MenuItem[]> {
     }
 
     if (!items.length) {
-      console.warn(`⚠️ داده معتبری برای منوی ${groupName} دریافت نشد`);
+      logger.warn(`⚠️ No valid data received for menu ${groupName}`);
       return [];
     }
 
-    console.log(`✅ ${groupName} دریافت شد: ${items.length} آیتم`);
+    logger.log(`✅ ${groupName} fetched: ${items.length} items`);
     return items;
   } catch (error) {
-    console.error(`💥 خطا در دریافت منوی ${groupName}:`, error);
+    // فقط خطاهای غیر از شبکه را به صورت error لاگ می‌کنیم
+    // خطاهای شبکه (fetch failed) معمولاً به دلیل عدم دسترسی به API است
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const isNetworkError =
+      errorMessage.includes("fetch failed") ||
+      errorMessage.includes("network") ||
+      errorMessage.includes("timeout") ||
+      errorMessage.includes("ECONNREFUSED") ||
+      errorMessage.includes("ENOTFOUND");
+
+    if (isNetworkError) {
+      logger.log(
+        `⚠️ Network error fetching menu ${groupName}, using default data`
+      );
+    } else {
+      logger.error(`💥 Error fetching menu ${groupName}:`, error);
+    }
     return [];
   }
 }
@@ -177,26 +208,26 @@ import { fetchFooterAboutContent } from "./fetchs";
 
 export async function fetchAboutContent(): Promise<string> {
   try {
-    console.log("📡 در حال دریافت متن درباره ما از CMS (footer-about)...");
+    logger.log("📡 Fetching about content from CMS (footer-about)...");
 
     const result = await fetchFooterAboutContent();
 
     if (!result.ok || !result.data) {
-      console.log("⚠️ پاسخ نامعتبر برای footer-about، استفاده از متن پیش‌فرض");
+      logger.log("⚠️ Invalid response for footer-about, using default content");
       return DEFAULT_FOOTER_DATA.about.content;
     }
 
     const cmsResponse = result.data as CmsContentResponse;
 
     if (Array.isArray(cmsResponse.data) && cmsResponse.data.length > 0) {
-      console.log("✅ متن درباره ما با موفقیت از CMS دریافت شد");
+      logger.log("✅ About content successfully fetched from CMS");
       return cmsResponse.data[0].content;
     }
 
-    console.log("⚠️ داده footer-about خالی است، استفاده از متن پیش‌فرض");
+    logger.log("⚠️ footer-about data is empty, using default content");
     return DEFAULT_FOOTER_DATA.about.content;
   } catch (error) {
-    console.error("💥 خطا در دریافت محتوای درباره ما:", error);
+    logger.error("💥 Error fetching about content:", error);
     return DEFAULT_FOOTER_DATA.about.content;
   }
 }
@@ -206,9 +237,9 @@ export async function fetchAboutContent(): Promise<string> {
  */
 function extractContactInfo(contactItems: MenuItem[]): ContactInfo {
   const defaultContact = DEFAULT_FOOTER_DATA.contactInfo;
-  
+
   if (!contactItems || contactItems.length === 0) {
-    console.log("⚠️ از اطلاعات تماس پیش‌فرض استفاده می‌شود");
+    logger.log("⚠️ Using default contact information");
     return defaultContact;
   }
 
@@ -217,24 +248,32 @@ function extractContactInfo(contactItems: MenuItem[]): ContactInfo {
   contactItems.forEach((item) => {
     const desc = item.description || "";
     const name = item.name || "";
-    
+
     // آدرس
-    if (desc.includes("خیام") || desc.includes("مشهد") || name.includes("آدرس")) {
+    if (
+      desc.includes("خیام") ||
+      desc.includes("مشهد") ||
+      name.includes("آدرس")
+    ) {
       contactInfo.address = desc;
     }
-    
+
     // ایمیل
     if (desc.includes("@") || desc.includes(".com") || name.includes("ایمیل")) {
       contactInfo.email = desc;
     }
-    
+
     // تلفن
-    if (desc.includes("۰۹") || desc.includes("0912") || name.includes("شماره")) {
+    if (
+      desc.includes("۰۹") ||
+      desc.includes("0912") ||
+      name.includes("شماره")
+    ) {
       contactInfo.phone = desc;
     }
   });
 
-  console.log("✅ اطلاعات تماس استخراج شد:", contactInfo);
+  logger.log("✅ Contact information extracted:", contactInfo);
   return contactInfo;
 }
 
@@ -243,11 +282,16 @@ function extractContactInfo(contactItems: MenuItem[]): ContactInfo {
  */
 export async function getFooterData(): Promise<FooterData> {
   try {
-    console.log("🚀 شروع دریافت داده‌های فوتر از API...");
+    logger.log("🚀 Starting to fetch footer data from API...");
 
     // لیست گروه‌های مورد نیاز
-    const groups = ["footer-quick", "footer-products", "header-solutions", "footer-contact"];
-    
+    const groups = [
+      "footer-quick",
+      "footer-products",
+      "header-solutions",
+      "footer-contact",
+    ];
+
     // دریافت تمام منوها به صورت موازی
     const menuPromises = groups.map(async (groupName) => {
       const items = await fetchMenuByGroup(groupName);
@@ -255,7 +299,7 @@ export async function getFooterData(): Promise<FooterData> {
     });
 
     const menuResults = await Promise.all(menuPromises);
-    
+
     // ساخت بخش‌های منو
     const menuSections: FooterMenuSection[] = [];
 
@@ -268,15 +312,15 @@ export async function getFooterData(): Promise<FooterData> {
 
       if (items && items.length > 0) {
         const sectionTitle = GROUP_TO_TITLE[groupName] || groupName;
-        
+
         // مرتب‌سازی بر اساس sortId
         const sortedItems = [...items].sort((a, b) => {
           return (a.sortId || 0) - (b.sortId || 0);
         });
 
         const links = sortedItems
-          .filter(item => item.name && item.linkUrl)
-          .map(item => ({
+          .filter((item) => item.name && item.linkUrl)
+          .map((item) => ({
             name: item.description || item.name,
             url: item.linkUrl || "#",
           }));
@@ -286,28 +330,29 @@ export async function getFooterData(): Promise<FooterData> {
             title: sectionTitle,
             links,
           });
-          console.log(`✅ بخش ${sectionTitle}: ${links.length} لینک`);
+          logger.log(`✅ Section ${sectionTitle}: ${links.length} links`);
         }
       }
     });
 
     // استخراج اطلاعات تماس
-    const contactResult = menuResults.find(r => r.groupName === "footer-contact");
+    const contactResult = menuResults.find(
+      (r) => r.groupName === "footer-contact"
+    );
     const contactInfo = extractContactInfo(contactResult?.items || []);
 
     // دریافت متن درباره ما
     const aboutContent = await fetchAboutContent();
 
     // استفاده از داده‌های API یا پیش‌فرض
-    const finalMenuSections = menuSections.length > 0 
-      ? menuSections 
-      : DEFAULT_FOOTER_DATA.menuSections;
+    const finalMenuSections =
+      menuSections.length > 0 ? menuSections : DEFAULT_FOOTER_DATA.menuSections;
 
-    console.log("🎉 داده‌های فوتر با موفقیت دریافت شد!");
-    console.log({
+    logger.log("🎉 Footer data successfully fetched!");
+    logger.log({
       sections: finalMenuSections.length,
       hasContact: !!contactResult,
-      aboutLength: aboutContent.length
+      aboutLength: aboutContent.length,
     });
 
     return {
@@ -316,8 +361,8 @@ export async function getFooterData(): Promise<FooterData> {
       contactInfo,
     };
   } catch (error) {
-    console.error("💥 خطا در دریافت داده‌های فوتر:", error);
-    console.log("⚠️ از داده‌های پیش‌فرض استفاده می‌شود");
+    logger.error("💥 Error fetching footer data:", error);
+    logger.log("⚠️ Using default footer data");
     return DEFAULT_FOOTER_DATA;
   }
 }
@@ -327,25 +372,25 @@ export async function getFooterData(): Promise<FooterData> {
  */
 export async function fetchSocialLinks() {
   try {
-    console.log("📡 در حال دریافت شبکه‌های اجتماعی...");
-    
+    logger.log("📡 Fetching social media links...");
+
     const socialItems = await fetchMenuByGroup("social-links");
-    
+
     if (!socialItems || socialItems.length === 0) {
-      console.log("📢 گروه social-links خالی است یا وجود ندارد");
+      logger.log("📢 social-links group is empty or does not exist");
       return [];
     }
 
-    const links = socialItems.map(item => ({
+    const links = socialItems.map((item) => ({
       name: item.description || item.name,
       url: item.linkUrl || "#",
       icon: item.name.toLowerCase(),
     }));
 
-    console.log(`✅ ${links.length} شبکه اجتماعی دریافت شد`);
+    logger.log(`✅ ${links.length} social media links fetched`);
     return links;
   } catch (error) {
-    console.error("💥 خطا در دریافت شبکه‌های اجتماعی:", error);
+    logger.error("💥 Error fetching social media links:", error);
     return [];
   }
 }

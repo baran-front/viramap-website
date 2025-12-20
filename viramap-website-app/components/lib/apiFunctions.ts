@@ -4,12 +4,18 @@
  * شامل توابع فرم تماس، منوها، مقالات و نظرات
  */
 
-import { safeFetch, CommonHeaders } from "./api";
+import { safeFetch, CommonHeaders, authenticate } from "./api";
 import { API_CONFIG } from "./constants";
+import { logger } from "./logger";
 import type { MenuItem, MenuApiResponse } from "./footerData";
 import type { ApiResult, PagedResult, PaginationParams } from "./api/types";
 import { buildErrorResult, toApiResult } from "./api/utils";
-import { ARTICLE_ENDPOINTS, MENU_ENDPOINTS, CONTACT_ENDPOINTS } from "./api/endpoints";
+import {
+  ARTICLE_ENDPOINTS,
+  MENU_ENDPOINTS,
+  CONTACT_ENDPOINTS,
+} from "./api/endpoints";
+import { getToken } from "./tokenManager";
 
 // Re-export types for backward compatibility
 export type { ApiResult, PagedResult, PaginationParams };
@@ -38,13 +44,248 @@ export interface PostContactUsParams {
   locale?: string;
 }
 
+// ==================== 1.1. Demo Request ====================
+
+export interface DemoRequestFormData {
+  fullname: string;
+  contact_channel: string; // mobile number
+}
+
+export interface DemoRequestResponse {
+  status: number;
+  result: {
+    data: number; // message id
+  } | null;
+}
+
+/**
+ * ارسال درخواست دمو
+ * Field mapping:
+ * - firstName = fullname
+ * - lastName = fullname
+ * - email = contact_channel (mobile number)
+ * - message = ""
+ */
+export async function submitDemoRequest(
+  data: DemoRequestFormData,
+  tenant: string = API_CONFIG.DEFAULT_TENANT,
+  locale: string = API_CONFIG.DEFAULT_LOCALE
+): Promise<ApiResult<DemoRequestResponse>> {
+  const payload: ContactUsFormPayload = {
+    firstName: data.fullname.trim(),
+    lastName: data.fullname.trim(),
+    email: data.contact_channel.trim(),
+    message: "",
+    jsonExt: "",
+    type: 0,
+    responseStatus: 0,
+  };
+
+  try {
+    const systemToken = await getSystemToken(tenant);
+
+    const response = await safeFetch<{ data: number }>(
+      CONTACT_ENDPOINTS.create,
+      {
+        method: "POST",
+        headers: {
+          ...CommonHeaders.jsonApplicationType,
+          ...(systemToken && { Authorization: `Bearer ${systemToken}` }),
+        },
+        body: JSON.stringify(payload),
+      },
+      {
+        tenant,
+        locale,
+        skipAuth: !!systemToken,
+      }
+    );
+
+    // تبدیل به فرمت مورد انتظار
+    const result: DemoRequestResponse = {
+      status: response.status,
+      result: response.result?.data ?? null,
+    };
+
+    return {
+      status: response.status,
+      ok: response.ok,
+      error: response.error,
+      result: result ? { data: result } : null,
+      data: result,
+    };
+  } catch (error) {
+    logger.error("خطا در ارسال درخواست دمو:", error);
+    return buildErrorResult<DemoRequestResponse>(
+      error instanceof Error
+        ? error.message
+        : "خطای ناشناخته در ارسال درخواست دمو"
+    );
+  }
+}
+
+// ==================== 1.2. Free Consultation Request ====================
+
+export interface FreeConsultationFormData {
+  firstName: string;
+  lastName: string;
+  contact_channel_1: string; // mobile
+  contact_channel_2: string; // email
+  calling_time: "7-to-13" | "13-to-19" | "19-to-22";
+}
+
+export interface FreeConsultationResponse {
+  status: number;
+  result: {
+    data: number; // message id
+  } | null;
+}
+
+/**
+ * ارسال درخواست مشاوره رایگان
+ * Field mapping:
+ * - firstName = firstName
+ * - lastName = lastName
+ * - email = "<mobile> & <email>"
+ * - message = "Calling time: <calling_time>"
+ */
+export async function submitFreeConsultation(
+  data: FreeConsultationFormData,
+  tenant: string = API_CONFIG.DEFAULT_TENANT,
+  locale: string = API_CONFIG.DEFAULT_LOCALE
+): Promise<ApiResult<FreeConsultationResponse>> {
+  const payload: ContactUsFormPayload = {
+    firstName: data.firstName.trim(),
+    lastName: data.lastName.trim(),
+    email: `${data.contact_channel_1.trim()} & ${data.contact_channel_2.trim()}`,
+    message: `Calling time: ${data.calling_time}`,
+    jsonExt: "",
+    type: 0,
+    responseStatus: 0,
+  };
+
+  try {
+    const systemToken = await getSystemToken(tenant);
+
+    const response = await safeFetch<{ data: number }>(
+      CONTACT_ENDPOINTS.create,
+      {
+        method: "POST",
+        headers: {
+          ...CommonHeaders.jsonApplicationType,
+          ...(systemToken && { Authorization: `Bearer ${systemToken}` }),
+        },
+        body: JSON.stringify(payload),
+      },
+      {
+        tenant,
+        locale,
+        skipAuth: !!systemToken,
+      }
+    );
+
+    // تبدیل به فرمت مورد انتظار
+    const result: FreeConsultationResponse = {
+      status: response.status,
+      result: response.result?.data ?? null,
+    };
+
+    return {
+      status: response.status,
+      ok: response.ok,
+      error: response.error,
+      result: result ? { data: result } : null,
+      data: result,
+    };
+  } catch (error) {
+    logger.error("خطا در ارسال درخواست مشاوره رایگان:", error);
+    return buildErrorResult<FreeConsultationResponse>(
+      error instanceof Error
+        ? error.message
+        : "خطای ناشناخته در ارسال درخواست مشاوره رایگان"
+    );
+  }
+}
+
+// ==================== 1.3. Success Helper ====================
+
+/**
+ * بررسی موفقیت بودن پاسخ API
+ * @param response پاسخ API
+ * @returns true اگر status === 200 و result.data وجود داشته باشد
+ */
+export function isSuccess<
+  T extends { status: number; result: { data?: unknown } | null }
+>(response: T): boolean {
+  return response.status === 200 && response.result?.data != null;
+}
+
 /**
  * ارسال فرم تماس با ما
  */
+/**
+ * دریافت توکن سیستم برای استفاده در API
+ * ابتدا از env variable یا localStorage استفاده می‌کند
+ * اگر موجود نبود، از API دریافت می‌کند
+ */
+async function getSystemToken(
+  tenant: string = API_CONFIG.DEFAULT_TENANT
+): Promise<string | null> {
+  // 1. بررسی env variable
+  if (process.env.NEXT_PUBLIC_API_TOKEN) {
+    return process.env.NEXT_PUBLIC_API_TOKEN;
+  }
+
+  // 2. بررسی localStorage (client-side)
+  if (typeof window !== "undefined") {
+    const token = await getToken();
+    if (token) {
+      return token;
+    }
+  }
+
+  // 3. دریافت توکن از API با اطلاعات سیستم
+  const systemEmail = process.env.NEXT_PUBLIC_SYSTEM_EMAIL || "admin@map.com";
+  const systemPassword =
+    process.env.NEXT_PUBLIC_SYSTEM_PASSWORD || "123Pa$$word!";
+
+  try {
+    logger.log("🔄 در حال دریافت توکن از API...", {
+      email: systemEmail,
+      tenant,
+    });
+    const authResult = await authenticate(systemEmail, systemPassword, tenant);
+    if (authResult.success && authResult.token) {
+      logger.log("✅ توکن از API دریافت شد");
+      return authResult.token;
+    } else {
+      logger.error(
+        "❌ خطا در دریافت توکن:",
+        authResult.error,
+        authResult.errorCode
+      );
+      // اگر خطای 404 بود، شاید endpoint اشتباه است
+      if (authResult.errorCode === "HTTP_404") {
+        logger.log(
+          "⚠️ Endpoint برای دریافت توکن پیدا نشد. لطفا endpoint را بررسی کنید."
+        );
+      }
+    }
+  } catch (error) {
+    console.error("❌ خطا در دریافت توکن سیستم:", error);
+  }
+
+  return null;
+}
+
 export async function postContactUs(
   params: PostContactUsParams
 ): Promise<ApiResult<ContactUsResponse>> {
-  const { form, tenant = API_CONFIG.DEFAULT_TENANT, locale = API_CONFIG.DEFAULT_LOCALE } = params;
+  const {
+    form,
+    tenant = API_CONFIG.DEFAULT_TENANT,
+    locale = API_CONFIG.DEFAULT_LOCALE,
+  } = params;
 
   // Prepare payload with defaults
   const payload: ContactUsFormPayload = {
@@ -58,25 +299,67 @@ export async function postContactUs(
   };
 
   try {
+    // دریافت توکن سیستم
+    const systemToken = await getSystemToken(tenant);
+
+    if (systemToken) {
+      console.log(
+        "✅ توکن سیستم دریافت شد:",
+        systemToken.substring(0, 20) + "..."
+      );
+    } else {
+      console.warn(
+        "⚠️ توکن سیستم موجود نیست - درخواست بدون Authorization header ارسال می‌شود"
+      );
+    }
+
+    // ارسال درخواست با توکن
+    // اگر توکن سیستم موجود است، آن را مستقیماً در header اضافه می‌کنیم
+    // در غیر این صورت، safeFetch خودش توکن را از localStorage یا env variable می‌گیرد
     const response = await safeFetch<ContactUsResponse>(
       CONTACT_ENDPOINTS.create,
       {
         method: "POST",
         headers: {
           ...CommonHeaders.jsonApplicationType,
+          // اگر توکن سیستم موجود است، آن را مستقیماً اضافه می‌کنیم
+          ...(systemToken && { Authorization: `Bearer ${systemToken}` }),
         },
         body: JSON.stringify(payload),
       },
       {
         tenant,
         locale,
-        skipAuth: false, // Requires Authorization header
+        // اگر توکن را خودمان در header اضافه کردیم، skipAuth را true می‌کنیم
+        // در غیر این صورت، safeFetch خودش توکن را می‌گیرد
+        skipAuth: !!systemToken,
       }
     );
 
+    // لاگ برای دیباگ
+    console.log("📤 درخواست ارسال شد:", {
+      endpoint: CONTACT_ENDPOINTS.create,
+      hasToken: !!systemToken,
+      tokenPreview: systemToken ? systemToken.substring(0, 20) + "..." : "none",
+      payload: payload,
+    });
+
+    if (!response.ok) {
+      console.error("❌ خطا در ارسال فرم تماس - Response:", {
+        status: response.status,
+        ok: response.ok,
+        error: response.error,
+        result: response.result,
+        hasToken: !!systemToken,
+        errorDetails: JSON.stringify(response.error, null, 2),
+      });
+    } else {
+      console.log("✅ فرم تماس با موفقیت ارسال شد");
+    }
+
     return toApiResult(response);
   } catch (error) {
-    console.error("خطا در ارسال فرم تماس:", error);
+    console.error("خطا در ارسال فرم تماس - Exception:", error);
     return buildErrorResult<ContactUsResponse>(
       error instanceof Error ? error.message : "خطای ناشناخته در ارسال فرم تماس"
     );
@@ -138,9 +421,116 @@ export async function getMenuLinksByGroup(
   } catch (error) {
     console.error(`خطا در دریافت منو برای گروه ${groupName}:`, error);
     return buildErrorResult<MenuLinksByGroupData>(
+      error instanceof Error ? error.message : "خطای ناشناخته در دریافت منوها"
+    );
+  }
+}
+
+// ==================== 2.1. چالش‌های راهکارها ====================
+
+export interface SolutionChallenge {
+  id: number;
+  name: string;
+  description: string | null;
+  sortId: number | null;
+}
+
+export interface GetSolutionChallengesParams {
+  category: string;
+  tenant?: string;
+  locale?: string;
+}
+
+/**
+ * نگاشت category به group name برای چالش‌های راهکارها
+ */
+function getChallengeGroupName(category: string): string {
+  const groupNameMap: Record<string, string> = {
+    healthcare: "solution-healthcare-challenges",
+    airports: "solution-airports-challenges",
+    exhibitions: "solution-exhibitions-challenges",
+    pilgrimage: "solution-pilgrimage-challenges",
+    universities: "solution-universities-challenges",
+    stadiums: "solution-stadiums-challenges",
+    industrial: "solution-industrial-challenges",
+    malls: "solution-malls-challenges", // در صورت نیاز
+  };
+
+  return groupNameMap[category] || `solution-${category}-challenges`;
+}
+
+/**
+ * دریافت چالش‌های یک راهکار از API
+ * این تابع category را به group name تبدیل می‌کند و داده‌ها را از API دریافت می‌کند
+ */
+export async function getSolutionChallenges(
+  params: GetSolutionChallengesParams
+): Promise<ApiResult<SolutionChallenge[]>> {
+  const {
+    category,
+    tenant = API_CONFIG.DEFAULT_TENANT,
+    locale = API_CONFIG.DEFAULT_LOCALE,
+  } = params;
+
+  if (!category || typeof category !== "string") {
+    return buildErrorResult<SolutionChallenge[]>(
+      "دسته‌بندی راهکار معتبر نیست",
+      400
+    );
+  }
+
+  const groupName = getChallengeGroupName(category);
+
+  try {
+    const response = await getMenuLinksByGroup({
+      groupName,
+      tenant,
+      locale,
+    });
+
+    if (!response.ok || !response.data) {
+      return buildErrorResult<SolutionChallenge[]>(
+        response.error?.message || "خطا در دریافت چالش‌های راهکار",
+        response.status
+      );
+    }
+
+    // تبدیل MenuApiResponse یا MenuItem[] به MenuItem[]
+    let items: MenuItem[] = [];
+    if (Array.isArray(response.data)) {
+      items = response.data;
+    } else if (response.data && "data" in response.data) {
+      items = response.data.data;
+    }
+
+    // تبدیل MenuItem[] به SolutionChallenge[] و مرتب‌سازی بر اساس sortId
+    const challenges: SolutionChallenge[] = items
+      .map((item) => ({
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        sortId: item.sortId,
+      }))
+      .sort((a, b) => {
+        // مرتب‌سازی بر اساس sortId (اعداد کوچکتر اول)
+        const sortA = a.sortId ?? 9999;
+        const sortB = b.sortId ?? 9999;
+        return sortA - sortB;
+      });
+
+    return {
+      status: response.status,
+      ok: true,
+      error: undefined,
+      result: { data: challenges },
+      data: challenges,
+    };
+  } catch (error) {
+    console.error(`خطا در دریافت چالش‌های راهکار ${category}:`, error);
+    return buildErrorResult<SolutionChallenge[]>(
       error instanceof Error
         ? error.message
-        : "خطای ناشناخته در دریافت منوها"
+        : "خطای ناشناخته در دریافت چالش‌های راهکار"
     );
   }
 }
@@ -171,7 +561,9 @@ export interface ArticleFilterParams {
   tagIds?: number[];
 }
 
-export interface GetArticlesParams extends PaginationParams, ArticleFilterParams {
+export interface GetArticlesParams
+  extends PaginationParams,
+    ArticleFilterParams {
   tenant?: string;
   locale?: string;
 }
@@ -290,12 +682,15 @@ export async function getArticleCategories(
         status: response.status,
         ok: response.ok,
         error: response.error,
-        result: response.result as { data?: GetArticleCategoriesResponse } | null,
+        result: response.result as {
+          data?: GetArticleCategoriesResponse;
+        } | null,
         data: null,
       };
     }
 
-    const apiResponse = response.result as unknown as ArticleCategoriesApiResponse;
+    const apiResponse =
+      response.result as unknown as ArticleCategoriesApiResponse;
 
     if (!apiResponse || !Array.isArray(apiResponse.data)) {
       return {
@@ -524,11 +919,7 @@ export async function postComment(
   } catch (error) {
     console.error("خطا در ارسال نظر مقاله:", error);
     return buildErrorResult<PostCommentResponse>(
-      error instanceof Error
-        ? error.message
-        : "خطای ناشناخته در ارسال نظر"
+      error instanceof Error ? error.message : "خطای ناشناخته در ارسال نظر"
     );
   }
 }
-
-

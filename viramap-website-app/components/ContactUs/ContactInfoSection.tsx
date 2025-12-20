@@ -1,173 +1,204 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import styles from "./ContactInfoSection.module.css";
+import { getMenuLinksByGroup } from "@/components/lib/apiFunctions";
+import type { MenuItem } from "@/components/lib/footerData";
+import { logger } from "@/components/lib/logger";
+
+interface ContactFeature {
+  id: number;
+  title: string;
+  value: string;
+  value2?: string;
+  icon: React.ReactNode;
+}
+
+// کامپوننت‌های آیکون که از فایل SVG استفاده می‌کنند
+const WebsiteIcon = () => (
+  <div className="relative h-14 w-14">
+    <img
+      src="/images/contact-svg/website.svg"
+      alt="Website"
+      className="h-14 w-14"
+    />
+  </div>
+);
+
+const EmailIcon = () => (
+  <div className="relative h-14 w-14">
+    <img
+      src="/images/contact-svg/email.svg"
+      alt="Email"
+      className="h-14 w-14"
+    />
+  </div>
+);
+
+const PhoneIcon = () => (
+  <div className="relative h-14 w-14">
+    <img src="/images/contact-svg/call.svg" alt="Phone" className="h-14 w-14" />
+  </div>
+);
+
+const AddressIcon = () => (
+  <div className="relative h-14 w-14">
+    <img
+      src="/images/contact-svg/addres.svg"
+      alt="Address"
+      className="h-14 w-14"
+    />
+  </div>
+);
+
+// داده‌های پیش‌فرض
+const defaultFeatures: ContactFeature[] = [
+  {
+    id: 1,
+    title: "وبسایت",
+    value: "www.arvinvira.com",
+    icon: <WebsiteIcon />,
+  },
+  {
+    id: 2,
+    title: "ایمیل",
+    value: "Info@loremIpsum.com",
+    icon: <EmailIcon />,
+  },
+  {
+    id: 3,
+    title: "تماس",
+    value: "۰۹۱۲۵۶۷۸۹۸۷",
+    value2: "۰۹۱۲۳۴۵۶۷۸۹",
+    icon: <PhoneIcon />,
+  },
+  {
+    id: 4,
+    title: "آدرس",
+    value: "خراسان رضوی، مشهد، بلوار خیام، خیام جنوبی، پلاک ۱۰، طبقه ۵",
+    icon: <AddressIcon />,
+  },
+];
+
+// تابع برای تعیین آیکون بر اساس نام
+const getIconByTitle = (title: string): React.ReactNode => {
+  const lowerTitle = title.toLowerCase();
+  if (
+    lowerTitle.includes("وبسایت") ||
+    lowerTitle.includes("website") ||
+    lowerTitle.includes("سایت")
+  ) {
+    return <WebsiteIcon />;
+  }
+  if (
+    lowerTitle.includes("ایمیل") ||
+    lowerTitle.includes("email") ||
+    lowerTitle.includes("mail")
+  ) {
+    return <EmailIcon />;
+  }
+  if (
+    lowerTitle.includes("تماس") ||
+    lowerTitle.includes("phone") ||
+    lowerTitle.includes("تلفن") ||
+    lowerTitle.includes("موبایل")
+  ) {
+    return <PhoneIcon />;
+  }
+  if (
+    lowerTitle.includes("آدرس") ||
+    lowerTitle.includes("address") ||
+    lowerTitle.includes("موقعیت")
+  ) {
+    return <AddressIcon />;
+  }
+  // پیش‌فرض
+  return <EmailIcon />;
+};
 
 const ContactInfoSection = () => {
-  const contactInfo = {
+  const [contactInfo, setContactInfo] = useState<{
+    title: string;
+    description: string;
+    features: ContactFeature[];
+  }>({
     title: "ارتباط با ما، تضمین آینده کسب و کار شماست.",
     description:
       "اجازه دهید با راهکارهای تخصصی و پشتیبانی دلسوزانه، مسیر موفقیت شما را هموار کنیم",
-    features: [
-      {
-        id: 1,
-        title: "وبسایت",
-        value: "www.arvinvira.com",
-        icon: (
-          <div className="relative h-14 w-14">
-            <svg
-              width="48"
-              height="48"
-              viewBox="0 0 48 48"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-14 w-14"
-            >
-              <path
-                opacity="0.4"
-                d="M8.03516 34.2246C9.60166 34.6176 11.1845 34.9463 12.7588 35.2246C13.0451 36.8059 13.3697 38.3857 13.7598 39.9521C11.4683 38.4826 9.51238 36.522 8.03516 34.2246Z"
-                fill="#FB6514"
-                stroke="#FB6514"
-                strokeWidth="2"
-              />
-              <path
-                opacity="0.4"
-                d="M39.9785 34.2227C38.4958 36.5311 36.5165 38.4999 34.1973 39.9893C34.6162 38.4133 34.9799 36.8248 35.2646 35.2246C36.8485 34.9457 38.4199 34.6162 39.9785 34.2227Z"
-                fill="#FB6514"
-                stroke="#FB6514"
-                strokeWidth="2"
-              />
-              <path
-                opacity="0.4"
-                d="M34.2139 8.0127C36.5373 9.50205 38.5111 11.4786 39.998 13.8037C38.4339 13.3893 36.858 13.0311 35.2656 12.7393C34.9849 11.1505 34.6315 9.57207 34.2139 8.0127Z"
-                fill="#FB6514"
-                stroke="#FB6514"
-                strokeWidth="2"
-              />
-              <path
-                opacity="0.4"
-                d="M15.3 6.18012C14.58 8.62012 14.06 11.1001 13.64 13.6201C11.06 14.0201 8.49996 14.6601 5.95996 15.4201C7.89996 11.4001 11.12 8.10012 15.1 6.12012C15.16 6.12012 15.24 6.18012 15.3 6.18012Z"
-                fill="#FB6514"
-              />
-              <path
-                d="M30.9795 13.18C26.3395 12.66 21.6595 12.66 17.0195 13.18C17.5195 10.44 18.1595 7.7 19.0595 5.06C19.0995 4.9 19.0795 4.78 19.0995 4.62C20.6795 4.24 22.2995 4 23.9995 4C25.6795 4 27.3195 4.24 28.8795 4.62C28.8995 4.78 28.8995 4.9 28.9395 5.06C29.8395 7.72 30.4795 10.44 30.9795 13.18Z"
-                fill="#FB6514"
-              />
-              <path
-                d="M13.18 30.9795C10.42 30.4795 7.7 29.8395 5.06 28.9395C4.9 28.8995 4.78 28.9195 4.62 28.8995C4.24 27.3195 4 25.6995 4 23.9995C4 22.3195 4.24 20.6795 4.62 19.1195C4.78 19.0995 4.9 19.0995 5.06 19.0595C7.72 18.1795 10.42 17.5195 13.18 17.0195C12.68 21.6595 12.68 26.3395 13.18 30.9795Z"
-                fill="#FB6514"
-              />
-              <path
-                d="M44.0003 23.9995C44.0003 25.6995 43.7603 27.3195 43.3803 28.8995C43.2203 28.9195 43.1003 28.8995 42.9403 28.9395C40.2803 29.8195 37.5603 30.4795 34.8203 30.9795C35.3403 26.3395 35.3403 21.6595 34.8203 17.0195C37.5603 17.5195 40.3003 18.1595 42.9403 19.0595C43.1003 19.0995 43.2203 19.1195 43.3803 19.1195C43.7603 20.6995 44.0003 22.3195 44.0003 23.9995Z"
-                fill="#FB6514"
-              />
-              <path
-                d="M30.9795 34.8203C30.4795 37.5803 29.8395 40.3003 28.9395 42.9403C28.8995 43.1003 28.8995 43.2203 28.8795 43.3803C27.3195 43.7603 25.6795 44.0003 23.9995 44.0003C22.2995 44.0003 20.6795 43.7603 19.0995 43.3803C19.0795 43.2203 19.0995 43.1003 19.0595 42.9403C18.1795 40.2803 17.5195 37.5803 17.0195 34.8203C19.3395 35.0803 21.6595 35.2603 23.9995 35.2603C26.3395 35.2603 28.6795 35.0803 30.9795 34.8203Z"
-                fill="#FB6514"
-              />
-              <path
-                d="M31.5267 31.5267C26.5245 32.1578 21.4755 32.1578 16.4733 31.5267C15.8422 26.5245 15.8422 21.4755 16.4733 16.4733C21.4755 15.8422 26.5245 15.8422 31.5267 16.4733C32.1578 21.4755 32.1578 26.5245 31.5267 31.5267Z"
-                fill="#FB6514"
-              />
-            </svg>
-          </div>
-        ),
-      },
-      {
-        id: 2,
-        title: "ایمیل",
-        value: "Info@loremIpsum.com",
-        icon: (
-          <div className="relative h-14 w-14">
-            <svg
-              width="48"
-              height="48"
-              viewBox="0 0 48 48"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-14 w-14"
-            >
-              <path
-                opacity="0.4"
-                d="M14 8H34C36.8465 8 39.066 8.71163 40.5693 10.1074C42.0593 11.4909 43 13.6906 43 17V31C43 34.3094 42.0593 36.5091 40.5693 37.8926C39.066 39.2884 36.8465 40 34 40H14C11.1535 40 8.93401 39.2884 7.43066 37.8926C5.94073 36.5091 5 34.3094 5 31V17C5 13.6906 5.94073 11.4909 7.43066 10.1074C8.93401 8.71163 11.1535 8 14 8Z"
-                fill="#FB6514"
-                stroke="#FB6514"
-                strokeWidth="2"
-              />
-              <path
-                d="M33.6904 17.5957C33.9055 17.4212 34.2148 17.4693 34.3623 17.6641L34.373 17.6777L34.3838 17.6904C34.5585 17.9055 34.5102 18.2157 34.3154 18.3633L34.3057 18.3701L34.2959 18.3789L28.0352 23.3789L28.0283 23.3838L28.0215 23.3896C26.9492 24.2776 25.4865 24.7401 24 24.7402C22.5151 24.7402 21.0472 24.2785 19.9512 23.3848L19.9434 23.3789L13.6895 18.3838H13.6904C13.4573 18.1943 13.4414 17.8803 13.5957 17.6904C13.7851 17.4574 14.0992 17.4415 14.2891 17.5957L14.2959 17.6016L20.5557 22.6016V22.6006C21.5247 23.3776 22.7819 23.7353 23.9893 23.7354C25.1966 23.7354 26.4538 23.3775 27.4229 22.6006L27.4238 22.6016L33.6836 17.6016L33.6904 17.5957Z"
-                fill="#FB6514"
-                stroke="#FB6514"
-                strokeWidth="2"
-              />
-            </svg>
-          </div>
-        ),
-      },
-      {
-        id: 3,
-        title: "تماس",
-        value: "۰۹۱۲۵۶۷۸۹۸۷",
-        value2: "۰۹۱۲۳۴۵۶۷۸۹",
-        icon: (
-          <div className="relative h-14 w-14">
-            <svg
-              width="48"
-              height="48"
-              viewBox="0 0 48 48"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-14 w-14"
-            >
-              <path
-                opacity="0.4"
-                d="M11.1797 5C11.5997 5 12.0108 5.09064 12.3672 5.26172L12.3809 5.26758C12.7521 5.43894 13.0674 5.68788 13.3174 6.04883L13.3242 6.05859L17.9648 12.5986L17.9688 12.6045C18.2924 13.0541 18.5098 13.4456 18.6543 13.7988L18.6572 13.8066L18.6611 13.8135C18.8021 14.1423 18.8603 14.4274 18.8604 14.6396C18.8604 14.9183 18.7803 15.2207 18.5859 15.54L18.5771 15.5537L18.5693 15.5684C18.3652 15.9293 18.0476 16.3381 17.6133 16.7725L17.6064 16.7793L17.5996 16.7871L16.0928 18.3525C15.6698 18.7755 15.4805 19.2978 15.4805 19.8604C15.4805 20.1149 15.5139 20.3369 15.5703 20.5625L15.584 20.6182L15.6035 20.6709C15.6423 20.7742 15.6808 20.8652 15.7061 20.9248C15.7346 20.9922 15.745 21.0184 15.751 21.0361L15.7793 21.1211L15.8223 21.1992C16.2295 21.9458 16.8993 22.865 17.7969 23.9258L17.8037 23.9346C18.7139 24.9863 19.6882 26.0624 20.7461 27.1406L20.7549 27.1484L20.7627 27.1572C21.2139 27.5959 21.6694 28.0361 22.126 28.459L17.0068 33.5781C16.5452 33.1514 16.0906 32.7166 15.6465 32.2725C13.8756 30.484 12.2567 28.6219 10.7891 26.6865L10.168 25.8516C8.76527 23.9009 7.61136 21.9616 6.72461 20.0479L6.36035 19.2295C5.44319 17.0505 5.00001 15.0033 5 13.0801C5 11.8387 5.21891 10.6658 5.64844 9.5918L5.65039 9.58594C6.07322 8.51129 6.74646 7.51272 7.70605 6.60742L7.71387 6.60059L7.72168 6.59277C8.85063 5.48147 10.009 5.00009 11.1797 5Z"
-                fill="#FB6514"
-                stroke="#FB6514"
-                strokeWidth="2"
-              />
-              <path
-                d="M33.2803 29.0801C33.5136 29.0801 33.785 29.1282 34.1211 29.2656C34.3882 29.3749 34.6791 29.5266 35.0029 29.7285L35.3379 29.9473L41.9414 34.6357L41.9512 34.6426C42.3339 34.9076 42.5593 35.1843 42.6953 35.4834C42.8558 35.8875 42.9404 36.2572 42.9404 36.6602C42.9404 37.1025 42.8606 37.5687 42.6982 38.0234C42.6388 38.1819 42.5972 38.29 42.5459 38.3926L42.541 38.4033L42.5361 38.4131C42.2359 39.0488 41.8497 39.6453 41.3398 40.208C40.4802 41.1554 39.5558 41.8249 38.5352 42.2637L38.3633 42.334C37.3034 42.7651 36.1515 43 34.9004 43C33.0186 43 30.972 42.5573 28.7725 41.6201C26.827 40.7912 24.8728 39.7068 22.9238 38.3633L22.0889 37.7715C21.6127 37.4174 21.1477 37.0695 20.6953 36.7178L25.8516 31.5615C26.1732 31.7754 26.4753 31.9585 26.7559 32.1055L26.8018 32.1299L26.8486 32.1484C26.8721 32.1578 26.9055 32.1722 26.9688 32.2012C27.0252 32.227 27.1027 32.2629 27.1865 32.2988L27.207 32.3086L27.2295 32.3164C27.5354 32.4311 27.8228 32.46 28.0801 32.46C28.697 32.46 29.206 32.2264 29.6025 31.832L31.123 30.332L31.127 30.3271C31.5865 29.8676 31.9858 29.5628 32.3232 29.3867L32.3516 29.3711L32.3799 29.3545C32.7028 29.1579 32.9853 29.0801 33.2803 29.0801Z"
-                fill="#FB6514"
-                stroke="#FB6514"
-                strokeWidth="2"
-              />
-            </svg>
-          </div>
-        ),
-      },
-      {
-        id: 4,
-        title: "آدرس",
-        value: "خراسان رضوی، مشهد، بلوار خیام، خیام جنوبی، پلاک ۱۰، طبقه ۵",
-        icon: (
-          <div className="relative h-14 w-14">
-            <svg
-              width="48"
-              height="48"
-              viewBox="0 0 48 48"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-14 w-14"
-            >
-              <path
-                opacity="0.4"
-                d="M23.9805 4.5H24C30.6269 4.5 38.0573 8.32131 40.1689 16.7188L40.2646 17.1221C42.4809 26.8981 36.5117 35.2716 30.8467 40.7188L30.8438 40.7227C28.9375 42.5744 26.4699 43.5 24 43.5C21.5311 43.5 19.062 42.575 17.1338 40.7197L17.1328 40.7188C11.4684 35.272 5.49805 26.8772 7.71484 17.1006C9.68696 8.42526 17.2661 4.5 23.9805 4.5Z"
-                fill="#FB6514"
-                stroke="#FB6514"
-                strokeWidth="2"
-              />
-              <path
-                d="M24 15.3203C26.927 15.3203 29.2997 17.6931 29.2998 20.6201C29.2998 23.5472 26.9271 25.9199 24 25.9199C21.073 25.9198 18.7002 23.5472 18.7002 20.6201C18.7003 17.6932 21.073 15.3204 24 15.3203Z"
-                fill="#FB6514"
-                stroke="#FB6514"
-                strokeWidth="2"
-              />
-            </svg>
-          </div>
-        ),
-      },
-    ],
-  };
+    features: defaultFeatures,
+  });
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        setIsLoading(true);
+        const result = await getMenuLinksByGroup({
+          groupName: "contact-info-page",
+        });
+
+        if (result.ok && result.data) {
+          // تبدیل داده‌های API به فرمت مورد نیاز
+          let menuItems: MenuItem[] = [];
+
+          if (Array.isArray(result.data)) {
+            menuItems = result.data;
+          } else if (
+            result.data &&
+            typeof result.data === "object" &&
+            "data" in result.data
+          ) {
+            const data = (result.data as { data?: MenuItem[] }).data;
+            menuItems = Array.isArray(data) ? data : [];
+          }
+
+          if (menuItems.length > 0) {
+            // مرتب‌سازی بر اساس sortId از چپ به راست (sortId بزرگ‌تر اول)
+            const sortedItems = [...menuItems].sort((a, b) => {
+              const sortA = a.sortId ?? 999;
+              const sortB = b.sortId ?? 999;
+              return sortB - sortA;
+            });
+
+            const features: ContactFeature[] = sortedItems.map(
+              (item, index) => {
+                const title = item.name || `آیتم ${index + 1}`;
+                const description = item.description || "";
+
+                // اگر description شامل چند خط است (مثل شماره تلفن‌های متعدد)
+                const lines = description
+                  .split("\n")
+                  .filter((line) => line.trim());
+                const value = lines[0] || "";
+                const value2 = lines[1] || undefined;
+
+                return {
+                  id: item.id || index + 1,
+                  title,
+                  value,
+                  value2,
+                  icon: getIconByTitle(title),
+                };
+              }
+            );
+
+            setContactInfo((prev) => ({
+              ...prev,
+              features,
+            }));
+          }
+        }
+      } catch (error) {
+        logger.error("خطا در دریافت اطلاعات تماس:", error);
+        // در صورت خطا، از داده‌های پیش‌فرض استفاده می‌شود
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchContactInfo();
+  }, []);
 
   return (
     <section className="relative w-full overflow-hidden">
@@ -183,42 +214,54 @@ const ContactInfoSection = () => {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-          {[...contactInfo.features].reverse().map((feature) => (
-            <div
-              key={feature.id}
-              className={`group relative px-6 py-7 transition duration-400 hover:-translate-y-1 ${styles.contactInfoCard}`}
-              style={{
-                minHeight: "180px",
-                background:
-                  "radial-gradient(50% 50% at 50.11% 50%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.06) 100%)",
-                border: "1px solid #3F3F46",
-                filter: "drop-shadow(14px 14px 100px rgba(0, 0, 0, 0.2))",
-                backdropFilter: "blur(3px)",
-                borderRadius: "16px",
-              }}
-            >
-              <div className="relative flex flex-col items-center text-center gap-3">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl ">
-                  {feature.icon}
-                </div>
-                <div className="space-y-1">
-                  <h3 className="font-ravi text-xl font-semibold text-white">
-                    {feature.title}
-                  </h3>
-                  <p className="font-ravi text-base text-gray-300 leading-relaxed">
-                    {feature.value}
-                  </p>
-                  {feature.value2 && (
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="px-6 py-7 rounded-2xl bg-gray-800/50 animate-pulse"
+                style={{ minHeight: "180px" }}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {[...contactInfo.features].reverse().map((feature) => (
+              <div
+                key={feature.id}
+                className={`group relative px-6 py-7 transition duration-400 hover:-translate-y-1 ${styles.contactInfoCard}`}
+                style={{
+                  minHeight: "180px",
+                  background:
+                    "radial-gradient(50% 50% at 50.11% 50%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.06) 100%)",
+                  border: "1px solid #3F3F46",
+                  filter: "drop-shadow(14px 14px 100px rgba(0, 0, 0, 0.2))",
+                  backdropFilter: "blur(3px)",
+                  borderRadius: "16px",
+                }}
+              >
+                <div className="relative flex flex-col items-center text-center gap-3">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl">
+                    {feature.icon}
+                  </div>
+                  <div className="space-y-1">
+                    <h3 className="font-ravi text-xl font-semibold text-white">
+                      {feature.title}
+                    </h3>
                     <p className="font-ravi text-base text-gray-300 leading-relaxed">
-                      {feature.value2}
+                      {feature.value}
                     </p>
-                  )}
+                    {feature.value2 && (
+                      <p className="font-ravi text-base text-gray-300 leading-relaxed">
+                        {feature.value2}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

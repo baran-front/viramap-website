@@ -9,6 +9,7 @@ import {
   StructuredData,
   generateOrganizationSchema,
 } from "@/components/lib/structured-data";
+import { FormMessageProvider } from "@/components/ui/form-message-provider";
 
 export const metadata: Metadata = {
   title: {
@@ -91,6 +92,7 @@ export default function RootLayout({
     <html lang="fa" dir="rtl">
       <body className="font-ravi">
         <StructuredData data={organizationSchema} />
+        <FormMessageProvider />
         <BackgroundBlur />
         <Header />
         <main>{children}</main>
