@@ -41,6 +41,25 @@ export const contactFormSchema = z.object({
 
 export type ContactFormValues = z.infer<typeof contactFormSchema>;
 
+// Contact Us Form Schema (with firstName/lastName split)
+export const contactUsFormSchema = z.object({
+  firstName: z
+    .string()
+    .min(2, "نام باید حداقل ۲ کاراکتر باشد")
+    .max(50, "نام نمی‌تواند بیش از ۵۰ کاراکتر باشد"),
+  lastName: z
+    .string()
+    .min(2, "نام خانوادگی باید حداقل ۲ کاراکتر باشد")
+    .max(50, "نام خانوادگی نمی‌تواند بیش از ۵۰ کاراکتر باشد"),
+  email: z.string().email("لطفا یک ایمیل معتبر وارد کنید"),
+  message: z
+    .string()
+    .min(10, "پیام باید حداقل ۱۰ کاراکتر باشد")
+    .max(1000, "پیام نمی‌تواند بیش از ۱۰۰۰ کاراکتر باشد"),
+});
+
+export type ContactUsFormValues = z.infer<typeof contactUsFormSchema>;
+
 // Free Consultation Form Schema
 export const freeConsultationFormSchema = z.object({
   firstName: z

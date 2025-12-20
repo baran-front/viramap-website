@@ -34,7 +34,7 @@ export const MENU_ENDPOINTS = {
  * Endpoints مربوط به فرم تماس
  */
 export const CONTACT_ENDPOINTS = {
-  create: "/v1/contactus/client/create",
+  create: "/v1/contactusmessages",
 } as const;
 
 /**

@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import {
-  ContactUsForm,
-  ContactInfoSection,
-  FreeConsultationSection,
-} from "@/components/ContactUs";
+import { Suspense } from "react";
+import AboutUsContent from "@/components/ContactUs/AboutUsContent";
 
 export const metadata: Metadata = {
   title: "تماس با ما | ویرامپ",
@@ -27,23 +24,10 @@ export const metadata: Metadata = {
   },
 };
 
-type AboutUsPageSearchParams = {
-  [key: string]: string | string[] | undefined;
-};
-
-type AboutUsPageProps = {
-  searchParams?: AboutUsPageSearchParams;
-};
-
-export default function AboutUsPage({ searchParams }: AboutUsPageProps) {
-  const params = searchParams ?? {};
-  const showFreeConsultation = params.free === "1";
-
+export default function AboutUsPage() {
   return (
-    <main>
-      {showFreeConsultation && <FreeConsultationSection autoScroll={true} />}
-      <ContactUsForm />
-      <ContactInfoSection />
-    </main>
+    <Suspense fallback={<main>در حال بارگذاری...</main>}>
+      <AboutUsContent />
+    </Suspense>
   );
 }

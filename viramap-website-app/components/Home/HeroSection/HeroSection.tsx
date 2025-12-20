@@ -12,7 +12,7 @@ const HeroSection = () => {
 
   // پیش‌بارگذاری صفحه «تماس با ما» برای سریع‌تر شدن کلیک روی «مشاوره رایگان»
   useEffect(() => {
-    router.prefetch("/about-us?free=1#free-consultation");
+    router.prefetch("/about-us?free=1");
   }, [router]);
 
   const openDemoModal = () => setIsDemoModalOpen(true);
@@ -186,7 +186,34 @@ const HeroSection = () => {
 
           {/* Secondary Button - مشاوره رایگان */}
           <button
-            onClick={() => router.push("/about-us?free=1#free-consultation")}
+            onClick={() => {
+              router.push("/about-us?free=1#free-consultation");
+              // بعد از نویگیت، به المنت با id="free-consultation" اسکرول می‌کنیم
+              // استفاده از چند لایه تاخیر برای اطمینان از رندر شدن کامل صفحه
+              const scrollToTarget = () => {
+                const element = document.getElementById("free-consultation");
+                if (element) {
+                  element.scrollIntoView({ behavior: "smooth", block: "start" });
+                  return true;
+                }
+                return false;
+              };
+              
+              // تلاش اولیه بعد از تاخیر کوتاه
+              setTimeout(() => {
+                if (!scrollToTarget()) {
+                  // اگر المنت هنوز رندر نشده، چند بار دیگر تلاش می‌کنیم
+                  let attempts = 0;
+                  const maxAttempts = 30;
+                  const interval = setInterval(() => {
+                    attempts++;
+                    if (scrollToTarget() || attempts >= maxAttempts) {
+                      clearInterval(interval);
+                    }
+                  }, 100);
+                }
+              }, 600);
+            }}
             className="flex flex-row justify-center items-center px-5 sm:px-6 md:px-7 py-3 sm:py-3.5 w-full sm:w-[167px] md:w-[177px] lg:w-[187px] h-12 sm:h-[48px] bg-transparent rounded-lg text-[#FB6514] font-ravi font-semibold text-[14px] sm:text-[15px] md:text-base gap-2 transition-all duration-300 ease-in-out hover:bg-[#FB6514]/10 hover:border-[#FB6514]/50 hover:-translate-y-0.5 hover:shadow-md hover:shadow-[#FB6514]/20 active:scale-[0.98] active:translate-y-0"
           >
             <span className="whitespace-nowrap">مشاوره رایگان</span>

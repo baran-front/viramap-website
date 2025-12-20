@@ -17,16 +17,19 @@ export type { ApiResult, PagedResult, PaginationParams };
 // ==================== 1. فرم تماس (Contact Us) ====================
 
 export interface ContactUsFormPayload {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  phone?: string;
-  subject?: string;
   message: string;
+  jsonExt?: string;
+  type?: number;
+  responseStatus?: number;
 }
 
 export interface ContactUsResponse {
-  id: number;
-  createdOn: string;
+  data: {
+    id: number;
+  };
 }
 
 export interface PostContactUsParams {
@@ -43,6 +46,17 @@ export async function postContactUs(
 ): Promise<ApiResult<ContactUsResponse>> {
   const { form, tenant = API_CONFIG.DEFAULT_TENANT, locale = API_CONFIG.DEFAULT_LOCALE } = params;
 
+  // Prepare payload with defaults
+  const payload: ContactUsFormPayload = {
+    firstName: form.firstName,
+    lastName: form.lastName,
+    email: form.email,
+    message: form.message,
+    jsonExt: form.jsonExt || "",
+    type: form.type ?? 0,
+    responseStatus: form.responseStatus ?? 0,
+  };
+
   try {
     const response = await safeFetch<ContactUsResponse>(
       CONTACT_ENDPOINTS.create,
@@ -51,12 +65,12 @@ export async function postContactUs(
         headers: {
           ...CommonHeaders.jsonApplicationType,
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       },
       {
         tenant,
         locale,
-        skipAuth: true,
+        skipAuth: false, // Requires Authorization header
       }
     );
 
